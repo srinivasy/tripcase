@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.email.parse.engine</groupId>
-	<artifactId>TripCase</artifactId>
+	<artifactId>tripcase</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0</version>
 	<name>TripCase Email parsing Parent Project</name>
