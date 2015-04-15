@@ -24,7 +24,7 @@ public class NameFinderClass {
 		
 		NameSample sample = null;
 		try{
-		InputStream is1 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-ner-person.bin");
+		InputStream is1 = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-ner-person.bin");
 		/*InputStream is2 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-ner-date.bin");
 		InputStream is3 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-ner-location.bin");
 		InputStream is4 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-ner-money.bin");
@@ -32,7 +32,7 @@ public class NameFinderClass {
 		InputStream is6 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-ner-organization.bin");
 		InputStream is7 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-ner-percentage.bin");
 		*/
-		InputStream is8 = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\email_templates\\OpenNLP\\Airline\\train_data_model.bin");
+		InputStream is8 = new FileInputStream("C:/Users/CB34388493/opennlp/models/train_data.txt");
 		
 		
 		//load the model

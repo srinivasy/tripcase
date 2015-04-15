@@ -25,7 +25,7 @@ public class SentenceDetectClass {
 		try{
 			
 		// always start with a model, a model is learned from training data
-		InputStream is = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-sent.bin");
+		InputStream is = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-sent.bin");
 		SentenceModel model = new SentenceModel(is);
 		SentenceDetectorME sdetector = new SentenceDetectorME(model);
 		//System.out.println("paragraph:::: " + paragraph);

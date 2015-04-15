@@ -22,7 +22,7 @@ public class TokenizeClass {
 		String tokens[] = null;
 		
 		try{
-		InputStream is = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-token.bin");
+		InputStream is = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-token.bin");
 	 
 		TokenizerModel model = new TokenizerModel(is);
 	 

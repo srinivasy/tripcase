@@ -58,7 +58,7 @@ public class PersonModelTrain {
 									});
 			
 			ObjectStream<String> lineStream =
-					new PlainTextByLineStream(new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\email_templates\\OpenNLP\\Airline\\train_data.txt"), charset);
+					new PlainTextByLineStream(new FileInputStream("C:/Users/CB34388493/opennlp/models/train_data.txt"), charset);
 			
 			 sampleStream = new NameSampleDataStream(lineStream);			
 			model =  NameFinderME.train("en", "person", sampleStream,TrainingParameters.defaultParams(), featureGenerator, Collections.<String, Object> emptyMap());

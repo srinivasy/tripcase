@@ -26,7 +26,8 @@ public class MainParser {
 	
 	
 	private static void parseAirline() {
-		File[] files = new File(Config.getEMailPath("airline")).listFiles();
+		//File[] files = new File(Config.getEMailPath("C:/Users/CB34388493/opennlp/emails/")).listFiles();
+		File[] files = new File("C:/Users/CB34388493/opennlp/emails/").listFiles();
 		
 		//readFile();
 		

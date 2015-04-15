@@ -26,7 +26,7 @@ public class PosTagClass {
 	public static void POSTag() {
 		try{
 		POSModel model = new POSModelLoader()	
-			.load(new File("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-pos-maxent.bin"));
+			.load(new File("C:/Users/CB34388493/opennlp/models/en-pos-maxent.bin"));
 		PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
 		POSTaggerME tagger = new POSTaggerME(model);
 	 

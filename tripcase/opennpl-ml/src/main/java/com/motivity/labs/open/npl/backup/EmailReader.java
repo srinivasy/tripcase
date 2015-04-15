@@ -1,4 +1,4 @@
-package com.motivity.tripcase.emailreader;
+package com.motivity.labs.open.npl.backup;
 //import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,165 +37,11 @@ import com.motivity.tripcase.utils.HtmlFileReader;
 import com.motivity.tripcase.utils.HtmlTableParser;
 
 public class EmailReader {
-	EMail email = new EMail();
-	
-	public static String getToAddress(MimeMessage mimeMessage){
-		String toReceipentsAddress = "";
-		try {
-			InternetAddress[] toRecipients = (InternetAddress[]) mimeMessage.getRecipients(RecipientType.TO);
 
-			if (toRecipients != null)
-			{
-				for (int i = 0; i < toRecipients.length; i++)
-				{
-					if (toRecipients[i].getPersonal() != null)
-					{
-						toReceipentsAddress += toRecipients[i].getPersonal();
-					}
-					else
-					{
-						toReceipentsAddress += toRecipients[i].getAddress();
-					}
-				}
-				
-			}
-		} catch (MessagingException e) {
-			System.err.println(e.getMessage());
-		}
-
-		return toReceipentsAddress;
-		
-	}
-	
-	public static String getFromAddress(MimeMessage mimeMessage){
-			String fromAddress="";
-		
-		try {
-			
-			if (mimeMessage.getFrom() != null && mimeMessage.getFrom().length > 0)
-			{
-				InternetAddress from = (InternetAddress) mimeMessage.getFrom()[0];
-
-				if (from.getPersonal() != null)
-				{
-					fromAddress=from.getPersonal();
-				}
-				if (from.getAddress() != null)
-				{
-					fromAddress=from.getAddress();
-				}
-
-			}
-
-		
-		} catch (MessagingException e) {
-			System.err.println(e.getMessage());
-		}
-
-		return fromAddress;
-	
-	}
-	
-	public static String getSubject(MimeMessage mimeMessage){
-		String subject="";
-		try {
-		if (mimeMessage.getSubject() != null && mimeMessage.getSubject().length() > 0)
-		{
-			subject=mimeMessage.getSubject();
-		}
-		
-		} catch (MessagingException e) {
-			System.err.println(e.getMessage());
-		}
-
-	return subject;
-		
-	}
-	
-	public static String getReceivedDate(MimeMessage mimeMessage){
-		String receivedDate="";
-		try{
-			if (mimeMessage.getReceivedDate() != null && mimeMessage.getReceivedDate() != null )
-			{
-				receivedDate=mimeMessage.getReceivedDate().toLocaleString();
-			}
-		} catch (MessagingException e) {
-			System.err.println(e.getMessage());
-		}
-		return receivedDate;
-	}
-	
-	public static String getBody(MimeMessage mimeMessage,boolean html){
-
-		String bodyText="";
-		List<BodyPart> allBodyParts = new ArrayList<BodyPart>();
-
-		try {
-			if (mimeMessage.getContent() instanceof Multipart)
-			{
-				getAllBodyParts((Multipart)mimeMessage.getContent(), allBodyParts);
-
-				for (int i = 0; i < allBodyParts.size(); i++)
-				{
-					
-					if (allBodyParts.get(i).isMimeType("text/plain") && allBodyParts.get(i).getDisposition() != null)
-					{
-						String content = (String) allBodyParts.get(i).getContent();
-						byte[] buffer = content.getBytes("UTF-8"); //here you can use char set from allBodyParts.get(i)
-
-					}
-					else if (allBodyParts.get(i).isMimeType("text/plain"))
-					{
-						if(allBodyParts.get(i).getContent() instanceof MimeBodyPart)
-						{
-							MimeBodyPart mimeBodyPart = (MimeBodyPart)allBodyParts.get(i).getContent();
-							
-							//donwloadAttachments(mimeBodyPart);//attachment downloads.
-							//email.setBody( mimeBodyPart.getDescription());
-							bodyText=mimeBodyPart.getDescription();
-						}
-						else if (allBodyParts.get(i).getContent() instanceof String)
-						{
-							bodyText=(String)allBodyParts.get(i).getContent();
-
-						}
-					}else if (allBodyParts.get(i).isMimeType("text/html"))
-					{
-						if(allBodyParts.get(i).getContent() instanceof MimeBodyPart)
-						{
-							MimeBodyPart mimeBodyPart = (MimeBodyPart)allBodyParts.get(i).getContent();
-							bodyText = mimeBodyPart.getDescription();
-
-						}
-						else if (allBodyParts.get(i).getContent() instanceof String)
-						{
-							bodyText = (String)allBodyParts.get(i).getContent();							
-							
-						}
-						
-					}
-				}
-			}else{
-				bodyText=mimeMessage.getContent().toString();
-			}
-		}
-		catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}catch (Throwable t) {
-			t.printStackTrace();
-		}
-		return bodyText;
-
-	
-	}
 
 	public EMail convertToString(MimeMessage mimeMessage)
 	{
-		
+		EMail email = new EMail();
 		try {
 			InternetAddress[] toRecipients = (InternetAddress[]) mimeMessage.getRecipients(RecipientType.TO);
 
@@ -508,7 +354,118 @@ public static void htmlTableParse(String htmlString){
 		}
 	}
 	
+	/*public static String passengerSummaryParse(String htmlString,String delimiter){
+		StringBuilder formattedOutput = new StringBuilder();
+		List< Map<String,String>> passengerList=new ArrayList<Map<String,String>>();
+		
+		delimiter = "|";
 
+
+		try {
+			Document document = Jsoup.parse(htmlString);
+			Elements passengerTables = document.select("table tbody tr td table tbody tr td table"); //select the Passenger & travel cost details table.
+			passengerList=processPassengerTable(passengerTables,passengerList);
+			formattedOutput.append(format(passengerList,delimiter));
+		}
+		catch(Exception t){
+				t.printStackTrace();
+		}
+		
+		//System.out.println("FormattedOutput from passengerSummary: " + formattedOutput.toString());
+		return formattedOutput.toString();
+	}
+	
+	private static List<Map<String,String>> processPassengerTable(Elements nestedTables,List< Map<String,String>> passengerList) {
+		ArrayList<Element> tableList = new ArrayList<Element>();
+		   try{
+		
+		for(int i=0;i<nestedTables.size();i++){
+			if(nestedTables.get(i).html().contains("Passenger summary"))
+			tableList.add(nestedTables.get(i));
+		}
+		
+		*//** Processing for Flight Details *//*
+		for(Element tbody:tableList){
+			
+						
+			if(tbody.html().contains("Passenger summary")){
+				processPassengerDetails(tbody,passengerList);
+				
+			}
+
+		}
+		   }
+		   catch(Exception t){
+			   t.printStackTrace();
+		   }
+		return passengerList;
+	}
+	
+	private static List< Map<String,String>>  processPassengerDetails(Element tbody,List< Map<String,String>> passengerList){
+		
+		if(tbody.html().contains("Passenger summary")){
+			
+		Elements rows=tbody.select("tr");
+		for (int i=2;i<rows.size();i++){
+			Map<String,String>  passengerDetailsMap=new LinkedHashMap<String,String>();
+			passengerDetailsMap.put(replaceAmpSpaceNullEmpty(rows.get(1).child(0).text()), replaceAmpSpaceNullEmpty(rows.get(i).child(0).text()));
+			passengerDetailsMap.put(replaceAmpSpaceNullEmpty(rows.get(1).child(1).text()), replaceAmpSpaceNullEmpty(rows.get(i).child(1).text()));
+			passengerDetailsMap.put(replaceAmpSpaceNullEmpty(rows.get(1).child(2).text()), replaceAmpSpaceNullEmpty(rows.get(i).child(2).text()));
+			passengerDetailsMap.put(replaceAmpSpaceNullEmpty(rows.get(1).child(3).text()), replaceAmpSpaceNullEmpty(rows.get(i).child(3).text()));
+			passengerList.add(passengerDetailsMap);
+			
+		}
+		}
+
+		return passengerList;
+		
+	}
+
+	private static String replaceAmpSpaceNullEmpty(String val){	
+		if(null!=val){
+			if(val.trim().isEmpty()){
+				return val.replace("\u00a0", "");
+			}
+			else{
+				return val.replace("\u00a0", "");
+			}
+		}
+		else{
+			val="";
+		}
+	
+		return val;
+	}
+	
+	private static String format(List< Map<String,String>> listMap,String delimiter){
+		
+		StringBuilder localString=new StringBuilder();
+		
+		if(!listMap.isEmpty() && listMap.size()>0){
+			
+			Map<String,String> passengerHeaderMap=listMap.get(0);
+			Set<String> headers=passengerHeaderMap.keySet();
+			for(String key:headers){
+				localString.append(key);
+				localString.append(delimiter);
+			}
+			
+			for(Map<String,String> passengerMap:listMap){
+				Collection<String> values=passengerMap.values();
+				localString.append("\n");
+				for(String value:values){
+					localString.append(value);
+					localString.append(delimiter);
+				}
+			}
+			
+		}
+		localString.append("\n");
+		return localString.toString();
+		
+	}*/
+	
+	
 	public static String getHtmlStringFromParserMap(Map<String, String> htmlTableMap){
 		
 		String tableHeaderAndValues = null;

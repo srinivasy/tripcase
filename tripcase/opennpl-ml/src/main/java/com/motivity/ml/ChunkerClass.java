@@ -30,7 +30,7 @@ public class ChunkerClass {
 	public static void chunk() {
 		try{
 		POSModel model = new POSModelLoader()
-				.load(new File("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-pos-maxent.bin"));
+				.load(new File("C:/Users/CB34388493/opennlp/models/en-pos-maxent.bin"));
 		PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
 		POSTaggerME tagger = new POSTaggerME(model);
 	 
@@ -55,7 +55,7 @@ public class ChunkerClass {
 		perfMon.stopAndPrintFinalResult();
 	 
 		// chunker
-		InputStream is = new FileInputStream("D:\\projects\\TripCase_Project\\Technical\\OpenNLPProject\\models\\en-chunker.bin");
+		InputStream is = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-pos-maxent.bin");
 		ChunkerModel cModel = new ChunkerModel(is);
 	 
 		ChunkerME chunkerME = new ChunkerME(cModel);

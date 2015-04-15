@@ -33,7 +33,7 @@ public class ParserBuilder {
 			parser.setEmailFile(file.getName());
 			parser.setEmail(email);
 			String rulesName = file.getName().replace("eml", "txt");
-			parser.setRulesFile(Config.getRulesFileName(rulesName));
+			//parser.setRulesFile(Config.getRulesFileName(rulesName));
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
