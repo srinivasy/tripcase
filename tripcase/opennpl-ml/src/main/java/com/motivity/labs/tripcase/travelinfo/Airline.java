@@ -1,4 +1,4 @@
-package com.motivity.tripcase.pojo;
+package com.motivity.labs.tripcase.travelinfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +13,7 @@ public class Airline {
 	private List<Flight> flights;
 	private Map<String, List<String>> data = new HashMap<String, List<String>>();
 	
-	
-	
+
 
 	public List<Flight> getFlights() {
 		return flights;

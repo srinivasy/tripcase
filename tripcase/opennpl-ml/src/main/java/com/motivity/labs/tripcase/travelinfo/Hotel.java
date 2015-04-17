@@ -1,4 +1,4 @@
-package com.motivity.tripcase.pojo;
+package com.motivity.labs.tripcase.travelinfo;
 
 import java.util.HashMap;
 import java.util.List;

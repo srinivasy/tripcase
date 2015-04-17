@@ -31,6 +31,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.motivity.labs.opennpl.models.NLPHelper;
 import com.motivity.ml.SentenceDetectClass;
 import com.motivity.tripcase.pojo.EMail;
 import com.motivity.tripcase.utils.HtmlFileReader;
@@ -176,7 +177,11 @@ public class EmailReader {
 					}
 				}
 			}else{
-				bodyText=mimeMessage.getContent().toString();
+				bodyText=mimeMessage.getContent().toString().trim();
+			
+				return bodyText;
+				
+				
 			}
 		}
 		catch (UnsupportedEncodingException e) {

@@ -1,4 +1,4 @@
-package com.motivity.labs.open.npl.backup;
+package com.motivity.labs.opennpl.backup;
 //import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.File;

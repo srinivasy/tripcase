@@ -17,19 +17,17 @@ import opennlp.tools.util.featuregen.AdaptiveFeatureGenerator;
 
 public class ModelCreation {
 	
-	public static void createDepartModel() throws IOException{
-		
-						      
+	public static void createModel(String modelType,String trainFile) throws IOException{
 	      Charset charset = Charset.forName("UTF-8");
-	      ObjectStream<String> lineStream =	new PlainTextByLineStream(new FileInputStream("C:/Users/CB34388493/opennlp/models/en-depart.train"), charset);
+	      ObjectStream<String> lineStream =	new PlainTextByLineStream(new FileInputStream(trainFile+".train"), charset);
 	      ObjectStream<NameSample> sampleStream = new NameSampleDataStream(lineStream);
 
 	      TokenNameFinderModel model;
 	      BufferedOutputStream modelOut=null;
 	      try {
       
-	     //   model = NameFinderME.train("en", "depart", sampleStream, null);
-	        model = NameFinderME.train("en","depart",sampleStream,(AdaptiveFeatureGenerator)null,Collections.<String,Object>emptyMap(),70,1);
+	     //model = NameFinderME.train("en", "depart", sampleStream, null);
+	     model = NameFinderME.train("en",modelType,sampleStream,(AdaptiveFeatureGenerator)null,Collections.<String,Object>emptyMap(),70,1);
 	       
 	      }
 	      finally {
@@ -38,7 +36,7 @@ public class ModelCreation {
 
 	     
 		try {
-	        modelOut = new BufferedOutputStream(new FileOutputStream("C:/Users/CB34388493/opennlp/models/en-depart.bin"));
+	        modelOut = new BufferedOutputStream(new FileOutputStream(trainFile+".bin"));
 	        model.serialize(modelOut);
 	      } finally {
 	        if (modelOut != null) 
@@ -46,5 +44,5 @@ public class ModelCreation {
 	      }
 	      
 	}
-
+	
 }

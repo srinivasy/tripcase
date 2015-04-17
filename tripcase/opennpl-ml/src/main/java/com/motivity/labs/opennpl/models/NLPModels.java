@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import opennlp.tools.chunker.ChunkerME;
 import opennlp.tools.chunker.ChunkerModel;
@@ -32,6 +33,7 @@ public final class NLPModels {
 	private static NameFinderME nameFinderOrganizationME=null;
 	private static NameFinderME nameFinderPercentageME=null;
 	private static NameFinderME nameFinderDepartME=null;
+	private static HashMap<String,NameFinderME> customModelMap=null;
 	private static POSTaggerME posTaggerME=null;
 	private static ChunkerME chunkerME=null;
 	
@@ -350,31 +352,51 @@ public final class NLPModels {
 	}
 	
 	
-	public static NameFinderME getDepartModel(){
-		InputStream is=null;
-		if(null==nameFinderDepartME){
-			try{
-				is = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-depart.bin");
-				TokenNameFinderModel model = new TokenNameFinderModel(is); 
-				nameFinderDepartME = new NameFinderME(model);
+	public static NameFinderME getCustomTrainedModel(String modelType,String loadModelFile){
+		
+		NameFinderME finderME=null;
+		if(null==customModelMap){
+			customModelMap = new HashMap<String,NameFinderME> ();
+			finderME=loadCustomModel(loadModelFile);
+			customModelMap.put(modelType,finderME);
+		}
+		else{
+			if(customModelMap.containsKey(modelType)){
+				finderME=customModelMap.get(modelType);
 			}
-			catch(InvalidFormatException ife){
-				ife.printStackTrace();
-			}catch(IOException ioe){
-				ioe.printStackTrace();
+			else{
+				finderME=loadCustomModel(loadModelFile);
+				customModelMap.put(modelType,finderME);
 			}
-				finally{
-					 try {
-						is.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			
-			
+
 		}
 	
-		return nameFinderDepartME;
+		return finderME;
 	}
+	
+	private static NameFinderME loadCustomModel(String loadModelFile){
+		InputStream is=null;
+		NameFinderME finderME=null;
+		try{
+			is = new FileInputStream(loadModelFile+".bin");
+			TokenNameFinderModel model = new TokenNameFinderModel(is); 
+			finderME = new NameFinderME(model);
+			
+		}
+		catch(InvalidFormatException ife){
+			ife.printStackTrace();
+		}catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+			finally{
+				 try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		return finderME;
+	}
+	
 
 }
