@@ -20,7 +20,7 @@ public class ControlProperties {
 		controlProps.put("print_tokens", "NO");
 		controlProps.put("print_match", "YES");
 		controlProps.put("print_origin_text", "NO");
-		controlProps.put("print_clean_sentence", "NO");
+		controlProps.put("print_clean_sentence", "YES");
 		
 	}
 	

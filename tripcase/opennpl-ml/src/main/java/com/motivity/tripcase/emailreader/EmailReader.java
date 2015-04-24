@@ -166,11 +166,13 @@ public class EmailReader {
 						{
 							MimeBodyPart mimeBodyPart = (MimeBodyPart)allBodyParts.get(i).getContent();
 							bodyText = mimeBodyPart.getDescription();
+							//System.out.println(" Body Text text/html ===>"+bodyText);
 
 						}
 						else if (allBodyParts.get(i).getContent() instanceof String)
 						{
-							bodyText = (String)allBodyParts.get(i).getContent();							
+							bodyText = (String)allBodyParts.get(i).getContent();		
+							//System.out.println(" Else Body Text text/html ===>"+bodyText);
 							
 						}
 						

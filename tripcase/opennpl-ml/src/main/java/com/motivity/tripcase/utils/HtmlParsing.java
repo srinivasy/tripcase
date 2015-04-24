@@ -1,17 +1,12 @@
 package com.motivity.tripcase.utils;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -26,8 +21,6 @@ import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities.EscapeMode;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
@@ -38,7 +31,7 @@ import com.motivity.labs.parse.file.reader.HtmlFileReader;
  * @author Nalini Kanta
  *
  */
-public class HtmlTableParser {
+public class HtmlParsing {
 
 	/**
 	 * parse
@@ -50,20 +43,7 @@ public class HtmlTableParser {
 	 * @throws Throwable
 	 */
 	
-	   public static void convertHtmlToXml(String cleanedHtml){
-		   try {
-			   String fn = "C:\\Users\\CB34388493\\workspace\\HTMLParser\\test\\travel";
-			   
-			   FileWriter fw  = new FileWriter(fn + ".xml");
-			   PrintWriter pw  = new PrintWriter(fw);
-			   pw.print(HtmlToXmlConverter.Html2Xml(cleanedHtml));
-			   pw.close();
-		   } catch (FileNotFoundException e) {
-				System.out.println("file not found");
-		   } catch (IOException e) {
-			   e.printStackTrace();
-		   }
-	   }
+
 	   
 	public static Map<String, String> parse(String htmlString, String filePath,
 			boolean isFileSource, String delimiter) throws Throwable {
@@ -93,6 +73,7 @@ public class HtmlTableParser {
 			
 			document.outputSettings().escapeMode(EscapeMode.base); // default
 
+//
 			document.outputSettings().charset("UTF-8");
 //			//document.outputSettings().charset("ASCII");
 			//document.outputSettings().charset("ISO-8859-1");
@@ -109,7 +90,6 @@ public class HtmlTableParser {
 			document=removeEmptyTags(document,"td");
 			//document=removeTagsOnlyWithNbsp(document,"td");
 			
-			//convertHtmlToXml(document.html());
 		
 			//Elements allTables = document.select("table tbody tr td table tbody"); 
 			Elements allTables = getTables(document,"table tbody");
@@ -132,8 +112,8 @@ public class HtmlTableParser {
 		//	allTablesResultMap=removeDuplicateTables(allTablesResultMap);
 
 			for (String tkeys : allTablesMap.keySet()) {
-				// if(tkeys.equalsIgnoreCase("TABLE_MV_5"))
-				// { //*testing scenario START */
+//				 if(tkeys.equalsIgnoreCase("TABLE_MV_12"))
+//				 { //*testing scenario START */
 				Element table = allTablesMap.get(tkeys);
 				//table=removeEmptyTagsFromTable(table,"td");
 				
@@ -159,7 +139,7 @@ public class HtmlTableParser {
 						
 						Element queueElement= queueElements.remove();
 						//System.out.println("Text====>"+queueElement.text());
-											
+					
 						if(queueElement.tagName().equalsIgnoreCase("td"))
 						{
 							if(queueElement.children().size()>=1){
@@ -183,11 +163,7 @@ public class HtmlTableParser {
 								formatString=addDelimiter(formatString,delimiter);
 								
 							}
-
 							else{
-								if(queueElement.tagName().equalsIgnoreCase("tr")){
-									formatString.append("\n");
-								}
 								
 								queueElements=refillQueue(queueElements,queueElement);
 								
@@ -525,8 +501,6 @@ public class HtmlTableParser {
 
 		htmlString = htmlString.replaceAll("<p>", "");
 		htmlString = htmlString.replaceAll("</p>", "");
-		htmlString = htmlString.replaceAll("<b>", "");
-		htmlString = htmlString.replaceAll("</b>", "");
 		htmlString = htmlString.replaceAll("<tbody>", "");
 		htmlString = htmlString.replaceAll("</tbody>", "");
 		htmlString = htmlString.replaceAll("<thead>", "");
@@ -571,20 +545,6 @@ public class HtmlTableParser {
 		
 		
 		
-		
-		return allTableMaps;
-	}
-	
-	private static Map<String,String> removeDuplicateEntries(Map<String,String> allTableMaps,String delimiter){
-		
-		Set<String> entriesSet=new HashSet<String>();
-		Set<String> allKeys=new HashSet<String>();
-		entriesSet.addAll(allTableMaps.values());
-	
-		for(String value:entriesSet){
-			
-			
-		}
 		
 		return allTableMaps;
 	}

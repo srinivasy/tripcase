@@ -67,8 +67,10 @@ public final class NLPHelper {
 	}
 	
 	public static String removeExtraWhiteSpaces(String line){
-		return line.replaceAll("\\s+$", "");
+		return line.replaceAll(" +", " ");
 	}
+	
+
 	
 	public static String[] cleanSentences(String line){
 		
@@ -78,23 +80,58 @@ public final class NLPHelper {
 		String newStr="";
 		for(int i=0;i<tokens.length;i++){
 		newStr=tokens[i];
-		newStr=newStr.replaceAll("\\s+$", "").trim();
-		newStr=newStr.replaceAll(": ", ":").replaceAll(" :", ":").trim();
+		newStr=newStr.trim();
+		newStr=newStr.replaceAll("[^a-z A-Z 0-9 : . / , ]", "");
+		newStr=removeExtraWhiteSpaces(newStr);
+//		newStr=newStr.replaceAll("\\s+$", "").trim();
+//		newStr=newStr.replaceAll(": ", ":").replaceAll(" :", ":").trim();
 		newStr=newStr.replaceAll(", ", " ").replaceAll(" ,", " ");
-		newStr=newStr.replaceAll("\\(","");
-		newStr=newStr.replaceAll("\\)","");
-		newStr=newStr.replaceAll("-", " ").replaceAll("/", " ");
-		newStr=newStr.replaceAll("#", " ");
-		newStr=newStr.replaceAll("\\'", "");
-		newStr=newStr.replaceAll("`", "");
-		newStr=newStr.replaceAll("\\*", "");
-		newStr=newStr.replaceAll("→", " ");
-		newStr=newStr.replaceAll("\\?", "");
+		newStr=newStr.replaceAll(",", " ");
+//		newStr=newStr.replaceAll("\\(","");
+//		newStr=newStr.replaceAll("\\)","");
+//		newStr=newStr.replaceAll("-", " ").replaceAll("/", " ");
+//		newStr=newStr.replaceAll("#", " ");
+//		newStr=newStr.replaceAll("\\'", "");
+//		newStr=newStr.replaceAll("`", "");
+//		newStr=newStr.replaceAll("\\*", "");
+//		newStr=newStr.replaceAll("→", " ");
+//		newStr=newStr.replaceAll("\\?", "");
+//		newStr=newStr.replaceAll("\t", "");
+
+//		newStr=newStr.replaceAll("PM", "<timetype>PM</timetype> ");
+//		newStr=newStr.replaceAll(" pm ", " PM ");
+//		newStr=newStr.replaceAll(" am ", " AM ");
+////		newStr=newStr.replaceAll("\\s?(am)"," AM");
+////		newStr=newStr.replaceAll("\\s?(pm)"," PM");
+//		newStr=newStr.replaceAll("Not Available", "NA");
+//		newStr=newStr.replaceAll("(Monday|MONDAY)", " ");
+//		newStr=newStr.replaceAll("(Tuesday|TUESDAY)", " ");
+//		newStr=newStr.replaceAll("(Wednesday|WEDNESDAY)", " ");
+//		newStr=newStr.replaceAll("(Thursday|THURSDAY)", " ");
+//		newStr=newStr.replaceAll("(Friday|FRIDAY)", " ");
+//		newStr=newStr.replaceAll("(Saturday|SATURDAY)", " ");
+//		newStr=newStr.replaceAll("(Sunday|SUNDAY)", " ");
+//		newStr=newStr.replaceAll(" Wed ", " ");
+//		newStr=newStr.replaceAll("Reserved", " ");
+//		newStr=newStr.replaceAll("R/Economy", "Economy");
+//		newStr=newStr.replaceAll("City", " ");
+//		newStr=newStr.replaceAll("Flight Number", "Flight_Number");
+		
+		
+		
+		
+//		newStr=newStr.replaceAll(" Fri ", " ");
+//		newStr=newStr.replaceAll(" FRI ", " ");
+
+		
+		
+		
 		
 		newStr=removeColonExceptTimeValue(newStr);
 		//newStr=removeDotExceptMoneyValue(newStr);
-		if(!newStr.trim().isEmpty()){
-			newLines.add(newStr.trim());
+		if(!newStr.isEmpty()){
+			newLines.add(newStr);
+			//System.out.println("Char Array:::"+newStr.toCharArray());
 		}
 		
 		//System.out.println("Tokens:"+newStr);
@@ -170,15 +207,40 @@ public final class NLPHelper {
 	public static NameFinderME loadTrainedModels(String modelName)throws IOException{
 		NameFinderME modelME=null;
 		
-		if(ModelTypes.DEPART_MODEL.equals(modelName)){
+		if(ModelTypes.MIXED_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.MIXED_MODEL,ModelTypes.MIXED_MODEL_FILE);
+		}
+		else if(ModelTypes.DEPART_MODEL.equals(modelName)){
 			modelME=NLPModels.getCustomTrainedModel(ModelTypes.DEPART_MODEL,ModelTypes.DEPART_MODEL_FILE);
 		}
-		if(ModelTypes.BOOKING_REF_MODEL.equals(modelName)){
+		else if(ModelTypes.DEPART_TIME_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.DEPART_TIME_MODEL,ModelTypes.DEPART_TIME_MODEL_FILE);
+		}
+		else if(ModelTypes.DEPART_DATE_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.DEPART_DATE_MODEL,ModelTypes.DEPART_DATE_MODEL_FILE);
+		}
+		else if(ModelTypes.BOOKING_REF_MODEL.equals(modelName)){
 			modelME=NLPModels.getCustomTrainedModel(ModelTypes.BOOKING_REF_MODEL,ModelTypes.BOOKING_REF_MODEL_FILE);
+		}
+		else if(ModelTypes.ARRIVE_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.ARRIVE_MODEL,ModelTypes.ARRIVE_MODEL_FILE);
+		}
+		else if(ModelTypes.ARRIVE_TIME_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.ARRIVE_TIME_MODEL,ModelTypes.ARRIVE_TIME_MODEL_FILE);
+		}
+		else if(ModelTypes.FLIGHT_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.FLIGHT_MODEL,ModelTypes.FLIGHT_MODEL_FILE);
+		}
+		else if(ModelTypes.SENTENCE_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.FLIGHT_MODEL,ModelTypes.SENTENCE_MODEL_FILE);
+		}
+		else if(ModelTypes.SPLIT_MODEL.equals(modelName)){
+			modelME=NLPModels.getCustomTrainedModel(ModelTypes.SPLIT_MODEL,ModelTypes.SPLIT_MODEL_FILE);
 		}
 		return modelME;
 		
 	}
+	
 	
 
 }

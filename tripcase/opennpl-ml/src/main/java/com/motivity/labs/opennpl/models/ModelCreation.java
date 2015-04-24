@@ -23,11 +23,15 @@ public class ModelCreation {
 	      ObjectStream<NameSample> sampleStream = new NameSampleDataStream(lineStream);
 
 	      TokenNameFinderModel model;
+
 	      BufferedOutputStream modelOut=null;
 	      try {
+	    	  
+	    	  Collections.<String,Object>emptyMap();
       
-	     //model = NameFinderME.train("en", "depart", sampleStream, null);
-	     model = NameFinderME.train("en",modelType,sampleStream,(AdaptiveFeatureGenerator)null,Collections.<String,Object>emptyMap(),70,1);
+	   //  model = NameFinderME.train("en", modelType, sampleStream, null);
+	 model = NameFinderME.train("en",modelType,sampleStream,(AdaptiveFeatureGenerator)null,Collections.<String,Object>emptyMap(),100,1);
+	  //  model= NameFinderME.train("en", modelType, sampleStream, Collections.<String,Object>emptyMap(), 70, 1);
 	       
 	      }
 	      finally {
