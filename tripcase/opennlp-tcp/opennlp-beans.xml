@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+   <bean id="nlpParser" class="com.sabre.tripcase.tcp.opennlp.parser.NlpParser">
+       
+       <property name="mimeMessageReader" ref="mimeMessageReader"/>
+       <property name="htmlHandler" ref="htmlHandler"/>
+       <property name="textHandler" ref="textHandler"/>
+       <property name="fileHandler" ref="fileHandler"/>
+   </bean>
+   
+      <bean id="mimeMessageReader" class="com.sabre.tripcase.tcp.opennlp.email.MimeMessageReader"></bean>
+      <bean id="htmlHandler" class="com.sabre.tripcase.tcp.opennlp.parser.handler.HtmlHandler"></bean>
+      <bean id="textHandler" class="com.sabre.tripcase.tcp.opennlp.parser.handler.TextHandler"></bean>
+	  <bean id="fileHandler" class="com.sabre.tripcase.tcp.opennlp.parser.handler.FileHandler">
+	  <property name="filePath" value="C:/Users/CB34388493/opennlp/emails/"/>
+	  <property name="processFile" value="ALL"/>
+	  </bean>
+	  
+	  <!--  NLP Models -->
+	  <bean id="nlpSentenceModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpSentenceModel"></bean>
+	  <bean id="nlpTokenModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpTokenModel"></bean>
+	  <bean id="nlpPersonModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpPersonModel"></bean>
+	  <bean id="nlpLocationModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpLocationModel"></bean>
+	  <bean id="nlpTimeModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpTimeModel"></bean>
+	  <bean id="nlpPercentageModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpPercentageModel"></bean>
+	  <bean id="nlpDateModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpDateModel"></bean>
+	  <bean id="nlpPOSModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpPOSTaggerModel"></bean>
+	  <bean id="nlpChunkModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpChunkerModel"></bean>
+	  <bean id="nlpOrganizationModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpOrganizationModel"></bean>
+	  <bean id="nlpMoneyModel" class="com.sabre.tripcase.tcp.opennlp.models.nlp.NlpMoneyModel"></bean>
+	  
+	  <!--  Trained Models -->
+	  
+	  <bean id="trainedModels" class="com.sabre.tripcase.tcp.opennlp.models.TrainedModels"></bean>
+	  <bean id="trainer" class="com.sabre.tripcase.tcp.opennlp.models.Trainer"></bean>
+	  
+	  
+</beans>
