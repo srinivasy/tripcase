@@ -10,26 +10,29 @@ import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 
 /**
+ * Class: NlpPOSTaggerModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpPOSTaggerModel {
-	
+
 	/**
 	 * getPosTaggerModel()
-	 * @return the posTaggerME
+	 * 
+	 * @return POSTaggerME
+	 * @throws Throwable
 	 */
-	public static POSTaggerME getPosTaggerModel() {
-		POSTaggerME posTaggerME=null;
-				try{
-			POSModel model = new POSModelLoader().load(new File("C:/Users/CB34388493/opennlp/models/en-pos-maxent.bin"));
+	public static POSTaggerME getPosTaggerModel() throws Throwable {
+		POSTaggerME posTaggerME = null;
+		try {
+			POSModel model = new POSModelLoader().load(new File(
+					"src/main/java/en-pos-maxent.bin"));
 			posTaggerME = new POSTaggerME(model);
-			}
-			catch(Exception ex){
-				ex.printStackTrace();
-			}
-			
-		
+		} catch (Exception ex) {
+			throw ex;
+		}
+
 		return posTaggerME;
 	}
 

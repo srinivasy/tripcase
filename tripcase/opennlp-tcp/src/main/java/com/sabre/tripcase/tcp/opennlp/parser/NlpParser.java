@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -35,16 +36,20 @@ public class NlpParser {
 	@Autowired
 	private Trainer trainer=null;
 	
-	public static void main(String args[]) {
+	private static Logger log =Logger.getLogger(NlpParser.class);
 	
+	public static void main(String args[]) {
 		try{
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("opennlp-beans.xml");
 		NlpParser nlpParser =(NlpParser) context.getBean("nlpParser");
 		nlpParser.startTraining();
+		log.info("Training models are successfully done");
 		nlpParser.startProcess();
+		log.info("NLP processing of Models and Source Files are successfully done");
 		}
 		catch(Throwable th){
+			log.error("Error inside NlpParser:", th);
 			th.printStackTrace();
 		}
 	}
@@ -61,8 +66,7 @@ public class NlpParser {
 		if(files != null){			
 				for (File file : files) {
 				if (file.isFile()) {
-					System.out.println("************************* " + file.getName() + " ***********************");
-					
+					log.info("************************* " + file.getName() + " ***********************");
 					MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);
 					String bodyText=EmailReader.getBody(mimeMessage, false);
 					ControlProperties.setFileName(fileHandler.getProcessFile());
@@ -73,7 +77,7 @@ public class NlpParser {
 						fileName=file.getName();
 					}
 					if(bodyText.contains(Constants.HTML_TAG)){
-					//htmlHandler.processHTMLContent(bodyText,fileName);
+					htmlHandler.processHTMLContent(bodyText,fileName);
 					}
 					else{
 						

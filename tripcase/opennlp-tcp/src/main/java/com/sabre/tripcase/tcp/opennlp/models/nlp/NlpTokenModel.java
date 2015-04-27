@@ -13,37 +13,37 @@ import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.InvalidFormatException;
 
 /**
+ * Class: NlpTokenModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpTokenModel {
-	private String modelPath="C:/Users/CB34388493/opennlp/models/en-token.bin";
-	
+
 	/**
 	 * getTokenModel()
-	 * @return the tokenizer
+	 * 
+	 * @return Tokenizer
+	 * @throws Throwable
 	 */
-	public  Tokenizer getTokenModel() {
-		InputStream inputStream=null;
-		Tokenizer tokenizer=null;
-		if(null==tokenizer){
-			try{
-			inputStream = new FileInputStream(modelPath);
-		 	TokenizerModel model = new TokenizerModel(inputStream);
-		 	tokenizer = new TokenizerME(model);
-		 	//tokenizer.tokenizePos("|");
-		 	
-			
-		}catch(InvalidFormatException ife){
-			ife.printStackTrace();
-		}catch(IOException ioe){
-			ioe.printStackTrace();
-		}
-			finally{
-				 try {
-					 inputStream.close();
+	public Tokenizer getTokenModel() throws Throwable {
+		InputStream inputStream = null;
+		Tokenizer tokenizer = null;
+		if (null == tokenizer) {
+			try {
+				inputStream = new FileInputStream("src/main/java/en-token.bin");
+				TokenizerModel model = new TokenizerModel(inputStream);
+				tokenizer = new TokenizerME(model);
+
+			} catch (InvalidFormatException ife) {
+				throw ife;
+			} catch (IOException ioe) {
+				throw ioe;
+			} finally {
+				try {
+					inputStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					throw e;
 				}
 			}
 		}

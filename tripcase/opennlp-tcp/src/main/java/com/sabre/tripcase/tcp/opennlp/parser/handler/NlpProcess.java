@@ -20,6 +20,7 @@ import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.util.Span;
 
 /**
+ * Class: NlpProcess
  * @author Nalini Kanta
  *
  */
@@ -28,41 +29,47 @@ public class NlpProcess {
 	private NlpSentenceModel nlpSentenceModel=null;
 	private NlpTokenModel nlpTokenModel=null;
 	private Trainer trainer;
-
 	
-	public String[] sentenceDetect(String content) {
+	/**
+	 * sentenceDetect()
+	 * @param content
+	 * @return String[]
+	 * @throws Throwable
+	 */
+	public String[] sentenceDetect(String content) throws Throwable {
 		String sentences[] = null;
 		sentences=nlpSentenceModel.getSentenceModel().sentDetect(content);
 		return sentences;
 	}
 	
-	public String[] tokenize(String sentence){
+	/**
+	 * tokenize()
+	 * @param sentence
+	 * @return String[]
+	 * @throws Throwable
+	 */
+	public String[] tokenize(String sentence) throws Throwable{
 		String tokens[] = null;
 		tokens = nlpTokenModel.getTokenModel().tokenize(sentence);
 		return tokens;
 	}
 	
 	public  void process(String value,String fileSource,String txId) throws Throwable{
-		
-		
 		SentenceDetectorME sentenceME=nlpSentenceModel.getSentenceModel();
-		
-	
 		String sentences[]= sentenceME.sentDetect(value);
 		String tokens[];
 
 		NlpHandler.printSentences(sentences,txId);
 		sentences=NlpHandler.cleanSentences(value);
 		
-		
 		NlpHandler.printCleanSentences(sentences,txId);
 		String mapModel="";
-	//	System.out.println("Matched ===>"+value);
+	
 	      for(String sentence:sentences){
-	    	  
-	    	 // mapModel=applyMatchedStringForModels(sentence);
-	    	  //System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
-	    	  
+	    	  /** 
+		    	 mapModel=applyMatchedStringForModels(sentence);
+		    	 System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
+	    	  */
 	    	  tokens=nlpTokenModel.getTokenModel().tokenize(sentence);
 	    	  NlpHandler.printTokens(tokens,txId);
 	    	  
@@ -72,12 +79,12 @@ public class NlpProcess {
 	    	  }
 	    	  else{
 	    		  
-//	 		     Set<Token> splitSet=processCustomTokens(ModelTypes.SPLIT_MODEL,tokens);
-//			     fetchTokens(splitSet,fileSource, txId);
+	    		  Set<Token> splitSet=processCustomTokens(ModelTypes.SPLIT_MODEL,tokens);
+	    		  fetchTokens(splitSet,fileSource, txId);
 			     
-//		     Set<Token> mixedSet=processCustomTokens(ModelTypes.MIXED_MODEL,tokens);
-//		     fetchTokens(mixedSet,fileSource, txId);
-//	    	  
+	    		  Set<Token> mixedSet=processCustomTokens(ModelTypes.MIXED_MODEL,tokens);
+	    		  fetchTokens(mixedSet,fileSource, txId);
+    	  
 	    	  Set<Token> departSet=processCustomTokens(ModelTypes.DEPART_MODEL,tokens);
 	    	  fetchTokens(departSet,fileSource, txId);
 	    	  

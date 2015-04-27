@@ -12,43 +12,42 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.InvalidFormatException;
 
 /**
+ * Class: NlpOrganizationModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpOrganizationModel {
-	
+
 	/**
 	 * getOrganizationModel()
-	 * @return the organizationME
+	 * 
+	 * @return NameFinderME
+	 * @throws Throwable
 	 */
-	public static NameFinderME getOrganizationModel() {
+	public static NameFinderME getOrganizationModel() throws Throwable {
 
-		InputStream inputStream=null;
-		NameFinderME organizationME=null;
-		
-			try{
-				inputStream = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-ner-organization.bin");
-				TokenNameFinderModel model = new TokenNameFinderModel(inputStream); 
-				organizationME = new NameFinderME(model);
+		InputStream inputStream = null;
+		NameFinderME organizationME = null;
+
+		try {
+			inputStream = new FileInputStream("src/main/java/en-ner-organization.bin");
+			TokenNameFinderModel model = new TokenNameFinderModel(inputStream);
+			organizationME = new NameFinderME(model);
+		} catch (InvalidFormatException ife) {
+			throw ife;
+		} catch (IOException ioe) {
+			throw ioe;
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				throw e;
 			}
-			catch(InvalidFormatException ife){
-				ife.printStackTrace();
-			}catch(IOException ioe){
-				ioe.printStackTrace();
-			}
-				finally{
-					 try {
-						 inputStream.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				
-			
-			
+
 		}
 
 		return organizationME;
 	}
-
 
 }

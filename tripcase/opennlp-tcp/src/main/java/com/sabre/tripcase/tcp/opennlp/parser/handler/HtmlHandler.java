@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sabre.tripcase.tcp.opennlp.constants.Constants;
@@ -21,10 +22,11 @@ import com.sabre.tripcase.tcp.opennlp.utils.HtmlTableParser;
 public class HtmlHandler {
 	@Autowired
 	private NlpProcess nlpProcess=null;
+	private static Logger log =Logger.getLogger(HtmlHandler.class);
 	
 	public  void processHTMLContent(String bodyText,String fileName) throws IOException{
-		System.out.println(" ************************ HTML Processor ***************************");
-		System.out.println(" *******************************************************************");
+		log.info(" ************************ HTML Processor ***************************");
+		log.info(" *******************************************************************");
 		
 		bodyText=NlpHandler.removeBlankLines(bodyText);
 

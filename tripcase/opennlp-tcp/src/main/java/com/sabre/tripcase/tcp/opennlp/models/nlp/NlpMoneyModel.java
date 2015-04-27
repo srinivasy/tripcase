@@ -12,42 +12,42 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.InvalidFormatException;
 
 /**
+ * Class: NlpMoneyModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpMoneyModel {
-	
+
 	/**
-	 * @return the nameFinderMoneyME
+	 * getMoneyModel()
+	 * 
+	 * @return NameFinderME
+	 * @throws Throwable
 	 */
-	public static NameFinderME getMoneyModel() {
+	public static NameFinderME getMoneyModel() throws Throwable {
 
-		InputStream inputStream=null;
-		NameFinderME moneyME=null;
+		InputStream inputStream = null;
+		NameFinderME moneyME = null;
 
-			try{
-				inputStream = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-ner-money.bin");
-				TokenNameFinderModel model = new TokenNameFinderModel(inputStream); 
-				moneyME = new NameFinderME(model);
+		try {
+			inputStream = new FileInputStream("src/main/java/en-ner-money.bin");
+			TokenNameFinderModel model = new TokenNameFinderModel(inputStream);
+			moneyME = new NameFinderME(model);
+		} catch (InvalidFormatException ife) {
+			throw ife;
+		} catch (IOException ioe) {
+			throw ioe;
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				throw e;
 			}
-			catch(InvalidFormatException ife){
-				ife.printStackTrace();
-			}catch(IOException ioe){
-				ioe.printStackTrace();
-			}
-				finally{
-					 try {
-						 inputStream.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				
-			
-			
+
 		}
-		
+
 		return moneyME;
 	}
-
 
 }

@@ -12,38 +12,37 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.InvalidFormatException;
 
 /**
+ * Class: NlpPersonModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpPersonModel {
-	
+
 	/**
 	 * getPersonModel()
-	 * @return the nameFinderPersonME
+	 * 
+	 * @return NameFinderME
+	 * @throws Throwable
 	 */
-	public static NameFinderME getPersonModel() {
-		InputStream inputStream=null;
-		NameFinderME	nameFinderPersonME=null;
-				try{
-				inputStream = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-ner-person.bin");
-				TokenNameFinderModel model = new TokenNameFinderModel(inputStream); 
-				nameFinderPersonME = new NameFinderME(model);
-				
+	public static NameFinderME getPersonModel() throws Throwable {
+		InputStream inputStream = null;
+		NameFinderME nameFinderPersonME = null;
+		try {
+			inputStream = new FileInputStream("src/main/java/en-ner-person.bin");
+			TokenNameFinderModel model = new TokenNameFinderModel(inputStream);
+			nameFinderPersonME = new NameFinderME(model);
+
+		} catch (InvalidFormatException ife) {
+			throw ife;
+		} catch (IOException ioe) {
+			throw ioe;
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				throw e;
 			}
-			catch(InvalidFormatException ife){
-				ife.printStackTrace();
-			}catch(IOException ioe){
-				ioe.printStackTrace();
-			}
-				finally{
-					 try {
-						 inputStream.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				
-			
-			
 		}
 		return nameFinderPersonME;
 	}

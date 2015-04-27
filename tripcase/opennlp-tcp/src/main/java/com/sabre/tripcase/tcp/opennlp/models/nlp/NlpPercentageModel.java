@@ -27,7 +27,7 @@ public class NlpPercentageModel {
 		NameFinderME percentageME=null;
 
 			try{
-				inputStream = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-ner-percentage.bin");
+				inputStream = new FileInputStream("src/main/java/en-ner-percentage.bin");
 				TokenNameFinderModel model = new TokenNameFinderModel(inputStream); 
 				percentageME = new NameFinderME(model);
 			}

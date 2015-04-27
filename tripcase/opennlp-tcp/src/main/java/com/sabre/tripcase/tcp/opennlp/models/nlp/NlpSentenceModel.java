@@ -13,45 +13,43 @@ import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.util.InvalidFormatException;
 
 /**
+ * Class: NlpSentenceModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpSentenceModel {
-	
-	
-	private String modelPath="C:/Users/CB34388493/opennlp/models/en-sent.bin";
-	
+
 	/**
 	 * getSentenceModel()
-	 * @return the sentenceDetectorME
+	 * 
+	 * @return SentenceDetectorME
+	 * @throws Throwable
 	 */
-	public SentenceDetectorME getSentenceModel() {
-		InputStream inputStream=null;
-		SentenceDetectorME sentenceDetectorME=null;
-		
-			try{
-			inputStream = new FileInputStream(modelPath);
+	public SentenceDetectorME getSentenceModel() throws Throwable {
+		InputStream inputStream = null;
+		SentenceDetectorME sentenceDetectorME = null;
+
+		try {
+			inputStream = new FileInputStream("src/main/java/en-sent.bin");
 			SentenceModel model = new SentenceModel(inputStream);
 			sentenceDetectorME = new SentenceDetectorME(model);
-			
-		}catch(InvalidFormatException ife){
-			ife.printStackTrace();
-		}catch(IOException io){
-			io.printStackTrace();
-		
-		}
-			finally{
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-				}
+
+		} catch (InvalidFormatException ife) {
+			throw ife;
+		} catch (IOException io) {
+			throw io;
+
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+
+				throw e;
 			}
-		
+		}
+
 		return sentenceDetectorME;
 	}
-	
-	
 
 }

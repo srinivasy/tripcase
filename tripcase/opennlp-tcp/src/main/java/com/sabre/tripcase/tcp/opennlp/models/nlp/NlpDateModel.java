@@ -12,45 +12,42 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.InvalidFormatException;
 
 /**
+ * Class: NlpDateModel
+ * 
  * @author Nalini Kanta
  *
  */
 public class NlpDateModel {
-	
+
 	/**
 	 * getDateModel()
-	 * @return the dateME
+	 * 
+	 * @return NameFinderME
+	 * @throws Throwable
 	 */
-	public static NameFinderME getDateModel() {
+	public static NameFinderME getDateModel() throws Throwable {
 
-		InputStream inputStream=null;
-		NameFinderME dateME=null;
-	
-			try{
-				inputStream = new FileInputStream("C:/Users/CB34388493/opennlp/models/en-ner-date.bin");
-				TokenNameFinderModel model = new TokenNameFinderModel(inputStream); 
-				dateME = new NameFinderME(model);
+		InputStream inputStream = null;
+		NameFinderME dateME = null;
+
+		try {
+			inputStream = new FileInputStream("src/main/java/en-ner-date.bin");
+			TokenNameFinderModel model = new TokenNameFinderModel(inputStream);
+			dateME = new NameFinderME(model);
+		} catch (InvalidFormatException ife) {
+			throw ife;
+		} catch (IOException ioe) {
+			throw ioe;
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				throw e;
 			}
-			catch(InvalidFormatException ife){
-				ife.printStackTrace();
-			}catch(IOException ioe){
-				ioe.printStackTrace();
-			}
-				finally{
-					 try {
-						 inputStream.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-			
-			
-			
+
 		}
-		
-	
+
 		return dateME;
 	}
-	
-
 
 }

@@ -5,6 +5,8 @@ package com.sabre.tripcase.tcp.opennlp.parser.handler;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import com.sabre.tripcase.tcp.opennlp.constants.Constants;
 
 /**
@@ -14,10 +16,12 @@ import com.sabre.tripcase.tcp.opennlp.constants.Constants;
 public class TextHandler {
 	
 	private NlpProcess nlpProcess=null;
+	private static Logger log =Logger.getLogger(TextHandler.class);
 	
 	public void processTextContent(String bodyText,String fileName) throws IOException{
-		System.out.println(" ************************ TEXT Processor ***************************");
-		System.out.println(" *******************************************************************");
+		
+		log.info(" ************************ TEXT Processor ***************************");
+		log.info(" *******************************************************************");
 		bodyText=NlpHandler.removeBlankLines(bodyText);
 		bodyText=bodyText.toString().replaceAll("\\<.*?>","");
 		try{

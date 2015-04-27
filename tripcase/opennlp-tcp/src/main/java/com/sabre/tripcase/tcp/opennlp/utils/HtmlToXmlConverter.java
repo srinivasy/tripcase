@@ -4,12 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.FileNotFoundException;
 
 class HtmlToXmlConverter {
 	enum states {text, tag, endtag, attrtext, script, endscript, specialtag, comment, skipcdata, entity, namedentity, numericentity, hexaentity, tillgt, tillquote, tillinst, andgt};
