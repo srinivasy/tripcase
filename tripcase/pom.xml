@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.email.parse.engine</groupId>
+	<groupId>com.sabre.tripcase.tcp</groupId>
 	<artifactId>tripcase</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0</version>
@@ -10,9 +10,11 @@
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
-		<spring.version>3.2.3.RELEASE</spring.version>
-		<junit.version>3.8.1</junit.version>
-		<opennpl.version>1.5.3</opennpl.version>
+	<!-- 	<spring.version>3.2.3.RELEASE</spring.version> -->
+		<spring.version>4.1.5.RELEASE</spring.version>
+	<!-- 	<junit.version>3.8.1</junit.version> -->
+		<junit.version>4.7</junit.version>
+		<opennlp.version>1.5.3</opennlp.version>
 		<opennlp.maxent.version>3.0.3</opennlp.maxent.version>
 		<mvn.compiler.plugin.version>3.2</mvn.compiler.plugin.version>
 		<mvn.jar.plugin.version>2.6</mvn.jar.plugin.version>
@@ -22,25 +24,26 @@
 		<jersey.version>1.18.1</jersey.version>
 		<activemq.version>5.10.0</activemq.version>
 		<!-- <gate.version>1.2.17</gate.version> -->
-		<opennpl.ml.version>1.0</opennpl.ml.version>
-		<gate.ml.version>1.0</gate.ml.version>
-		<jms.ml.version>1.0</jms.ml.version>
-		<parse.ml.version>1.0</parse.ml.version>
-		<rest.ml.version>1.0</rest.ml.version>
-		<dao.ml.version>1.0</dao.ml.version>
-		<common.ml.version>1.0</common.ml.version>
+		<opennlp.tcp.version>1.0</opennlp.tcp.version>
+		<gate.tcp.version>1.0</gate.tcp.version>
+		<jms.tcp.version>1.0</jms.tcp.version>
+		<parse.tcp.version>1.0</parse.tcp.version>
+		<rest.tcp.version>1.0</rest.tcp.version>
+		<dao.tcp.version>1.0</dao.tcp.version>
+		<common.tcp.version>1.0</common.tcp.version>
+		<commondata.tcp.version>1.0</commondata.tcp.version>
 	</properties>
 
 	<modules>
-		<module>gate-ml</module>
-		<module>parse-ml</module>
-		<module>jms-ml</module>
-		<module>rest-ml</module>
-		<module>opennpl-ml</module>
-		<module>dao-ml</module>
-		<module>common-ml</module>
-  
-  </modules>
+		<module>gate-tcp</module>
+		<module>parse-tcp</module>
+		<module>jms-tcp</module>
+		<module>rest-tcp</module>
+		<module>opennlp-tcp</module>
+		<module>dao-tcp</module>
+		<module>common-tcp</module>
+		<module>commondata-tcp</module>
+	</modules>
 	<build>
 		<pluginManagement>
 			<plugins>
