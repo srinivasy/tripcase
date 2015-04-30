@@ -210,7 +210,7 @@ public class HtmlTableParser {
 			throw t;
 		}
 		
-		allTablesResultMap=removeDuplicateTables(allTablesResultMap,delimiter);
+		//allTablesResultMap=removeDuplicateTables(allTablesResultMap,delimiter);
 		//changeArrangements(allTablesResultMap,patternMatches);
 		
 		
@@ -233,13 +233,13 @@ public class HtmlTableParser {
 
 		if (null != val) {
 			if (val.trim().isEmpty()) {
-				return val.replace("\u00a0", "");
+				return val.replace("\u00a0", " ");
 			} else {
-				return val.replace("\u00a0", "");
+				return val.replace("\u00a0", " ");
 				 
 			}
 		} else {
-			val = "";
+			val = " ";
 		}
 
 		return val;
@@ -506,12 +506,12 @@ public class HtmlTableParser {
 			} else {
 				val=val.replaceAll("&gt;", "");
 				val=val.replaceAll("&lt;", "");
-				val=val.replaceAll("&amp;", "");
+				val=val.replaceAll("&amp;", " ");
 				val=val.replaceAll("=09", "");
 				val=val.replaceAll("=20", "");
 				val=val.replaceAll("3D", "");
 				
-				return val.replaceAll("&nbsp;", "");
+				return val.replaceAll("&nbsp;", " ");
 			}
 		} else {
 			val = "";

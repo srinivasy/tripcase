@@ -61,12 +61,14 @@ public class NlpParser {
 	public  void startProcess() throws Throwable{
 		
 		File[] files = fileHandler.getFilesList();
+		//String fileName="2362060_horizontal.eml";
 		String fileName="";
 
 		if(files != null){			
 				for (File file : files) {
 				if (file.isFile()) {
 					log.info("************************* " + file.getName() + " ***********************");
+					System.out.println("************************* " + file.getName() + " ***********************");
 					MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);
 					String bodyText=EmailReader.getBody(mimeMessage, false);
 					ControlProperties.setFileName(fileHandler.getProcessFile());
@@ -79,9 +81,15 @@ public class NlpParser {
 					if(bodyText.contains(Constants.HTML_TAG)){
 					htmlHandler.processHTMLContent(bodyText,fileName);
 					}
+					else if(bodyText.contains(Constants.HTML_TABLE)){
+						htmlHandler.processHTMLContent("<html> "+bodyText+" </html>",fileName);
+					}
+					else if(bodyText.contains(Constants.HTML_DIV)){
+						htmlHandler.processHTMLContent("<html> "+bodyText+" </html>",fileName);
+					}
 					else{
 						
-						textHandler.processTextContent(bodyText,fileName);
+						//textHandler.processTextContent(bodyText,fileName);
 					}
 					
 				}

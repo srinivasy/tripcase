@@ -1,11 +1,15 @@
 package com.sabre.tripcase.tcp.opennlp.parser.handler;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sabre.tripcase.tcp.opennlp.dto.TokenType;
 import com.sabre.tripcase.tcp.opennlp.utils.ControlProperties;
 import com.sabre.tripcase.tcp.opennlp.utils.ExtractMatchedSentense;
 
@@ -72,7 +76,7 @@ public final class NlpHandler {
 		for(int i=0;i<tokens.length;i++){
 		newStr=tokens[i];
 		newStr=newStr.trim();
-		newStr=newStr.replaceAll("[^a-z A-Z 0-9 : . / , ]", "");
+		newStr=newStr.replaceAll("[^a-z A-Z 0-9 : . , @]", " ");
 		newStr=removeExtraWhiteSpaces(newStr);
 //		newStr=newStr.replaceAll("\\s+$", "").trim();
 //		newStr=newStr.replaceAll(": ", ":").replaceAll(" :", ":").trim();
@@ -89,7 +93,7 @@ public final class NlpHandler {
 //		newStr=newStr.replaceAll("\\?", "");
 //		newStr=newStr.replaceAll("\t", "");
 
-//		newStr=newStr.replaceAll("PM", "<timetype>PM</timetype> ");
+//     newStr=newStr.replaceAll("PM", "<timetype>PM</timetype> ");
 //		newStr=newStr.replaceAll(" pm ", " PM ");
 //		newStr=newStr.replaceAll(" am ", " AM ");
 ////		newStr=newStr.replaceAll("\\s?(am)"," AM");
@@ -113,6 +117,17 @@ public final class NlpHandler {
 		
 //		newStr=newStr.replaceAll(" Fri ", " ");
 //		newStr=newStr.replaceAll(" FRI ", " ");
+		
+		newStr=newStr.replaceAll("Date issued", " ");
+		newStr=newStr.replaceAll("Weather", " ");
+//		newStr=newStr.replaceAll("at", " ");
+		newStr=newStr.replaceAll("is", " ");
+		newStr=newStr.replaceAll("of", " ");
+		
+		newStr=newStr.replaceAll("Est.", " ");
+		
+		
+		
 
 		
 		
@@ -196,18 +211,116 @@ public final class NlpHandler {
 	public static String applyMatchedStringForModels(String sentences) throws Throwable{
 		String mapValue="";
 		String mapModel="";
-		Map<String,String> matchedSenetenceMap=null;
-	  	matchedSenetenceMap=ExtractMatchedSentense.match(sentences);
-		Set<String> keySet=matchedSenetenceMap.keySet();
+		Map<String,String> matchedSenetenceMapLevel0=null;
+		Map<String,String> matchedSenetenceMapLevel1=null;
+		matchedSenetenceMapLevel0=ExtractMatchedSentense.match(sentences,0);
+		Set<String> keySet=matchedSenetenceMapLevel0.keySet();
+		
+		List<TokenType> finalTagList=new LinkedList<TokenType>();
+		
 		for(String strKey:keySet){
-				mapValue=matchedSenetenceMap.get(strKey);
+				mapValue=matchedSenetenceMapLevel0.get(strKey);
 				mapModel=strKey;
-				System.out.println(" Model="+mapModel+" , "+mapValue);
+				//System.out.println(" Model 0="+mapModel+" , "+mapValue);
+				matchedSenetenceMapLevel1=ExtractMatchedSentense.match(mapValue,1);
 			}
+		keySet=matchedSenetenceMapLevel0.keySet();
+		for(String strKey:keySet){
+			mapValue=matchedSenetenceMapLevel1.get(strKey);
+			mapModel=strKey;
+			//System.out.println(" Model 1="+mapModel+" , "+mapValue);
+			String[] tokens=removeExtraWhiteSpaces(mapValue.trim()).split(" ");
+			List<TokenType> tagList=new LinkedList<TokenType>();
+			
+			TokenType currentType=null;
+			boolean isValueFirst=Boolean.FALSE;
+			
+			for(String token:tokens){
+				
+				if(token.contains("<") || token.contains(">")){
+					//System.out.println("Tokens --->"+token);
+					
+					if(token.startsWith("</") && token.endsWith(">")){
+						//System.out.println("Close Tag --->"+token);
+						currentType.setEndTag(token);
+						
+					}
+					else{
+						if(isValueFirst){
+							currentType.setFirstTag(token);
+							isValueFirst=Boolean.FALSE;
+						}
+						else{
+							currentType=new TokenType();
+							currentType.setFirstTag(token);
+						
+						//System.out.println("Open Tag --->"+token);
+						tagList.add(currentType);
+						}
+					}
+
+				}
+				else{
+					//System.out.println("Value --->"+token);
+					if(null!=currentType){
+						currentType.setValue(token);
+						
+					}
+					else{
+						currentType=new TokenType();
+						currentType.setValue(token);
+						tagList.add(currentType);
+						isValueFirst=Boolean.TRUE;
+					}
+					
+					
+				}
+				
+				
+			}
+			
+			Iterator<TokenType> itrTokentype=tagList.iterator();
+			
+			while(itrTokentype.hasNext()){
+				TokenType tokenType=itrTokentype.next();
+				if(null== tokenType.getValue() && null==tokenType.getEndTag()){
+					itrTokentype.remove();
+				
+				}
+				else{
+					if(null==tokenType.getEndTag()){
+					TokenType newTokenType=new TokenType(tokenType.getFirstTag(),tokenType.getValue(),tokenType.getFirstTag().replace("<", "</"));
+					finalTagList.add(newTokenType);
+					//System.out.println("New Linked List:"+newTokenType.toStringXML());
+					}
+					else{
+						finalTagList.add(tokenType);
+					//System.out.println("Linked List:"+tokenType.toStringXML());
+					}
+				}
+			}
+			
+
+			
+
+			
+		}
+		
+		printFinalList(finalTagList);
+		
+		
 	
 	      return mapModel;
 	}
 	
 	
 
+	public static void printFinalList(List<TokenType> finalList){
+		
+		Iterator<TokenType> itrList=finalList.iterator();
+		while(itrList.hasNext()){
+			System.out.println(itrList.next().toStringXML());
+		}
+		
+	}
 }

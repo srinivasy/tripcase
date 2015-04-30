@@ -66,10 +66,10 @@ public class NlpProcess {
 		String mapModel="";
 	
 	      for(String sentence:sentences){
-	    	  /** 
-		    	 mapModel=applyMatchedStringForModels(sentence);
-		    	 System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
-	    	  */
+	    	 
+		    	// mapModel=NlpHandler.applyMatchedStringForModels(sentence);
+		    	// System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
+	    	 
 	    	  tokens=nlpTokenModel.getTokenModel().tokenize(sentence);
 	    	  NlpHandler.printTokens(tokens,txId);
 	    	  
@@ -79,38 +79,37 @@ public class NlpProcess {
 	    	  }
 	    	  else{
 	    		  
-	    		  Set<Token> splitSet=processCustomTokens(ModelTypes.SPLIT_MODEL,tokens);
-	    		  fetchTokens(splitSet,fileSource, txId);
-			     
-	    		  Set<Token> mixedSet=processCustomTokens(ModelTypes.MIXED_MODEL,tokens);
-	    		  fetchTokens(mixedSet,fileSource, txId);
-    	  
+//	    	 Set<Token> splitSet=processCustomTokens(ModelTypes.SPLIT_MODEL,tokens);
+//	    	 fetchTokens(splitSet,fileSource, txId);
+//			     
+//	    	 Set<Token> mixedSet=processCustomTokens(ModelTypes.MIXED_MODEL,tokens);
+//	    	 fetchTokens(mixedSet,fileSource, txId);
+//    	  
 	    	  Set<Token> departSet=processCustomTokens(ModelTypes.DEPART_MODEL,tokens);
 	    	  fetchTokens(departSet,fileSource, txId);
-	    	  
-	    	  Set<Token> departTimeSet=processCustomTokens(ModelTypes.DEPART_TIME_MODEL,tokens);
-	    	  fetchTokens(departTimeSet,fileSource, txId);
-	    	  
-	    	  Set<Token> departDateSet=processCustomTokens(ModelTypes.DEPART_DATE_MODEL,tokens);
-	    	  fetchTokens(departDateSet,fileSource, txId);
-	    	  
+//	    	  
+//	    	  Set<Token> departTimeSet=processCustomTokens(ModelTypes.DEPART_TIME_MODEL,tokens);
+//	    	  fetchTokens(departTimeSet,fileSource, txId);
+//	    	  
+//	    	  Set<Token> departDateSet=processCustomTokens(ModelTypes.DEPART_DATE_MODEL,tokens);
+//	    	  fetchTokens(departDateSet,fileSource, txId);
+//	    	  
 //	    	  Set<Token> bookingRefSet=processCustomTokens(ModelTypes.BOOKING_REF_MODEL,tokens);
 //	    	  fetchTokens(bookingRefSet,fileSource, txId);
-	    	  
-	    	  Set<Token> arriveSet=processCustomTokens(ModelTypes.ARRIVE_MODEL,tokens);
-	    	  fetchTokens(arriveSet,fileSource, txId);
-		     
-	    	  Set<Token> arriveDateSet=processCustomTokens(ModelTypes.ARRIVE_DATE_MODEL,tokens);
-	    	  fetchTokens(arriveDateSet,fileSource, txId);
 //	    	  
-	    	  Set<Token> arrivalTimeSet=processCustomTokens(ModelTypes.ARRIVE_TIME_MODEL,tokens);
-	    	  fetchTokens(arrivalTimeSet,fileSource, txId);
+//	    	  Set<Token> arriveSet=processCustomTokens(ModelTypes.ARRIVE_MODEL,tokens);
+//	    	  fetchTokens(arriveSet,fileSource, txId);
+//		     
+//	    	  Set<Token> arriveDateSet=processCustomTokens(ModelTypes.ARRIVE_DATE_MODEL,tokens);
+//	    	  fetchTokens(arriveDateSet,fileSource, txId);
+//	    	  
+//	    	  Set<Token> arrivalTimeSet=processCustomTokens(ModelTypes.ARRIVE_TIME_MODEL,tokens);
+//	    	  fetchTokens(arrivalTimeSet,fileSource, txId);
 //	    	  
 	    	  Set<Token> flightSet=processCustomTokens(ModelTypes.FLIGHT_MODEL,tokens);
 	    	  fetchTokens(flightSet,fileSource, txId);
 	    	  
-//	    	  Set<Token> sentenceSet=processCustomTokens(ModelTypes.SENTENCE_MODEL,tokens);
-//	    	  fetchTokens(sentenceSet,fileSource, txId);
+
 	    	  
 	    	  }
 	    	

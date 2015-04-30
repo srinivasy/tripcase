@@ -29,6 +29,9 @@ public class HtmlHandler {
 		log.info(" *******************************************************************");
 		
 		bodyText=NlpHandler.removeBlankLines(bodyText);
+//		System.out.println("===================== START fileName ("+fileName+") =====================");
+//		System.out.println("HTML--->"+bodyText);
+//		System.out.println("===================== END =====================");
 
 		if(bodyText.contains(Constants.HTML_TAG) ){
 			try{
@@ -37,8 +40,10 @@ public class HtmlHandler {
 				Iterator<Entry<String,String>> iterator=entrySet.iterator();
 				while(iterator.hasNext()){
 					Entry<String,String> keyEntry=iterator.next();
-				//	String key=keyEntry.getKey();
+					String key=keyEntry.getKey();
 					String value=keyEntry.getValue().replace("-", " ");
+//					System.out.println("Key="+key);
+//					System.out.println("Value="+value);
 					
 					nlpProcess.process(value,Constants.HTML,fileName);
 
