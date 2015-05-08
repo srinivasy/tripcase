@@ -18,9 +18,9 @@ public class ControlProperties {
 		controlProps=new Properties();
 		controlProps.put("print_sentence", "NO");
 		controlProps.put("print_tokens", "NO");
-		controlProps.put("print_match", "YES");
+		controlProps.put("print_match", "NO");
 		controlProps.put("print_origin_text", "NO");
-		controlProps.put("print_clean_sentence", "YES");
+		controlProps.put("print_clean_sentence", "NO");
 		
 	}
 	

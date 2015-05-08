@@ -71,6 +71,7 @@ public class NlpParser {
 					System.out.println("************************* " + file.getName() + " ***********************");
 					MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);
 					String bodyText=EmailReader.getBody(mimeMessage, false);
+					System.out.println(bodyText);
 					ControlProperties.setFileName(fileHandler.getProcessFile());
 					if(fileHandler.getProcessFile().equals(Constants.ALL_FILES)){
 						fileName=Constants.ALL_FILES;

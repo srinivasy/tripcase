@@ -233,13 +233,13 @@ public class HtmlTableParser {
 
 		if (null != val) {
 			if (val.trim().isEmpty()) {
-				return val.replace("\u00a0", " ");
+				return val.replace("\u00a0", "EMPTY");
 			} else {
-				return val.replace("\u00a0", " ");
+				return val.replace("\u00a0", "EMPTY");
 				 
 			}
 		} else {
-			val = " ";
+			val = "EMPTY";
 		}
 
 		return val;

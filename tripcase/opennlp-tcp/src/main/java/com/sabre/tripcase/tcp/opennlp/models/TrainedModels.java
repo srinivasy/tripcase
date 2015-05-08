@@ -9,6 +9,8 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 
+import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
+
 import opennlp.tools.namefind.NameFinderME;
 import opennlp.tools.namefind.NameSample;
 import opennlp.tools.namefind.NameSampleDataStream;
@@ -24,7 +26,8 @@ public class TrainedModels {
 	
 	public void createModel(String modelType,String trainFile) throws IOException{
 	      Charset charset = Charset.forName("UTF-8");
-	      ObjectStream<String> lineStream =	new PlainTextByLineStream(new FileInputStream(trainFile+".train"), charset);
+	      System.out.println("File path:"+trainFile);
+	      ObjectStream<String> lineStream =	new PlainTextByLineStream(new FileInputStream(ModelTypes.TRAIN_FILE_BASE_LOCATION+trainFile+".train"), charset);
 	      ObjectStream<NameSample> sampleStream = new NameSampleDataStream(lineStream);
 
 	      TokenNameFinderModel model;
@@ -45,7 +48,7 @@ public class TrainedModels {
 
 	     
 		try {
-	        modelOut = new BufferedOutputStream(new FileOutputStream(trainFile+".bin"));
+	        modelOut = new BufferedOutputStream(new FileOutputStream(ModelTypes.BIN_FILE_BASE_LOCATION+trainFile+".bin"));
 	        model.serialize(modelOut);
 	      } finally {
 	        if (modelOut != null) 
@@ -58,7 +61,7 @@ public class TrainedModels {
 		InputStream is=null;
 		NameFinderME finderME=null;
 		try{
-			is = new FileInputStream(loadModelFile+".bin");
+			is = new FileInputStream(ModelTypes.BIN_FILE_BASE_LOCATION+loadModelFile+".bin");
 			TokenNameFinderModel model = new TokenNameFinderModel(is); 
 			finderME = new NameFinderME(model);
 			

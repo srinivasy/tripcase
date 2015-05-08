@@ -221,14 +221,14 @@ public final class NlpHandler {
 		for(String strKey:keySet){
 				mapValue=matchedSenetenceMapLevel0.get(strKey);
 				mapModel=strKey;
-				//System.out.println(" Model 0="+mapModel+" , "+mapValue);
+				System.out.println(" Model 0="+mapModel+" , "+mapValue);
 				matchedSenetenceMapLevel1=ExtractMatchedSentense.match(mapValue,1);
 			}
 		keySet=matchedSenetenceMapLevel0.keySet();
 		for(String strKey:keySet){
 			mapValue=matchedSenetenceMapLevel1.get(strKey);
 			mapModel=strKey;
-			//System.out.println(" Model 1="+mapModel+" , "+mapValue);
+			System.out.println(" Model 1="+mapModel+" , "+mapValue);
 			String[] tokens=removeExtraWhiteSpaces(mapValue.trim()).split(" ");
 			List<TokenType> tagList=new LinkedList<TokenType>();
 			

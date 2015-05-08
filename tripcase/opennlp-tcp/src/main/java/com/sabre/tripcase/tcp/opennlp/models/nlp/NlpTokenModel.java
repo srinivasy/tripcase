@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
+
 import opennlp.tools.tokenize.Tokenizer;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
@@ -31,7 +33,7 @@ public class NlpTokenModel {
 		Tokenizer tokenizer = null;
 		if (null == tokenizer) {
 			try {
-				inputStream = new FileInputStream("src/main/java/en-token.bin");
+				inputStream = new FileInputStream(ModelTypes.NLP_FILE_BASE_LOCATION+"/en-token.bin");
 				TokenizerModel model = new TokenizerModel(inputStream);
 				tokenizer = new TokenizerME(model);
 

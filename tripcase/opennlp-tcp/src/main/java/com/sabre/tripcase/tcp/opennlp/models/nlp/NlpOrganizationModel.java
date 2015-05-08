@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
+
 import opennlp.tools.namefind.NameFinderME;
 import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.InvalidFormatException;
@@ -31,7 +33,7 @@ public class NlpOrganizationModel {
 		NameFinderME organizationME = null;
 
 		try {
-			inputStream = new FileInputStream("src/main/java/en-ner-organization.bin");
+			inputStream = new FileInputStream(ModelTypes.NLP_FILE_BASE_LOCATION+"/en-ner-organization.bin");
 			TokenNameFinderModel model = new TokenNameFinderModel(inputStream);
 			organizationME = new NameFinderME(model);
 		} catch (InvalidFormatException ife) {

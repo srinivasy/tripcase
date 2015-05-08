@@ -1,0 +1,19 @@
+UNITED 6037  17MAY DENVER  EL PASO   <START:departtime> 1938 <END>  2129.
+UNITED 1041  17MAY LAS VEGAS  DENVER <START:departtime> 1528 <END> 1823. 
+UNITED 4384 12MAY EL PASO HOUSTON <START:departtime> 0630 <END> 0925. 
+UNITED 6037 17MAY DENVER EL PASO <START:departtime> 1938 <END> 2129. 
+US AIR 2963  12MAY EL PASO  PHOENIX <START:departtime>  0620 <END>  0642. 
+US AIR 602  12MAY PHOENIX  LAS VEGAS  <START:departtime> 0750 <END>  0900. 
+US AIR 2958 17MAY PHOENIX EL PASO <START:departtime> 2140 <END> 2349. 
+AMERICAN AIRLINES 97  MIA Miami <START:departtime> Aug 12 201408:25PM <END> PHX Phoenix   Aug 12 201410:00PM   F Snack.
+AMERICAN AIRLINES 113  BCN Barcelona <START:departtime> Aug 12 201411:20AM <END> MIA Miami   Aug 12 201403:30PM  J Lunch Snack.
+AMERICAN AIRLINES 112  MIA Miami <START:departtime> Aug 01 201406:20PM <END> BCN Barcelona   Aug 02 201409:30AM  J Dinner Breakfast or Snack.
+AMERICAN AIRLINES 62  PHX Phoenix <START:departtime> Aug 01 201407:20AM <END> MIA Miami   Aug 01 201402:55PM  F Breakfast.
+Flight514 REP <START:departtime> 10:50 PM <END>  PVG 4:00 AM 4h 10m Economy.
+Flight501 PVG <START:departtime> 9:30 AM <END> HKG 11:50 AM 2h 20m Economy.
+Date Mar 04 2014  Time  <START:departtime> 1:39 PM. <END>
+Date Mar 06 2014  Time  <START:departtime> 3:31 PM. <END>
+Date Mar 06 2014  Time  <START:departtime> 4:55 PM. <END>
+Date Mar 04 2014  Time  <START:departtime> 12:08 PM. <END>
+
+

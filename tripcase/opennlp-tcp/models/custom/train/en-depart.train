@@ -1,0 +1,42 @@
+Departs <START:depart> Palma Majorca PMI <END> 22:40.
+VS044 29 MAR <START:depart> LAS <END> 17:05  LGW 11:05 X Economy OK VS.
+VS043 06 APR <START:depart> LGW <END> 11:25 LAS 14:10 X Economy OK VS.
+Flight514 <START:depart> REP <END> 10:50 PM PVG 4:00 AM 4h 10m Economy.
+Flight501 <START:depart> PVG <END> 9:30 AM HKG 11:50 AM 2h 20m Economy.
+From <START:depart> PIT    Pittsburgh PA <END>     9:15 am    Monday.
+From <START:depart> DFW    Dallas TX <END>         12:35 pm   Monday.
+From <START:depart> ABQ    Albuquerque NM <END>    10:30 am   Saturday.
+Departure City  <START:depart> Madison WI MSN.<END>
+DEPARTS <START:depart> LAX <END> 5   ARRIVES MSP 1 Frequent Flyer Number DL6909575711.
+Departs <START:depart> Boston MA   BOS. <END>
+AMERICAN AIRLINES 62 <START:depart> PHX Phoenix <END> Aug 01 201407:20AM MIA Miami Aug 01 201402:55PM F Breakfast.
+AMERICAN AIRLINES 112 <START:depart> MIA Miami <END> Aug 01 201406:20PM BCN Barcelona Aug 02 201409:30AM J Dinner Breakfast or Snack.
+DEPARTS <START:depart> LAX <END> 5   ARRIVES MSP 1 Frequent Flyer Number DL6909575711.
+AMERICAN AIRLINES 97 <START:depart> MIA Miami <END> Aug 12 201408:25PM PHX Phoenix Aug 12 201410:00PM F Snack.
+UNITED 6037  17MAY <START:depart> DENVER <END> EL PASO   1938   2129.
+UNITED 1041  17MAY <START:depart> LAS VEGAS <END> DENVER 1528   1823. 
+UNITED 4384 12MAY <START:depart> EL PASO <END> HOUSTON 0630 0925.
+UNITED 1210 12MAY <START:depart> HOUSTON <END> LAS VEGAS 1220 1346.
+US AIR 2963  12MAY <START:depart> EL PASO <END> PHOENIX 0620   0642. 
+US AIR 602  12MAY <START:depart> PHOENIX <END> LAS VEGAS 0750   0900. 
+US AIR 689  17MAY <START:depart> LAS VEGAS <END> PHOENIX  1930   2036. 
+US AIR 2958 17MAY <START:depart> PHOENIX <END> EL PASO 2140 2349.
+DEPARTS <START:depart> ATL <END> S   ARRIVES LAX 5 Frequent Flyer Number DL6909575711.
+AMERICAN AIRLINES 113 <START:depart> BCN Barcelona <END> Aug 12 201411:20AM MIA Miami Aug 12 201403:30PM J Lunch Snack.
+4 10 2014 <START:depart> Newark NJ EWR   Liberty <END> to Fort Lauderdale FL FLL 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+4 28 2014 <START:depart> Fort Lauderdale FL FLL <END> to Newark NJ EWR   Liberty 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+Departure City  <START:depart> Detroit Metro MI DTW.<END>
+Depart  17:30 <START:depart> Copenhagen CPH <END> Terminal 3.
+Depart  11:05 <START:depart> Bologna BLQ. <END>
+Departs  <START:depart> Milwaukee WI MKE. <END>
+Departs  <START:depart> Chicago OHare IL ORD. <END>
+Departs  <START:depart> Pittsburgh PA PIT. <END>
+Departs  <START:depart> Chicago OHare IL ORD. <END>
+
+Thu 10APR14 UA1730 YN <START:depart> NEWARK NJ EWR <END> LIBERTY4:55 PM FORT LAUDERDALE FL FLL8:00 PM 737 800 Purchase.
+Mon 28APR14 UA1120 YN <START:depart> FORT LAUDERDALE FL <END> FLL5:12 PM NEWARK NJ EWR LIBERTY8:25 PM 737 800 Purchase.
+
+AMERICAN AIRLINES <START:flight> 1635 <END> <START:depart> DFW Dallas Fort Worth <END> May 17 201407:05 AM PHX Phoenix May 17 201407:30 AM T Food for Purchase
+US AIRWAYS OPERATED BY US AIRWAYS EXPRESS MESA AIRLINES <START:flight> 2844 <END> <START:depart> PHX Phoenix <END> May 17 201408:52 AM TUS Tucson May 17 201409:45 AM X N A
+AMERICAN AIRLINES <START:flight> 1295 <END> <START:depart> TUS Tucson <END> May 20 201401:40 PM DFW Dallas Fort Worth May 20 201405:55 PM Z Snack
+

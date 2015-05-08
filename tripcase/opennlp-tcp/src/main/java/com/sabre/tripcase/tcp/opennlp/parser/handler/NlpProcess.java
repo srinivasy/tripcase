@@ -67,7 +67,7 @@ public class NlpProcess {
 	
 	      for(String sentence:sentences){
 	    	 
-		    	// mapModel=NlpHandler.applyMatchedStringForModels(sentence);
+		    	 mapModel=NlpHandler.applyMatchedStringForModels(sentence);
 		    	// System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
 	    	 
 	    	  tokens=nlpTokenModel.getTokenModel().tokenize(sentence);
@@ -85,8 +85,8 @@ public class NlpProcess {
 //	    	 Set<Token> mixedSet=processCustomTokens(ModelTypes.MIXED_MODEL,tokens);
 //	    	 fetchTokens(mixedSet,fileSource, txId);
 //    	  
-	    	  Set<Token> departSet=processCustomTokens(ModelTypes.DEPART_MODEL,tokens);
-	    	  fetchTokens(departSet,fileSource, txId);
+//	    	  Set<Token> departSet=processCustomTokens(ModelTypes.DEPART_MODEL,tokens);
+//	    	  fetchTokens(departSet,fileSource, txId);
 //	    	  
 //	    	  Set<Token> departTimeSet=processCustomTokens(ModelTypes.DEPART_TIME_MODEL,tokens);
 //	    	  fetchTokens(departTimeSet,fileSource, txId);
@@ -106,8 +106,8 @@ public class NlpProcess {
 //	    	  Set<Token> arrivalTimeSet=processCustomTokens(ModelTypes.ARRIVE_TIME_MODEL,tokens);
 //	    	  fetchTokens(arrivalTimeSet,fileSource, txId);
 //	    	  
-	    	  Set<Token> flightSet=processCustomTokens(ModelTypes.FLIGHT_MODEL,tokens);
-	    	  fetchTokens(flightSet,fileSource, txId);
+//	    	  Set<Token> flightSet=processCustomTokens(ModelTypes.FLIGHT_MODEL,tokens);
+//	    	  fetchTokens(flightSet,fileSource, txId);
 	    	  
 
 	    	  

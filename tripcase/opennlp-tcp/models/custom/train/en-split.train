@@ -1,0 +1,26 @@
+Arrives <START:split> Dublin Terminal 2 DUB <END> <START:split> 00:30.<END>
+4 10 2014 <START:split> Newark NJ EWR   Liberty <END> to <START:split> Fort Lauderdale FL FLL <END> 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+4 28 2014 <START:split> Fort Lauderdale FL FLL <END> to <START:split> Newark NJ EWR   Liberty <END> 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+<START:split> UNITED 4384 <END> 12MAY <START:split> EL PASO <END> <START:split> HOUSTON <END> <START:split> 0630 <END> <START:split> 0925. <END>
+<START:split> UNITED 1210 <END> 12MAY <START:split> HOUSTON <END> <START:split> LAS VEGAS <END> <START:split> 1220 <END> <START:split> 1346. <END>
+<START:split> UNITED 6037 <END> 17MAY <START:split> DENVER <END> <START:split> EL PASO <END> <START:split> 1938 <END> <START:split> 2129.<END>
+<START:split> UNITED 1041 <END> 17MAY <START:split> LAS VEGAS <END> <START:split> DENVER <END> <START:split> 1528 <END> <START:split> 1823. <END>
+<START:split> US AIR 2963 <END> 12MAY <START:split> EL PASO <END> <START:split> PHOENIX <END> <START:split> 0620 <END> <START:split> 0642. <END>
+<START:split> US AIR 602 <END> 12MAY <START:split> PHOENIX <END> <START:split> LAS VEGAS <END> <START:split> 0750 <END> <START:split> 0900. <END>
+<START:split> US AIR 689 <END> 17MAY <START:split> LAS VEGAS <END> <START:split> PHOENIX <END> <START:split> 1930 <END> <START:split> 2036. <END>
+<START:split> US AIR 2958 <END> 17MAY <START:split> PHOENIX <END> <START:split> EL PASO <END> <START:split> 2140 <END> <START:split> 2349. <END>
+Arrival City  <START:split> Philadelphia PA PHL.<END>
+To   <START:split> PIT    Pittsburgh PA <END>  <START:split>    5:30 pm <END>    Saturday.
+To   <START:split> DFW    Dallas TX <END>      <START:split>    1:10 pm <END>    Saturday.
+To   <START:split> ABQ    Albuquerque NM <END> <START:split>    1:25 pm <END>   Monday.
+To   <START:split> DFW    Dallas TX <END>      <START:split>    11:40 am <END>   Monday.
+DEPARTS ATL S   ARRIVES <START:split> LAX <END> 5 Frequent Flyer Number DL6909575711.
+DEPARTS LAX 5   ARRIVES <START:split> MSP <END> 1 Frequent Flyer Number DL6909575711.
+Arrives <START:split> Milwaukee WI   MKE. <END>
+Arrives <START:split> Boston MA   BOS. <END>
+<START:split> AMERICAN AIRLINES 97 <END> <START:split> MIA Miami <END> <START:split> Aug 12 201408:25PM <END> <START:split> PHX Phoenix <END> <START:split> Aug 12 201410:00PM <END> F Snack.
+<START:split> AMERICAN AIRLINES 113 <END> <START:split> BCN Barcelona <END> <START:split> Aug 12 201411:20AM <END> <START:split> MIA Miami <END> <START:split> Aug 12 201403:30PM <END> J Lunch Snack.
+<START:split> AMERICAN AIRLINES 112 <END> <START:split> MIA Miami <END> <START:split> Aug 01 201406:20PM <END> <START:split> BCN Barcelona <END> <START:split> Aug 02 201409:30AM J Dinner Breakfast or Snack.
+<START:split> AMERICAN AIRLINES 62 <END> <START:split> PHX Phoenix <END> <START:split> Aug 01 201407:20AM <END> <START:split> MIA Miami <END> <START:split> Aug 01 201402:55PM <END> F Breakfast.
+Arriving <START:split> HKG <END>  <START:split> 11:50 AM <END> May 17.
+Flight <START:split> EI0739 <END> Sat 26 Jul 2014.

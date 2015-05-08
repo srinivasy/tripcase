@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
+
 import opennlp.tools.chunker.ChunkerME;
 import opennlp.tools.chunker.ChunkerModel;
 import opennlp.tools.util.InvalidFormatException;
@@ -27,7 +29,7 @@ public class NlpChunkerModel {
 		InputStream inputStream=null;
 		ChunkerME chunkerME=null;
 			try{
-			inputStream = new FileInputStream("src/main/java/en-chunker.bin");
+			inputStream = new FileInputStream(ModelTypes.NLP_FILE_BASE_LOCATION+"/en-chunker.bin");
 			ChunkerModel cModel = new ChunkerModel(inputStream);
 		 	chunkerME = new ChunkerME(cModel);
 		}

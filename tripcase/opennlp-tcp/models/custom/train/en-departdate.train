@@ -1,0 +1,17 @@
+UNITED 6037  <START:departdate> 17MAY <END> DENVER  EL PASO    1938   2129.
+UNITED 1041  <START:departdate> 17MAY <END> LAS VEGAS  DENVER  1528  1823. 
+UNITED 4384 <START:departdate> 12MAY <END> EL PASO HOUSTON  0630  0925. 
+UNITED 6037 <START:departdate> 17MAY <END> DENVER EL PASO  1938  2129. 
+US AIR 2963 <START:departdate> 12MAY <END> EL PASO  PHOENIX   0620   0642. 
+US AIR 602 <START:departdate> 12MAY <END> PHOENIX  LAS VEGAS   0750   0900. 
+US AIR 2958 <START:departdate> 17MAY <END> PHOENIX EL PASO  2140  2349. 
+AMERICAN AIRLINES 97  MIA Miami <START:departdate> Aug 12 201408:25PM <END>  PHX Phoenix   Aug 12 201410:00PM   F Snack.
+AMERICAN AIRLINES 113  BCN Barcelona <START:departdate> Aug 12 201411:20AM <END>  MIA Miami   Aug 12 201403:30PM  J Lunch Snack.
+AMERICAN AIRLINES 112  MIA Miami  <START:departdate> Aug 01 201406:20PM <END>  BCN Barcelona   Aug 02 201409:30AM  J Dinner Breakfast or Snack.
+AMERICAN AIRLINES 62  PHX Phoenix <START:departdate> Aug 01 201407:20AM <END>  MIA Miami   Aug 01 201402:55PM  F Breakfast.
+Date  <START:departdate> Mar 04 2014 <END> Time  12:08 PM. 
+Date  <START:departdate> Mar 04 2014 <END> Time  1:39 PM. 
+Date  <START:departdate> Mar 06 2014 <END> Time  3:31 PM. 
+Date  <START:departdate> Mar 06 2014 <END> Time  4:55 PM. 
+
+

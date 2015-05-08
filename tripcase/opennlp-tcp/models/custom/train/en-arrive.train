@@ -1,0 +1,35 @@
+Arrives <START:arrive> Dublin Terminal 2 DUB <END>   00:30.
+4 10 2014 Newark NJ EWR   Liberty to <START:arrive> Fort Lauderdale FL  FLL <END> 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+4 28 2014 Fort Lauderdale FL FLL to <START:arrive> Newark NJ EWR   Liberty <END> 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+UNITED 6037  17MAY DENVER <START:arrive> EL PASO <END>  1938   2129.
+UNITED 1041  17MAY LAS VEGAS <START:arrive> DENVER <END>  1528   1823. 
+UNITED 4384 12MAY EL PASO <START:arrive> HOUSTON <END> 0630 0925.
+UNITED 1210 12MAY HOUSTON <START:arrive> LAS VEGAS <END> 1220 1346.
+US AIR 2963  12MAY EL PASO <START:arrive> PHOENIX <END>  0620   0642. 
+US AIR 602  12MAY PHOENIX <START:arrive> LAS VEGAS <END>  0750   0900. 
+US AIR 689  17MAY LAS VEGAS <START:arrive> PHOENIX  <END> 1930   2036. 
+US AIR 2958 17MAY PHOENIX <START:arrive> EL PASO <END> 2140 2349.
+Arrival City  <START:arrive> Philadelphia PA PHL.<END>
+To   <START:arrive> PIT    Pittsburgh PA  <END>     5:30 pm     Saturday.
+To   <START:arrive> DFW    Dallas TX       <END>    1:10 pm     Saturday.
+To   <START:arrive> ABQ    Albuquerque NM  <END>    1:25 pm    Monday.
+To   <START:arrive> DFW    Dallas TX      <END>     11:40 am    Monday.
+DEPARTS ATL S   ARRIVES <START:arrive> LAX <END> 5 Frequent Flyer Number DL6909575711.
+DEPARTS LAX 5   ARRIVES <START:arrive> MSP <END> 1 Frequent Flyer Number DL6909575711.
+Arrives <START:arrive> Milwaukee WI   MKE. <END>
+Arrives <START:arrive> Boston MA   BOS. <END>
+AMERICAN AIRLINES 97  MIA Miami Aug 12 201408:25PM <START:arrive> PHX Phoenix <END>  Aug 12 201410:00PM  F Snack.
+AMERICAN AIRLINES 113  BCN Barcelona Aug 12 201411:20AM <START:arrive> MIA Miami <END>  Aug 12 201403:30PM  J Lunch Snack.
+AMERICAN AIRLINES 112  MIA Miami Aug 01 201406:20PM <START:arrive> BCN Barcelona  <END> Aug 02 201409:30AM J Dinner Breakfast or Snack.
+AMERICAN AIRLINES 62  PHX Phoenix Aug 01 201407:20AM <START:arrive> MIA Miami <END>  Aug 01 201402:55PM  F Breakfast.
+Flight514 REP 10:50 PM <START:arrive> PVG <END> 4:00 AM 4h 10m Economy.
+Flight501 PVG 9:30 AM <START:arrive> HKG <END> 11:50 AM 2h 20m Economy.
+Arrive  13:05 <START:arrive> Copenhagen CPH <END> Terminal 3.
+Arrive  19:30 <START:arrive> Bologna BLQ. <END>
+Arrives  <START:arrive> Pittsburgh PA PIT. <END>
+Arrives  <START:arrive> Chicago OHare IL ORD. <END>
+Arrives  <START:arrive> Milwaukee WI MKE. <END>
+
+Thu 10APR14 UA1730 YN NEWARK NJ EWR  LIBERTY4:55 PM <START:arrive> FORT LAUDERDALE FL <END> FLL8:00 PM 737 800 Purchase.
+Mon 28APR14 UA1120 YN FORT LAUDERDALE FL  FLL5:12 PM <START:arrive> NEWARK NJ EWR <END> LIBERTY8:25 PM 737 800 Purchase.
+

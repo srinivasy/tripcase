@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
+
 import opennlp.tools.namefind.NameFinderME;
 import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.InvalidFormatException;
@@ -27,7 +29,7 @@ public class NlpPercentageModel {
 		NameFinderME percentageME=null;
 
 			try{
-				inputStream = new FileInputStream("src/main/java/en-ner-percentage.bin");
+				inputStream = new FileInputStream(ModelTypes.NLP_FILE_BASE_LOCATION+"/en-ner-percentage.bin");
 				TokenNameFinderModel model = new TokenNameFinderModel(inputStream); 
 				percentageME = new NameFinderME(model);
 			}

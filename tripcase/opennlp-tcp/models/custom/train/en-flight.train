@@ -1,0 +1,32 @@
+Flight <START:flight> EI0739 <END>  Sat 26 Jul 2014.
+<START:flight> DELTA AIRLINES   Flight Number 327. <END>
+Air   <START:flight>  American Airlines         Flight  1469 <END>   Class Coach.
+<START:flight> UNITED 6037 <END>  17MAY DENVER  EL PASO   1938   2129.
+<START:flight> UNITED 1041 <END>  17MAY LAS VEGAS  DENVER   1528   1823. 
+<START:flight> US AIR 2963 <END>  12MAY EL PASO  PHOENIX   0620   0642. 
+<START:flight> US AIR 602 <END>  12MAY PHOENIX  LAS VEGAS   0750   0900. 
+<START:flight> AMERICAN AIRLINES 97 <END>  MIA Miami Aug 12 201408:25PM  PHX Phoenix  Aug 12 2014  10:00PM  F Snack.
+<START:flight> AMERICAN AIRLINES 113 <END>  BCN Barcelona Aug 12 201411:20AM  MIA Miami  Aug 12 2014  03:30PM  J Lunch Snack.
+<START:flight> AMERICAN AIRLINES 112 <END>  MIA Miami Aug 01 201406:20PM  BCN Barcelona  Aug 02 201409:30AM J Dinner Breakfast or Snack.
+<START:flight> AMERICAN AIRLINES 62 <END>  PHX Phoenix Aug 01 201407:20AM  MIA Miami  Aug 01 201402:55PM F Breakfast.
+Reserved <START:flight> SOUTHWEST AIRLINES 3137.<END>
+Hanoi HAN   Siem Reap REP Wed May 14 2014   Wed May 14 2014  2 one way tickets CONFIRMED <START:flight> Vietnam Airlines EGIMQZ. <END>
+<START:flight> VS044 <END> 29 MAR LAS 17:05 LGW 11:05 X Economy OK VS. 
+Thu 10APR14 <START:flight> UA1730 YN 4:55 PM 8:00 PM 737 800 Purchase. <END>
+Reserved <START:flight> SOUTHWEST AIRLINES 234. <END>
+<START:flight> Flight514 <END> REP 10:50 PM PVG 4:00 AM 4h 10m Economy. 
+<START:flight> Flight501 <END> PVG 9:30 AM HKG 11:50 AM 2h 20m Economy.
+Reserved  <START:flight> UNITED AIRLINES 5431. <END>
+Reserved  <START:flight> UNITED AIRLINES 533. <END>
+Reserved  <START:flight> UNITED AIRLINES 493. <END>
+Reserved  <START:flight> UNITED AIRLINES 5412. <END>
+
+Thu 10APR14 <START:flight> UA1730 <END> YN NEWARK NJ EWR LIBERTY4:55 PM FORT LAUDERDALE FL FLL8:00 PM 737 800 Purchase.
+Mon 28APR14 <START:flight> UA1120 <END> YN FORT LAUDERDALE FL FLL5:12 PM NEWARK NJ EWR LIBERTY8:25 PM 737 800 Purchase.
+AMERICAN AIRLINES <START:flight> 1635 <END> DFW Dallas Fort Worth May 17 201407:05 AM PHX Phoenix May 17 201407:30 AM T Food for Purchase.
+US AIRWAYS OPERATED BY US AIRWAYS EXPRESS MESA AIRLINES <START:flight> 2844 <END> PHX Phoenix May 17 201408:52 AM TUS Tucson May 17 201409:45 AM X N A.
+AMERICAN AIRLINES <START:flight> 1295 <END> TUS Tucson May 20 201401:40 PM DFW Dallas Fort Worth May 20 201405:55 PM Z Snack.
+
+Delta Air Lines Flight Number  <START:flight> 1731 <END> Class  Q Coach Economy.
+Delta Air Lines Flight Number  <START:flight> 1655 <END> Class  Q Coach Economy.
+

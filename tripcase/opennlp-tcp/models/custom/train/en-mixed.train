@@ -1,0 +1,57 @@
+Arrives <START:arrive> Dublin Terminal 2 DUB <END> <START:arrivaltime> 00:30.<END>
+4 10 2014 <START:depart> Newark NJ EWR   Liberty <END> to <START:arrive> Fort Lauderdale FL FLL <END> 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+4 28 2014 <START:depart> Fort Lauderdale FL FLL <END> to <START:arrive> Newark NJ EWR   Liberty <END> 0.00 USD 0.00 USD 70.0lbs 32.0kg   62.0in 157.0cm.
+<START:flight> UNITED 4384 <END> 12MAY <START:depart> EL PASO <END> <START:arrive> HOUSTON <END> <START:departtime> 0630 <END> <START:arrivaltime> 0925. <END>
+<START:flight> UNITED 1210 <END> 12MAY <START:depart> HOUSTON <END> <START:arrive> LAS VEGAS <END> <START:departtime> 1220 <END> <START:arrivaltime> 1346. <END>
+<START:flight> UNITED 6037 <END> 17MAY <START:depart> DENVER <END> <START:arrive> EL PASO <END> <START:departtime> 1938 <END> <START:arrivaltime> 2129.<END>
+<START:flight> UNITED 1041 <END> 17MAY <START:depart> LAS VEGAS <END> <START:arrive> DENVER <END> <START:departtime> 1528 <END> <START:arrivaltime> 1823. <END>
+<START:flight> US AIR 2963 <END> 12MAY <START:depart> EL PASO <END> <START:arrive> PHOENIX <END> <START:departtime> 0620 <END> <START:arrivaltime> 0642. <END>
+<START:flight> US AIR 602 <END> 12MAY <START:depart> PHOENIX <END> <START:arrive> LAS VEGAS <END> <START:departtime> 0750 <END> <START:arrivaltime> 0900. <END>
+<START:flight> US AIR 689 <END> 17MAY <START:depart> LAS VEGAS <END> <START:arrive> PHOENIX <END> <START:departtime> 1930 <END> <START:arrivaltime> 2036. <END>
+<START:flight> US AIR 2958 <END> 17MAY <START:depart> PHOENIX <END> <START:arrive> EL PASO <END> <START:departtime> 2140 <END> <START:arrivaltime> 2349. <END>
+Arrival City  <START:arrive> Philadelphia PA PHL.<END>
+To   <START:arrive> PIT    Pittsburgh PA <END>  <START:arrivaltime>    5:30 pm <END>    Saturday.
+To   <START:arrive> DFW    Dallas TX <END>      <START:arrivaltime>    1:10 pm <END>    Saturday.
+To   <START:arrive> ABQ    Albuquerque NM <END> <START:arrivaltime>    1:25 pm <END>   Monday.
+To   <START:arrive> DFW    Dallas TX <END>      <START:arrivaltime>    11:40 am <END>   Monday.
+DEPARTS ATL S   ARRIVES <START:arrive> LAX <END> 5 Frequent Flyer Number DL6909575711.
+DEPARTS LAX 5   ARRIVES <START:arrive> MSP <END> 1 Frequent Flyer Number DL6909575711.
+Arrives <START:arrive> Milwaukee WI   MKE. <END>
+Arrives <START:arrive> Boston MA   BOS. <END>
+<START:flight> AMERICAN AIRLINES 97 <END> <START:depart> MIA Miami <END> <START:departtime> Aug 12 201408:25PM <END> <START:arrive> PHX Phoenix <END> <START:arrivaltime> Aug 12 201410:00PM <END> F Snack.
+<START:flight> AMERICAN AIRLINES 113 <END> <START:depart> BCN Barcelona <END> <START:departtime> Aug 12 201411:20AM <END> <START:arrive> MIA Miami <END> <START:arrivaltime> Aug 12 201403:30PM <END> J Lunch Snack.
+<START:flight> AMERICAN AIRLINES 112 <END> <START:depart> MIA Miami <END> <START:departtime> Aug 01 201406:20PM <END> <START:arrive> BCN Barcelona <END> <START:arrivaltime> Aug 02 201409:30AM J Dinner Breakfast or Snack.
+<START:flight> AMERICAN AIRLINES 62 <END> <START:depart> PHX Phoenix <END> <START:departtime> Aug 01 201407:20AM <END> <START:arrive> MIA Miami <END> <START:arrivaltime> Aug 01 201402:55PM <END> F Breakfast.
+Arriving <START:arrive> HKG <END>  <START:arrivaltime> 11:50 AM <END> May 17.
+Flight <START:flight> EI0739 <END> Sat 26 Jul 2014.
+From  <START:depart> DFW Dallas TX <END> <START:departtime> 1:55 pm <END>  Saturday.
+From  <START:depart> ABQ Albuquerque NM <END> <START:departtime> 10:30 am <END> Saturday.
+From  <START:depart> DFW Dallas TX <END> <START:departtime> 12:35 pm <END> Monday.
+From  <START:depart> PIT Pittsburgh PA <END> <START:departtime> 9:15 am <END> Monday.
+
+Reserved  <START:flight> UNITED AIRLINES 5431. <END>
+Departs  <START:depart> Milwaukee WI MKE. <END>
+Date  <START:departdate> Mar 04 2014 <END> Time  <START:departtime> 12:08 PM. <END>
+Arrives  <START:arrive> Chicago OHare IL ORD. <END>
+Date  <START:arrivaldate> Mar 04 2014 <END> Time  <START:arrivaltime> 12:59 PM. <END>
+
+Reserved  <START:flight> UNITED AIRLINES 533. <END>
+Departs  <START:depart> Chicago OHare IL ORD. <END>
+Date  <START:departdate> Mar 04 2014 <END> Time  <START:departtime> 1:39 PM. <END>
+Arrives  <START:arrive> Pittsburgh PA PIT. <END>
+Date  <START:arrivaldate> Mar 04 2014 <END> Time  <START:arrivaltime> 4:04 PM. <END>
+
+Reserved  <START:flight> UNITED AIRLINES 493. <END>
+Departs  <START:depart> Pittsburgh PA PIT. <END>
+Date  <START:departdate> Mar 06 2014 <END> Time  <START:departtime> 3:31 PM. <END>
+Arrives  <START:arrive> Chicago OHare IL ORD. <END>
+Date <START:arrivaldate> Mar 06 2014 <END> Time  <START:arrivaltime> 4:14 PM. <END>
+
+Reserved  <START:flight> UNITED AIRLINES 5412. <END>
+Departs  <START:depart> Chicago OHare IL ORD. <END>
+Date  <START:departdate> Mar 06 2014 <END> Time  <START:departtime> 4:55 PM. <END>
+Arrives  <START:arrive> Milwaukee WI MKE. <END>
+Date  <START:arrivaldate> Mar 06 2014 <END> Time  <START:arrivaltime> 5:44 PM. <END>
+
+
+

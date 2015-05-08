@@ -65,7 +65,7 @@ public class ExtractMatchedSentense {
 		
 	}
 	
-	private static boolean evaluate(String parentStr,String token,int level){
+	public static boolean evaluate(String parentStr,String token,int level){
 		
 		//System.out.println("String="+parentStr +" ["+token+"]");
 		
@@ -89,6 +89,34 @@ public class ExtractMatchedSentense {
 			return evaluatelevel1(parentStr,token);
 		}
 
+
+		return matchFound;
+		
+		
+	}
+	
+	public static boolean evaluateTable(String parentStr,String token){
+		
+		//System.out.println("String="+parentStr +" ["+token+"]");
+		
+		boolean matchFound=Boolean.FALSE;
+		
+		if(token.equals("Departure City and Time")){
+			System.out.println("Here is the Token="+token);
+		}
+	   
+		 if(parentStr.trim().matches(token+"(.*)")){
+			 matchFound=Boolean.TRUE;
+	      }
+	      
+		 else if(!matchFound && parentStr.trim().matches("(.*)"+token+"(.*)")){
+			 matchFound= Boolean.TRUE;
+	      }
+		 
+		 else if(!matchFound && parentStr.trim().matches("(.*)"+token)){
+			 matchFound= Boolean.TRUE;
+	      }
+	
 
 		return matchFound;
 		
@@ -175,7 +203,7 @@ public class ExtractMatchedSentense {
 					}
 					
 					if(parentString.contains("<month>")){
-					parentString=dateMatch(parentString,dateMatch, Boolean.FALSE);
+					//parentString=dateMatch(parentString,dateMatch, Boolean.FALSE);
 					}
 					
 					mRequiredLines.put(row, parentString);
@@ -197,19 +225,64 @@ public class ExtractMatchedSentense {
 	}
 	
 	private static String patternMatch(String regex,String sentence){
+		String match="";
+		
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(sentence);
-		String match="";
+	
+		
 		
 		while (matcher.find()) {
 //		      System.out.print("Start index: " + matcher.start());
 //		      System.out.print(" End index: " + matcher.end() + " ");
 //		      System.out.println(matcher.group());
 		      match=matcher.group();
-		      break;
+		
 		    }
 		
 		return match;
+		
+	}
+	
+	private static String patternDayMatch(String regex,String sentence){
+		String match="";
+		
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(sentence);
+		
+		while (matcher.find()) {
+//		      System.out.print("Start index: " + matcher.start());
+//		      System.out.print(" End index: " + matcher.end() + " ");
+//		      System.out.println(matcher.group());
+		      match+=matcher.group();
+		      if(match.length()==2){
+		      sentence=sentence.replace(match, " <date> "+match+" </date> ");
+		      match="";
+		     }
+		      
+
+		
+		    }
+		
+		return sentence;
+		
+	}
+	
+	private static String patternTimeMatch(String regex,String sentence){
+		String match="";
+
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(sentence);
+		
+		
+		while (matcher.find()) {
+		      match=matcher.group();
+		      sentence=sentence.replace(match, " <time> "+match+" </time> ");
+				
+	
+		    }
+		
+		return sentence;
 		
 	}
 	
@@ -231,7 +304,8 @@ public class ExtractMatchedSentense {
 		
 		
 	//	if(evaluate(parentString,regEx,0) && !isDateMatch){
-			String customTagging=parentString.replace(patternMatch(regEx,parentString), " <date> "+patternMatch(regEx,parentString)+" </date> ");
+			
+			String customTagging=patternDayMatch(regEx,parentString);
 			parentString=customTagging;
 			isDateMatch=Boolean.TRUE;
 	//	}
@@ -270,14 +344,14 @@ public class ExtractMatchedSentense {
 	
 	private static String timeMatch24(String parentString,String regEx, boolean isTimeMatch24){
 		if(evaluate(parentString,regEx,1) && !isTimeMatch24){
-			String customTagging=parentString.replace(patternMatch(regEx,parentString), " <time> "+patternMatch(regEx,parentString)+" </time> ");
+			String customTagging=patternTimeMatch(regEx,parentString);
 			parentString=customTagging;
 			isTimeMatch24=Boolean.TRUE;
 		}
 		return parentString;
 	}
 	
-	private static Map<String,Set<String>> loadMap(String path) throws IOException{
+	public static Map<String,Set<String>> loadMap(String path) throws IOException{
 		Properties childTokens = new Properties();
 		InputStream in=null;
 								
