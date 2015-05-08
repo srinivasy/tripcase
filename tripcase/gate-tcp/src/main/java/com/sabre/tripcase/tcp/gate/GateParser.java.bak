@@ -1,0 +1,198 @@
+package com.motivity.parser;
+
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Corpus;
+import gate.CorpusController;
+import gate.Document;
+import gate.Factory;
+import gate.FeatureMap;
+import gate.GateConstants;
+import gate.util.Out;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+
+/**
+ * 
+ * @author Venkat Haranadh
+ */
+public class GateParser implements InitializingBean {
+
+	private static Logger LOG = LoggerFactory.getLogger(GateParser.class);
+
+	private CorpusController application;
+	private Corpus corpus;
+
+	public void setApplication(CorpusController application) {
+		this.application = application;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		init();
+	}
+
+	public void init() throws Exception {
+		corpus = Factory.newCorpus("webapp corpus");
+		application.setCorpus(corpus);
+	}
+
+	public void invokeHandler(String message) throws Exception {
+		Document doc = null;
+		try {
+			FeatureMap params = Factory.newFeatureMap();
+		      params.put("stringContent", message);
+		      params.put("preserveOriginalContent", new Boolean(true));
+		      params.put("collectRepositioningInfo", new Boolean(true));
+		      //Utils.featureMap("stringContent", message)
+			doc = (Document) Factory.createResource("gate.corpora.DocumentImpl",params);
+			corpus.add(doc);
+
+			LOG.debug("Creating app " + application);
+			application.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// for each document, get an XML document with the
+		// person and location names added
+		Iterator iter = corpus.iterator();
+
+		while (iter.hasNext()) {
+			Document doc1 = (Document) iter.next();
+			AnnotationSet defaultAnnotSet = doc1.getAnnotations();
+			//Map<String,AnnotationSet> map=doc1.get();
+			Set annotTypesRequired = new HashSet();
+
+			annotTypesRequired.add("Person");
+			annotTypesRequired.add("Departure");
+			annotTypesRequired.add("Arrival");
+			annotTypesRequired.add("Seats");
+			/*
+			annotTypesRequired.add("FinalFlighSeats");
+			annotTypesRequired.add("FinalFlightArrivalDate");
+			annotTypesRequired.add("FinalFlightArrivalTime");
+			annotTypesRequired.add("FinalFlightDepartingDate");
+			annotTypesRequired.add("FinalFlightDepartingTime");
+			annotTypesRequired.add("Finaldepartjunc");
+
+			Set<Annotation> peopleAndPlaces = new HashSet<Annotation>(
+					defaultAnnotSet.get(annotTypesRequired));
+
+			FeatureMap features = doc1.getFeatures();
+			String originalContent = (String) features.get(GateConstants.ORIGINAL_DOCUMENT_CONTENT_FEATURE_NAME);
+			//RepositioningInfo info = (RepositioningInfo) features
+				//	.get(GateConstants.DOCUMENT_REPOSITIONING_INFO_FEATURE_NAME);
+
+			 if (originalContent != null) {
+				Out.prln("OrigContent existing. Generate file...");
+
+				Iterator it = peopleAndPlaces.iterator();
+				Annotation currAnnot;
+				SortedAnnotationList sortedAnnotations = new SortedAnnotationList();
+
+				while (it.hasNext()) {
+					currAnnot = (Annotation) it.next();
+					sortedAnnotations.addSortedExclusive(currAnnot);
+				} // while
+
+				StringBuffer editableContent = new StringBuffer();
+				// editableContent.getChars(srcBegin, srcEnd, dst, dstBegin);
+				// insert anotation tags backward
+				Out.prln("Unsorted annotations count2: "+ peopleAndPlaces.size());
+				Out.prln("Sorted annotations count2: "+ sortedAnnotations.size());
+				int flightcount = 0;
+				String firstflighttoken;
+
+				for (int i = 0; i < sortedAnnotations.size(); i++) {
+
+					currAnnot = (Annotation) sortedAnnotations.get(i);
+					
+				  if (i == 0) {
+						flightcount++;
+						firstflighttoken = currAnnot.getType();
+						editableContent.append("<Flight" + (flightcount)
+								+ ">\n");
+					} else {
+						if (currAnnot.getType().equals("firstflighttoken")) {
+							editableContent.append("</Flight" + (flightcount++)
+									+ ">\n");
+							editableContent.append("<Flight" + (flightcount)
+									+ ">\n");
+						}
+					}
+
+					String token = originalContent.substring(currAnnot
+							.getStartNode().getOffset().intValue(), currAnnot
+							.getEndNode().getOffset().intValue());
+
+					editableContent.append("<");
+					editableContent.append(currAnnot.getType());
+					editableContent.append(">");
+					editableContent.append(token);
+					editableContent.append("</");
+					editableContent.append(currAnnot.getType());
+					editableContent.append(">\n");
+				} // for
+
+				editableContent.append("</Flight" + (flightcount) + ">\n");
+				Out.prln("output"+editableContent.toString());
+			} else {
+				Out.prln("Content : " + originalContent);
+			}
+               
+		
+		} // for each doc
+
+	}
+
+	//private 
+	
+	
+	public static class SortedAnnotationList extends Vector {
+		public SortedAnnotationList() {
+			super();
+		} // SortedAnnotationList
+
+		public boolean addSortedExclusive(Annotation annot) {
+			Annotation currAnot = null;
+
+			// overlapping check
+			for (int i = 0; i < size(); ++i) {
+				currAnot = (Annotation) get(i);
+				if (annot.overlaps(currAnot)) {
+					return false;
+				} // if
+			} // for
+
+			long annotStart = annot.getStartNode().getOffset().longValue();
+			long currStart;
+			// insert
+			for (int i = 0; i < size(); ++i) {
+				currAnot = (Annotation) get(i);
+				currStart = currAnot.getStartNode().getOffset().longValue();
+				if (annotStart < currStart) {
+					insertElementAt(annot, i);
+					/*
+					 * Out.prln("Insert start: "+annotStart+" at position: "+i+
+					 * " size="+size()); Out.prln("Current start: "+currStart);
+					 */
+					return true;
+				} // if
+			} // for
+
+			int size = size();
+			insertElementAt(annot, size);
+			// Out.prln("Insert start: "+annotStart+" at size position: "+size);
+			return true;
+		} // addSorted
+	} // SortedAnnotationList
+
+}

@@ -1,4 +1,4 @@
-package com.sabre.tripcase.tcp.parser;
+package com.sabre.tripcase.tcp.common.preprocess;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
