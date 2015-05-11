@@ -12,6 +12,7 @@ public interface ModelTypes {
 	public static final String TRAIN_FILE_BASE_LOCATION="models/custom/train";
 	public static final String BIN_FILE_BASE_LOCATION="models/custom/bin";
 	public static final String NLP_FILE_BASE_LOCATION="models/nlp";
+	public static final String RESPONSE_FILE_BASE_LOCATION="C:/Users/CB34388493/opennlp/response";
 	
 	public static final String MIXED_MODEL="mixed";
 	public static final String MIXED_MODEL_FILE="/en-mixed";

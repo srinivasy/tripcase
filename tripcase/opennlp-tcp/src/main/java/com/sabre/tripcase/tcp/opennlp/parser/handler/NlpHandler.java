@@ -299,28 +299,31 @@ public final class NlpHandler {
 					}
 				}
 			}
-			
-
-			
-
-			
 		}
 		
-		printFinalList(finalTagList);
-		
-		
-	
-	      return mapModel;
+		//printFinalList(finalTagList);
+	     // return mapModel;
+		return printFinalList(finalTagList);
 	}
 	
 	
 
-	public static void printFinalList(List<TokenType> finalList){
-		
+	public static String printFinalList(List<TokenType> finalList){
+		StringBuilder output=new StringBuilder();
 		Iterator<TokenType> itrList=finalList.iterator();
+		String result="";
 		while(itrList.hasNext()){
-			System.out.println(itrList.next().toStringXML());
+			result=itrList.next().toStringXML();
+			System.out.println(result);
+			output.append(result);
+			output.append("\n");
 		}
 		
+		return output.toString();
+		
 	}
+
+
+
+
 }

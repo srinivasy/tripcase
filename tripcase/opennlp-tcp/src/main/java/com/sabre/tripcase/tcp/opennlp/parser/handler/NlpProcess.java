@@ -3,9 +3,14 @@
  */
 package com.sabre.tripcase.tcp.opennlp.parser.handler;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
@@ -54,7 +59,7 @@ public class NlpProcess {
 		return tokens;
 	}
 	
-	public  void process(String value,String fileSource,String txId) throws Throwable{
+	public  void process(String value,String fileSource,String txId,String actualFileName,List<String> allResponses) throws Throwable{
 		SentenceDetectorME sentenceME=nlpSentenceModel.getSentenceModel();
 		String sentences[]= sentenceME.sentDetect(value);
 		String tokens[];
@@ -64,11 +69,14 @@ public class NlpProcess {
 		
 		NlpHandler.printCleanSentences(sentences,txId);
 		String mapModel="";
+		
 	
 	      for(String sentence:sentences){
-	    	 
+ 
 		    	 mapModel=NlpHandler.applyMatchedStringForModels(sentence);
-		    	// System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
+		    	 allResponses.add(mapModel);
+		    	//System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
+
 	    	 
 	    	  tokens=nlpTokenModel.getTokenModel().tokenize(sentence);
 	    	  NlpHandler.printTokens(tokens,txId);
@@ -114,6 +122,10 @@ public class NlpProcess {
 	    	  }
 	    	
 	      }
+	      
+	      // Copy Response to File
+	      
+	      
 	      
 			Itinerary.init();
 			Itinerary.setTransactionId(txId);
@@ -197,6 +209,37 @@ public class NlpProcess {
 		this.trainer = trainer;
 	}
 	
+	
+	public static void copyResponseToFile(List<String> responses,String fileName){
+		FileOutputStream fop=null;
+   	 try{
+   	 File responseFile=new File(ModelTypes.RESPONSE_FILE_BASE_LOCATION+"/"+fileName.replace("eml", "txt"));
+   	 fop=new FileOutputStream(responseFile);
+   	 for(String response:responses){
+   		 byte[] contentInBytes = response.getBytes();
+   	   	 fop.write(contentInBytes);
+
+   	   	 }
+   	 }
+   	   	 catch(Exception ex){
+   	   		 System.out.println("Exception while copying response to File:");
+   	   		 ex.printStackTrace();
+   	   	 }
+   	 finally{
+   		 try{
+   			 if(null!=fop){
+   				 fop.flush();
+   				 fop.close(); 
+   			 }
+
+   		 }
+   		 catch(Exception ex){
+   			 System.out.println("Exception while closing filestream:"+ex.getMessage());
+   		 }
+   	 }
+   	 
+   	
+	}
 	
 
 }

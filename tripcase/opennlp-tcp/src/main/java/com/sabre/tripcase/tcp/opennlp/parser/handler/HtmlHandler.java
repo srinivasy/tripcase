@@ -33,7 +33,7 @@ public class HtmlHandler {
 	private static Logger log =Logger.getLogger(HtmlHandler.class);
 	private static Map<String,Set<String>> mapHeader;
 	
-	public  void processHTMLContent(String bodyText,String fileName) throws IOException{
+	public  void processHTMLContent(String bodyText,String fileName,String responseFileName) throws IOException{
 		log.info(" ************************ HTML Processor ***************************");
 		log.info(" *******************************************************************");
 		
@@ -44,6 +44,7 @@ public class HtmlHandler {
 
 		if(bodyText.contains(Constants.HTML_TAG) ){
 			try{
+				List<String> allResponses=new ArrayList<String>();
 				Map<String,String> htmlParsedMap=HtmlTableParser.parse(bodyText, null, false, Constants.PIPE_DELIMITER);
 				
 				Set<Entry<String,String>> entrySet=htmlParsedMap.entrySet();
@@ -56,7 +57,8 @@ public class HtmlHandler {
 					System.out.println("Value="+value);
 					value=switchToKeyValueFormat(value);
 					System.out.println("Returned value from TABLE FORMAT====>"+value);
-					nlpProcess.process(value,Constants.HTML,fileName);
+					nlpProcess.process(value,Constants.HTML,fileName,responseFileName,allResponses);
+					nlpProcess.copyResponseToFile(allResponses, responseFileName);
 
 				}
 				

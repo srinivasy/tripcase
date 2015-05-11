@@ -4,6 +4,8 @@
 package com.sabre.tripcase.tcp.opennlp.parser.handler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -18,14 +20,14 @@ public class TextHandler {
 	private NlpProcess nlpProcess=null;
 	private static Logger log =Logger.getLogger(TextHandler.class);
 	
-	public void processTextContent(String bodyText,String fileName) throws IOException{
-		
+	public void processTextContent(String bodyText,String fileName,String actualFileName) throws IOException{
+		List<String> allResponses=new ArrayList<String>();
 		log.info(" ************************ TEXT Processor ***************************");
 		log.info(" *******************************************************************");
 		bodyText=NlpHandler.removeBlankLines(bodyText);
 		bodyText=bodyText.toString().replaceAll("\\<.*?>","");
 		try{
-			nlpProcess.process(bodyText,Constants.TEXT,fileName);
+			nlpProcess.process(bodyText,Constants.TEXT,fileName,actualFileName,allResponses);
 			}
 		catch(Throwable th){
 			th.printStackTrace();

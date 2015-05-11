@@ -43,7 +43,7 @@ public class NlpParser {
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("opennlp-beans.xml");
 		NlpParser nlpParser =(NlpParser) context.getBean("nlpParser");
-		nlpParser.startTraining();
+		//nlpParser.startTraining();
 		log.info("Training models are successfully done");
 		nlpParser.startProcess();
 		log.info("NLP processing of Models and Source Files are successfully done");
@@ -80,13 +80,13 @@ public class NlpParser {
 						fileName=file.getName();
 					}
 					if(bodyText.contains(Constants.HTML_TAG)){
-					htmlHandler.processHTMLContent(bodyText,fileName);
+					htmlHandler.processHTMLContent(bodyText,fileName,file.getName());
 					}
 					else if(bodyText.contains(Constants.HTML_TABLE)){
-						htmlHandler.processHTMLContent("<html> "+bodyText+" </html>",fileName);
+						htmlHandler.processHTMLContent("<html> "+bodyText+" </html>",fileName,file.getName());
 					}
 					else if(bodyText.contains(Constants.HTML_DIV)){
-						htmlHandler.processHTMLContent("<html> "+bodyText+" </html>",fileName);
+						htmlHandler.processHTMLContent("<html> "+bodyText+" </html>",fileName,file.getName());
 					}
 					else{
 						
