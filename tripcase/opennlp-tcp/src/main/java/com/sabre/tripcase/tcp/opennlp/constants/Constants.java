@@ -20,7 +20,7 @@ public interface Constants {
 	public static final String TEXT="TEXT";
 	
 	public static final String SPACE_DELIMITER=" ";
-	public static final String PIPE_DELIMITER="|";
+	public static final String PIPE_DELIMITER=" | ";
 	
 	public static final String TAG_OPEN="OPEN";
 	public static final String TAG_CLOSE="CLOSE";

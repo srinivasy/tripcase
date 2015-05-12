@@ -76,7 +76,7 @@ public final class NlpHandler {
 		for(int i=0;i<tokens.length;i++){
 		newStr=tokens[i];
 		newStr=newStr.trim();
-		newStr=newStr.replaceAll("[^a-z A-Z 0-9 : . , @]", " ");
+		newStr=newStr.replaceAll("[^a-z A-Z 0-9 : . , @ |]", " ");
 		newStr=removeExtraWhiteSpaces(newStr);
 //		newStr=newStr.replaceAll("\\s+$", "").trim();
 //		newStr=newStr.replaceAll(": ", ":").replaceAll(" :", ":").trim();
@@ -315,7 +315,10 @@ public final class NlpHandler {
 		while(itrList.hasNext()){
 			result=itrList.next().toStringXML();
 			System.out.println(result);
+			result=result.replace("|", "");
+			if(!result.contains("><")){
 			output.append(result);
+			}
 			output.append("\n");
 		}
 		

@@ -94,25 +94,42 @@ public class HtmlHandler {
 		List<String> valueList=new ArrayList<String>();
 		Map<String,String> matchedHeaderMap=new LinkedHashMap<String,String>();
 		int headerCount=0;
+		int matchFoundCount=0;
+		Map<Integer,Integer> matchFoundMap=new HashMap<Integer,Integer>();
 		if(null==mapHeader){
 		mapHeader=ExtractMatchedSentense.loadMap("src/main/java/airline_alias.properties");
 		}
 		String[] sentences=text.split("\n");
 		
-		for (int i=0;i<sentences.length;i++){
-		for(String headerKey:mapHeader.keySet()){
-				Set<String> headerSet=mapHeader.get(headerKey);
-				for(String header:headerSet){
-				if(ExtractMatchedSentense.evaluateTable(sentences[i],header)){
-				matchedHeaderMap.put("<S"+headerCount+">", header);
-				sentences[i]=sentences[i].replace(header, "<S"+headerCount+">");
-				headerCount++;
-				}
-			}
-			}
-		}
+		/** Removing empty lines from table */
+		sentences=removeEmptyLinesFromTable(sentences);
 		
+			for (int i=0;i<sentences.length;i++){
+						for(String headerKey:mapHeader.keySet()){
+						Set<String> headerSet=mapHeader.get(headerKey);
+						for(String header:headerSet){
+						//	sentences[i]=sentences[i].replaceAll("([a-z])([A-Z])/g", "$1 $2");
+						if(ExtractMatchedSentense.evaluateTable(sentences[i],header)){
+						matchedHeaderMap.put("<S"+headerCount+">", header);
+						sentences[i]=sentences[i].replace(header, "<S"+headerCount+">");
+						headerCount++;
+						if(matchFoundMap.containsKey(i))
+							matchFoundCount=matchFoundMap.get(i)+1;
+							matchFoundMap.put(i, matchFoundCount);
+						}
+						else{
+							matchFoundMap.put(i, 1);
+						}
+					}
+					}
+			}
 	
+	/** Let's remove or eliminate the unmatched lines , stop these from processing */
+			sentences=eliminateUnmatchedString(sentences,matchFoundMap);
+	/** Remove sentence with more stop words , stop these from processing */
+			sentences=checkCountStopWords(sentences);
+	
+	/** Setting the Original Header Token back to the String sentence */
 		for(int i=0;i<sentences.length;i++){
 			String line=sentences[i];
 			
@@ -122,13 +139,12 @@ public class HtmlHandler {
 			}
 			sentences[i]=line;
 		}
-			
 	}
 		
 		
-		
+	/** Swapping the Horizontal format to Key:value format */	
 		for (int i=0;i<sentences.length;i++){
-			if(sentences[i].contains(">|<") || sentences[i].contains("><")){
+			if(sentences[i].contains(">|<") || sentences[i].contains("><") || sentences[i].contains("> | <")){
 				headerList.clear();
 				String headers[]=sentences[i].split("\\|");
 				for(String header:headers){
@@ -169,14 +185,8 @@ public class HtmlHandler {
 				
 			}
 
-				sb.append("\n");
-				
-			
-
-	
+			sb.append("\n");
 			valueList.clear();
-			
-			
 		}
 		
 	//return sb.toString();
@@ -199,5 +209,137 @@ public class HtmlHandler {
 		
 		return isMatch;
 	}
+	
+	private String[] eliminateUnmatchedString(String[] sentenceArray,Map<Integer,Integer> matchFoundMap){
+		List<String> newLines=new ArrayList<String>();
+		int index=0;
+		if(null!=sentenceArray && sentenceArray.length>0){
+			for(String sentence:sentenceArray){
+				int matchCount=matchFoundMap.get(index);
+				if(matchCount>0){
+					newLines.add(sentence);
+				}
+				else{
+					System.out.println("Unmatched Lines=====>"+sentence);
+				}
+					
+				}
+			}
+		
+		return newLines.toArray(new String[0]);
+		
+	}
+
+	private void verifySentenceLengthForUnusalMatch(String value){
+		
+	}
+	
+	
+	private void caseCheckForAirlinesAndFlight(String value,int matchFound){
+		
+		if(matchFound>0){
+			
+		}
+		
+	}
+	
+	private void preProcessTable(String value){
+		
+	}
+	
+	private String[] checkCountStopWords(String[] sentenceArray){
+		String stopWords="is|of|a|an|the|to|at|other|and|from|by|which|be|your|hereby|.com|has|or|any|on|thank|via|for|please|are|Subject";
+		List<String> newLines=new ArrayList<String>();
+		String[] stops=stopWords.split("\\|");
+		String tempSentence="";
+		int stopCount=0;
+		
+		if(null!=sentenceArray && sentenceArray.length>0){
+			for(String sentence:sentenceArray){
+				tempSentence=sentence.replace("|", " ").trim();
+				for(String stop:stops){
+					if(tempSentence.matches("(.*) "+stop+" (.*)")){
+						stopCount++;
+				      }
+				}
+				if(stopCount <1 ){
+					newLines.add(sentence);
+				}
+				else{
+					System.out.println("Stop words=====>"+sentence);
+				}
+				stopCount=0;
+		}
+		
+		
+	}
+		return newLines.toArray(new String[0]);
+	}
+	
+	private String[] removeEmptyLinesFromTable(String[] sentenceArray){
+		
+		List<String> newLines=new ArrayList<String>();
+		
+		if(null!=sentenceArray && sentenceArray.length>0){
+			for(String sentence:sentenceArray){
+				if(!sentence.replace("|", " ").trim().isEmpty()){
+					newLines.add(sentence);
+				}
+			
+			}
+		}
+		return newLines.toArray(new String[0]);
+		
+	}
+	
+	private String[] wrongStatusRemoval(String[] sentenceArray){
+		String statusWords="Confirmed|OK";
+		List<String> newLines=new ArrayList<String>();
+		String[] statuses=statusWords.split("\\|");
+		String tempSentence="";
+		int statusCount=0;
+		
+		if(null!=sentenceArray && sentenceArray.length>0){
+			for(String sentence:sentenceArray){
+				tempSentence=sentence.replace("|", " ").trim();
+				for(String status:statuses){
+					if(tempSentence.toLowerCase().contains("status")){
+					if(tempSentence.toLowerCase().matches("(.*) "+status.toLowerCase()+" (.*)")){
+						statusCount++;
+				      }
+					}
+				}
+				if(statusCount >1 ){
+					newLines.add(sentence);
+				}
+				else{
+					System.out.println("statusCount words=====>"+sentence);
+				}
+				statusCount=0;
+		}
+		
+		
+	}
+		return newLines.toArray(new String[0]);
+	}
+	
+//	private void insertSpaceInMiddle(String sentence){
+//		
+//				String newString = "";
+//				boolean wasUpper = false;
+//				for (int i = 0; i < sentence.length; i++)
+//				{
+//				    if (!wasUpper && sentence.charAt(i)== sentence.charAt(i))
+//				    {
+//				        newString = newString + " ";
+//				        wasUpper = true;
+//				    }
+//				    else
+//				    {
+//				        wasUpper = false;
+//				    }
+//				    newString = newString + sentence[i];
+//				}
+//	}
 
 }

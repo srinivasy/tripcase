@@ -86,7 +86,7 @@ public class ExtractMatchedSentense {
 	      }
 	}
 		else if(level==1){
-			return evaluatelevel1(parentStr,token);
+			//return evaluatelevel1(parentStr,token);
 		}
 
 
@@ -101,19 +101,15 @@ public class ExtractMatchedSentense {
 		
 		boolean matchFound=Boolean.FALSE;
 		
-		if(token.equals("Departure City and Time")){
-			System.out.println("Here is the Token="+token);
-		}
-	   
-		 if(parentStr.trim().matches(token+"(.*)")){
+		 if(parentStr.matches(token+" (.*)")){
 			 matchFound=Boolean.TRUE;
 	      }
 	      
-		 else if(!matchFound && parentStr.trim().matches("(.*)"+token+"(.*)")){
+		 else if(!matchFound && parentStr.matches("(.*) "+token+" (.*)")){
 			 matchFound= Boolean.TRUE;
 	      }
 		 
-		 else if(!matchFound && parentStr.trim().matches("(.*)"+token)){
+		 else if(!matchFound && parentStr.matches("(.*) "+token)){
 			 matchFound= Boolean.TRUE;
 	      }
 	
@@ -175,7 +171,7 @@ public class ExtractMatchedSentense {
 		boolean isDateMatch=Boolean.FALSE;
 		boolean isMonthMatch=Boolean.FALSE;
 		Map<String,String> mRequiredLines=new HashMap<String,String>();
-		
+		Map<String,Boolean> matchFoundKey=new HashMap<String,Boolean>();
 		int rowNumber=0;
 		String row="ROW"+rowNumber;
 		String tagging="";
@@ -189,7 +185,18 @@ public class ExtractMatchedSentense {
 					isMatched= Boolean.TRUE;
 					if(level==0){
 						//tagging=parentString.replace(token, "<"+token+">");
-						tagging=parentString.replace(token, " <"+mapKey+"> ");
+						
+						tagging=parentString.replace(token, "<"+mapKey+">");
+						
+						
+//						String subTagging=parentString.substring(parentString.indexOf(token));//,parentString.length()-1);
+//						subTagging=subTagging.substring(subTagging.indexOf("|"),parentString.length()-1);
+//						String[] delimitedValues=subTagging.split("\\|");
+//						if(null!=delimitedValues){
+//							System.out.println("First Matching value=="+delimitedValues[0]);
+//						}
+						
+						
 					}
 					else{
 						
