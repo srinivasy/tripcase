@@ -3,23 +3,34 @@
  */
 package com.sabre.tripcase.tcp.opennlp.parser.handler;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import opennlp.tools.sentdetect.SentenceDetectorME;
 
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sabre.tripcase.tcp.opennlp.constants.Constants;
+import com.sabre.tripcase.tcp.opennlp.constants.ModelTypes;
+import com.sabre.tripcase.tcp.opennlp.dto.Itinerary;
+import com.sabre.tripcase.tcp.opennlp.dto.Token;
+import com.sabre.tripcase.tcp.opennlp.dto.TokenType;
 import com.sabre.tripcase.tcp.opennlp.utils.ExtractMatchedSentense;
 import com.sabre.tripcase.tcp.opennlp.utils.HtmlTableParser;
 
@@ -29,11 +40,22 @@ import com.sabre.tripcase.tcp.opennlp.utils.HtmlTableParser;
  */
 public class HtmlHandler {
 	@Autowired
-	private NlpProcess nlpProcess=null;
 	private static Logger log =Logger.getLogger(HtmlHandler.class);
 	private static Map<String,Set<String>> mapHeader;
 	
-	public  void processHTMLContent(String bodyText,String fileName,String responseFileName) throws IOException{
+	public List<Object> processHTMLContent(String bodyText,String fileName) throws IOException{
+		return processHTMLContent(bodyText,fileName,fileName);
+		
+	}
+	
+	public String getHtmlToText(String bodyText) throws Throwable{
+		
+		String htmlToText="";
+		
+		return htmlToText;
+	}
+	
+	public  List<Object> processHTMLContent(String bodyText,String fileName,String responseFileName) throws IOException{
 		log.info(" ************************ HTML Processor ***************************");
 		log.info(" *******************************************************************");
 		
@@ -56,9 +78,10 @@ public class HtmlHandler {
 					System.out.println("Key="+key);
 					System.out.println("Value="+value);
 					value=switchToKeyValueFormat(value);
+					htmlParsedMap.put(key, value);
 					System.out.println("Returned value from TABLE FORMAT====>"+value);
-					nlpProcess.process(value,Constants.HTML,fileName,responseFileName,allResponses);
-					nlpProcess.copyResponseToFile(allResponses, responseFileName);
+					allResponses=process(value,fileName,responseFileName,allResponses);
+					copyResponseToFile(allResponses, responseFileName);
 
 				}
 				
@@ -72,20 +95,24 @@ public class HtmlHandler {
 			}
 		}
 		
+		return null;
+		
 	}
 
-	/**
-	 * @return the nlpProcess
-	 */
-	public NlpProcess getNlpProcess() {
-		return nlpProcess;
-	}
-
-	/**
-	 * @param nlpProcess the nlpProcess to set
-	 */
-	public void setNlpProcess(NlpProcess nlpProcess) {
-		this.nlpProcess = nlpProcess;
+	
+	public List<String> process(String sentenceValue,String transactionId,String actualFileName,List<String> allResponses) throws Throwable{
+		String sentences[]= sentenceValue.split("\n");
+		String mapModel="";
+	
+	      for(String sentence:sentences){
+ 
+		    	 mapModel=NlpHandler.applyMatchedStringForModels(sentence);
+		    	 allResponses.add(mapModel);
+		    	//System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
+	      }
+	      
+	      return allResponses;
+		
 	}
 	
 	public String switchToKeyValueFormat(String text) throws IOException{
@@ -108,7 +135,7 @@ public class HtmlHandler {
 						for(String headerKey:mapHeader.keySet()){
 						Set<String> headerSet=mapHeader.get(headerKey);
 						for(String header:headerSet){
-						//	sentences[i]=sentences[i].replaceAll("([a-z])([A-Z])/g", "$1 $2");
+						sentences[i]=insertSpaceInMiddle(sentences[i]);
 						if(ExtractMatchedSentense.evaluateTable(sentences[i],header)){
 						matchedHeaderMap.put("<S"+headerCount+">", header);
 						sentences[i]=sentences[i].replace(header, "<S"+headerCount+">");
@@ -323,23 +350,177 @@ public class HtmlHandler {
 		return newLines.toArray(new String[0]);
 	}
 	
-//	private void insertSpaceInMiddle(String sentence){
-//		
-//				String newString = "";
-//				boolean wasUpper = false;
-//				for (int i = 0; i < sentence.length; i++)
-//				{
-//				    if (!wasUpper && sentence.charAt(i)== sentence.charAt(i))
-//				    {
-//				        newString = newString + " ";
-//				        wasUpper = true;
-//				    }
-//				    else
-//				    {
-//				        wasUpper = false;
-//				    }
-//				    newString = newString + sentence[i];
-//				}
-//	}
+	private String insertSpaceInMiddle(String sentence){
+		
+		StringBuilder result = new StringBuilder();
+		for(int i=0 ; i <sentence.length()-2 ; i++) {
+		    char c1 = sentence.charAt(i);
+		    char c2 = sentence.charAt(i+1);
+		    result.append(c1);
+		    if(i!=0 && Character.isLowerCase(c1) && Character.isUpperCase(c2)) {
+		        result.append(' ');
+		    }
+		    else if(i!=0 && c1==')' && (Character.isLowerCase(c2) || Character.isUpperCase(c2))) {
+		        result.append(' ');
+		    }
+		    
+		    else if(i!=0 && c1==')' && (Character.isLowerCase(c2) || Character.isUpperCase(c2))) {
+		        result.append(' ');
+		    }
+		    
+		}
+		
+		return result.toString();
+	}
+	
+	public static String applyMatchedStringForModels(String sentences) throws Throwable{
+		String mapValue="";
+		String mapModel="";
+		Map<String,String> matchedSenetenceMapLevel0=null;
+		Map<String,String> matchedSenetenceMapLevel1=null;
+		matchedSenetenceMapLevel0=ExtractMatchedSentense.match(sentences,0);
+		Set<String> keySet=matchedSenetenceMapLevel0.keySet();
+		
+		List<TokenType> finalTagList=new LinkedList<TokenType>();
+		
+		for(String strKey:keySet){
+				mapValue=matchedSenetenceMapLevel0.get(strKey);
+				mapModel=strKey;
+				System.out.println(" Model 0="+mapModel+" , "+mapValue);
+				matchedSenetenceMapLevel1=ExtractMatchedSentense.match(mapValue,1);
+			}
+		keySet=matchedSenetenceMapLevel0.keySet();
+		for(String strKey:keySet){
+			mapValue=matchedSenetenceMapLevel1.get(strKey);
+			mapModel=strKey;
+			System.out.println(" Model 1="+mapModel+" , "+mapValue);
+			String[] tokens=removeExtraWhiteSpaces(mapValue.trim()).split(" ");
+			List<TokenType> tagList=new LinkedList<TokenType>();
+			
+			TokenType currentType=null;
+			boolean isValueFirst=Boolean.FALSE;
+			
+			for(String token:tokens){
+				
+				if(token.contains("<") || token.contains(">")){
+					//System.out.println("Tokens --->"+token);
+					
+					if(token.startsWith("</") && token.endsWith(">")){
+						//System.out.println("Close Tag --->"+token);
+						currentType.setEndTag(token);
+						
+					}
+					else{
+						if(isValueFirst){
+							currentType.setFirstTag(token);
+							isValueFirst=Boolean.FALSE;
+						}
+						else{
+							currentType=new TokenType();
+							currentType.setFirstTag(token);
+						
+						//System.out.println("Open Tag --->"+token);
+						tagList.add(currentType);
+						}
+					}
+
+				}
+				else{
+					//System.out.println("Value --->"+token);
+					if(null!=currentType){
+						currentType.setValue(token);
+						
+					}
+					else{
+						currentType=new TokenType();
+						currentType.setValue(token);
+						tagList.add(currentType);
+						isValueFirst=Boolean.TRUE;
+					}
+					
+					
+				}
+				
+				
+			}
+			
+			Iterator<TokenType> itrTokentype=tagList.iterator();
+			
+			while(itrTokentype.hasNext()){
+				TokenType tokenType=itrTokentype.next();
+				if(null== tokenType.getValue() && null==tokenType.getEndTag()){
+					itrTokentype.remove();
+				
+				}
+				else{
+					if(null==tokenType.getEndTag()){
+					TokenType newTokenType=new TokenType(tokenType.getFirstTag(),tokenType.getValue(),tokenType.getFirstTag().replace("<", "</"));
+					finalTagList.add(newTokenType);
+					//System.out.println("New Linked List:"+newTokenType.toStringXML());
+					}
+					else{
+						finalTagList.add(tokenType);
+					//System.out.println("Linked List:"+tokenType.toStringXML());
+					}
+				}
+			}
+		}
+		
+		//printFinalList(finalTagList);
+	     // return mapModel;
+		return printFinalList(finalTagList);
+	}
+	
+	public static String printFinalList(List<TokenType> finalList){
+		StringBuilder output=new StringBuilder();
+		Iterator<TokenType> itrList=finalList.iterator();
+		String result="";
+		while(itrList.hasNext()){
+			result=itrList.next().toStringXML();
+			System.out.println(result);
+			result=result.replace("|", "");
+			if(!result.contains("><")){
+			output.append(result);
+			}
+			output.append("\n");
+		}
+		
+		return output.toString();
+		
+	}
+	public static String removeExtraWhiteSpaces(String line){
+		return line.replaceAll(" +", " ");
+	}
+	
+	public  void copyResponseToFile(List<String> responses,String fileName){
+		FileOutputStream fop=null;
+   	 try{
+   	 File responseFile=new File(ModelTypes.RESPONSE_FILE_BASE_LOCATION+"/"+fileName.replace("eml", "txt"));
+   	 fop=new FileOutputStream(responseFile);
+   	 for(String response:responses){
+   		 byte[] contentInBytes = response.getBytes();
+   	   	 fop.write(contentInBytes);
+
+   	   	 }
+   	 }
+   	   	 catch(Exception ex){
+   	   		 System.out.println("Exception while copying response to File:");
+   	   		 ex.printStackTrace();
+   	   	 }
+   	 finally{
+   		 try{
+   			 if(null!=fop){
+   				 fop.flush();
+   				 fop.close(); 
+   			 }
+
+   		 }
+   		 catch(Exception ex){
+   			 System.out.println("Exception while closing filestream:"+ex.getMessage());
+   		 }
+   	 }
+   	 
+   	
+	}
 
 }
