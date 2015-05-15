@@ -1,17 +1,12 @@
 package com.sabre.tripcase.tcp.common.utils;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -30,7 +25,8 @@ import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import com.sabre.tripcase.tcp.common.constants.Constants;
-import com.sabre.tripcase.tcp.common.preprocess.HtmlFileReader;
+
+
 
 
 /**
@@ -40,31 +36,7 @@ import com.sabre.tripcase.tcp.common.preprocess.HtmlFileReader;
  */
 public class HtmlTableParser {
 
-	/**
-	 * parse
-	 * @param htmlString
-	 * @param filePath
-	 * @param isFileSource
-	 * @param delimiter
-	 * @return Map<String, String>
-	 * @throws Throwable
-	 */
-	
-	   public static void convertHtmlToXml(String cleanedHtml){
-		   try {
-			   String fn = "C:\\Users\\CB34388493\\workspace\\HTMLParser\\test\\travel";
-			   
-			   FileWriter fw  = new FileWriter(fn + ".xml");
-			   PrintWriter pw  = new PrintWriter(fw);
-			   pw.print(HtmlToXmlConverter.Html2Xml(cleanedHtml));
-			   pw.close();
-		   } catch (FileNotFoundException e) {
-				System.out.println("file not found");
-		   } catch (IOException e) {
-			   e.printStackTrace();
-		   }
-	   }
-	   
+  
 	public static Map<String, String> parse(String htmlString, String filePath,
 			boolean isFileSource, String delimiter) throws Throwable {
 
@@ -73,14 +45,14 @@ public class HtmlTableParser {
 		StringBuilder formatString = null;
 		String patternMatches="DEPART(.*)AIRCRAFT(.*)ARRIVE(.*)CABIN(.*)TRAVEL TIME(.*)MEAL(.*)SEATS(.*)";
 
-		if (Boolean.TRUE == isFileSource) {
+/*		if (Boolean.TRUE == isFileSource) {
 			try {
 				HtmlFileReader htmlFileReader = new HtmlFileReader();
 				htmlString = htmlFileReader.htmlFileRead(filePath);
 			} catch (Throwable t) {
 				throw t;
 			}
-		}
+		}*/
 
 		try {
 			
@@ -132,10 +104,11 @@ public class HtmlTableParser {
 		//	allTablesResultMap=removeDuplicateTables(allTablesResultMap);
 
 			for (String tkeys : allTablesMap.keySet()) {
-				// if(tkeys.equalsIgnoreCase("TABLE_MV_5"))
+				// if(tkeys.equalsIgnoreCase("TABLE_MV_12"))
 				// { //*testing scenario START */
 				Element table = allTablesMap.get(tkeys);
 				//table=removeEmptyTagsFromTable(table,"td");
+				System.out.println("Table Data=====>"+table.html());
 				
 				//Element childTable=table.child(0).select("table").first();
 				//System.out.println("Child Table Name="+childTable+",Key="+tkeys);
@@ -159,19 +132,42 @@ public class HtmlTableParser {
 						
 						Element queueElement= queueElements.remove();
 						//System.out.println("Text====>"+queueElement.text());
+						
+/*						if(queueElement.tagName().equalsIgnoreCase("td") || queueElement.tagName().equalsIgnoreCase("th"))
+						{
+							
+								
+								
+								if(queueElement.ownText().isEmpty()){
+									if(!queueElement.text().isEmpty()){
+									formatString.append(replaceAmpSpaceNullEmpty(queueElement.text())+"|");
+									}
+								}
+								else{
+									formatString.append(replaceAmpSpaceNullEmpty(queueElement.ownText())+"|");
+								}
+								//formatString.append("|");
+							
+						}
+						else{
+							queueElements=refillQueue(queueElements,queueElement);
+							//formatString.append("\n");
+						}*/
 											
 						if(queueElement.tagName().equalsIgnoreCase("td"))
 						{
+
 							if(queueElement.children().size()>=1){
 								
 								queueElements=refillQueue(queueElements,queueElement);
 								
 							}
 							else{
-								
-							
-								formatString.append(replaceAmpSpaceNullEmpty(queueElement.text()));
-								formatString=addDelimiter(formatString,delimiter);
+								if(!replaceAmpSpaceNullEmpty(queueElement.text()).isEmpty()){
+									formatString.append(replaceAmpSpaceNullEmpty(queueElement.text()));
+									formatString=addDelimiter(formatString,delimiter);
+								}
+
 								
 								
 							}
@@ -179,14 +175,18 @@ public class HtmlTableParser {
 						}
 						else{
 							if(queueElement.children().size()==0){
+								if(!replaceAmpSpaceNullEmpty(queueElement.text()).isEmpty()){
 								formatString.append(replaceAmpSpaceNullEmpty(queueElement.text()));
 								formatString=addDelimiter(formatString,delimiter);
+								}
 								
 							}
 
 							else{
 								if(queueElement.tagName().equalsIgnoreCase("tr")){
+									if(queueElement.child(0).tagName().equalsIgnoreCase("td")){
 									formatString.append("\n");
+									}
 								}
 								
 								queueElements=refillQueue(queueElements,queueElement);
@@ -199,11 +199,13 @@ public class HtmlTableParser {
 
 					formatString.append("\n");
 				}
+				
+				
 				allTablesResultMap.put(tkeys, formatString.toString());
 				
 			
 
-			//	 } /**Testing scenario END */
+				// } /**Testing scenario END */
 			}
 			
 
@@ -211,7 +213,7 @@ public class HtmlTableParser {
 			throw t;
 		}
 		
-		allTablesResultMap=removeDuplicateTables(allTablesResultMap,delimiter);
+		//allTablesResultMap=removeDuplicateTables(allTablesResultMap,delimiter);
 		//changeArrangements(allTablesResultMap,patternMatches);
 		
 		
@@ -234,13 +236,13 @@ public class HtmlTableParser {
 
 		if (null != val) {
 			if (val.trim().isEmpty()) {
-				return val.replace("\u00a0", "");
+				return val.replace("\u00a0", "EMPTY");
 			} else {
-				return val.replace("\u00a0", "");
+				return val.replace("\u00a0", "EMPTY");
 				 
 			}
 		} else {
-			val = "";
+			val = "EMPTY";
 		}
 
 		return val;
@@ -279,10 +281,10 @@ public class HtmlTableParser {
 
 	
 	private static Document removeTags(Document document){
-//		for( Element element : document.select("a") )
-//		{
-//		    element.remove();
-//		}
+		for( Element element : document.select("a") )
+		{
+		    element.remove();
+		}
 		for( Element element : document.select("img") )
 		{
 		    element.remove();
@@ -291,6 +293,8 @@ public class HtmlTableParser {
 		
 		return document;
 	}
+	
+	
 	
 	private static Document removeAttributes(Document document,String tagName){
 		
@@ -507,12 +511,12 @@ public class HtmlTableParser {
 			} else {
 				val=val.replaceAll("&gt;", "");
 				val=val.replaceAll("&lt;", "");
-				val=val.replaceAll("&amp;", "");
+				val=val.replaceAll("&amp;", " ");
 				val=val.replaceAll("=09", "");
 				val=val.replaceAll("=20", "");
 				val=val.replaceAll("3D", "");
 				
-				return val.replaceAll("&nbsp;", "");
+				return val.replaceAll("&nbsp;", " ");
 			}
 		} else {
 			val = "";
@@ -539,7 +543,7 @@ public class HtmlTableParser {
 		if (null != delimiter && !delimiter.isEmpty()) {
 			sourceString.append(delimiter);
 		} else {
-			sourceString.append("\t");
+			sourceString.append(" ");
 		}
 		return sourceString;
 	}

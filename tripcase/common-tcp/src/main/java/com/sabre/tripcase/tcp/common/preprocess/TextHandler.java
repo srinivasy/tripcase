@@ -12,11 +12,11 @@ import com.sabre.tripcase.tcp.common.constants.Constants;
 public class TextHandler 
 {
 	private static Logger log =Logger.getLogger(TextHandler.class);	
-	public void processTextContent(String bodyText,String fileName) throws IOException
+	public String processTextContent(String content) throws IOException
 	{
 		
 		log.info(" ************************ TEXT Processor ***************************");
 		log.info(" *******************************************************************");
-		bodyText=bodyText.toString().replaceAll("\\<.*?>","");
+		return content.toString().replaceAll("\\<.*?>","");
 	}
 }

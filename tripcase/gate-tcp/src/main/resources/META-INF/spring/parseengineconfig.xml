@@ -26,8 +26,8 @@
 		</gate:preload-plugins>
  	</gate:init>   -->
 	
-	<import resource="classpath:META-INF/spring/gateparseconfig.xml"/>
-	<import resource="classpath:META-INF/spring/nlpparseconfig.xml"/>
+	<import resource="**/META-INF/spring/gateparseconfig.xml"/>
+	<import resource="**/META-INF/spring/nlpparseconfig.xml"/>
 	
 
 	<!-- Define the pooled handler bean -->
