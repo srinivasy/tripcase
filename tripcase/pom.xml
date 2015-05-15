@@ -9,6 +9,7 @@
 	<name>TripCase Email parsing Parent Project</name>
 
 	<properties>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.7</jdk.version>
 	<!-- 	<spring.version>3.2.3.RELEASE</spring.version> -->
 		<spring.version>4.1.5.RELEASE</spring.version>
@@ -21,24 +22,35 @@
 		<tomcat.home>${TOMCAT_HOME}</tomcat.home>
 
 		<log4j.version>1.2.17</log4j.version>
-		<jersey.version>1.18.1</jersey.version>
-		<activemq.version>5.10.0</activemq.version>
+<!-- 		<jersey.version>1.18.1</jersey.version>
+		<activemq.version>5.10.0</activemq.version> -->
 		<!-- <gate.version>1.2.17</gate.version> -->
 		<opennlp.tcp.version>1.0</opennlp.tcp.version>
 		<gate.tcp.version>1.0</gate.tcp.version>
-		<jms.tcp.version>1.0</jms.tcp.version>
+		<!-- <jms.tcp.version>1.0</jms.tcp.version> -->
 		<parse.tcp.version>1.0</parse.tcp.version>
-		<rest.tcp.version>1.0</rest.tcp.version>
+		<!-- <rest.tcp.version>1.0</rest.tcp.version> -->
 		<dao.tcp.version>1.0</dao.tcp.version>
 		<common.tcp.version>1.0</common.tcp.version>
 		<commondata.tcp.version>1.0</commondata.tcp.version>
+
+		<gate.core>8.0</gate.core>
+		<xstream.version>1.4.8</xstream.version>
+		<slf4j12.version>1.5.11</slf4j12.version>
+		<ems.client.version>1.0.0-SNAPSHOT</ems.client.version>
+		<commons.lang.version>2.4</commons.lang.version>
+		<commons.logging.version>1.1.3</commons.logging.version>
+		<commons.io.version>1.3.2</commons.io.version>
+		<commons-pool.version>1.5.3</commons-pool.version>
+		<commons.collections.version>3.2.1</commons.collections.version>
+		
 	</properties>
 
 	<modules>
 		<module>gate-tcp</module>
 		<module>parse-tcp</module>
-		<module>jms-tcp</module>
-		<module>rest-tcp</module>
+	<!-- 	<module>jms-tcp</module>
+		<module>rest-tcp</module> -->
 		<module>opennlp-tcp</module>
 		<module>dao-tcp</module>
 		<module>common-tcp</module>
@@ -56,6 +68,7 @@
 						<target>${jdk.version}</target>
 					</configuration>
 				</plugin>
+	
 			</plugins>
 		</pluginManagement>
 	</build>

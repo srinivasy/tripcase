@@ -23,7 +23,7 @@
 	<bean id="mimeMessageReader" class="com.sabre.tripcase.tcp.opennlp.email.MimeMessageReader"></bean>
 	<bean id="htmlHandler"
 		class="com.sabre.tripcase.tcp.opennlp.parser.handler.HtmlHandler">
-		<property name="nlpProcess" ref="nlpProcess" />
+		
 	</bean>
 	<bean id="textHandler"
 		class="com.sabre.tripcase.tcp.opennlp.parser.handler.TextHandler">

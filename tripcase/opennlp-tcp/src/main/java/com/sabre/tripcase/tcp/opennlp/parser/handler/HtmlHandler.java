@@ -13,17 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import opennlp.tools.sentdetect.SentenceDetectorME;
-
 import org.apache.log4j.Logger;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sabre.tripcase.tcp.opennlp.constants.Constants;
@@ -107,9 +99,14 @@ public class HtmlHandler {
 	      for(String sentence:sentences){
  
 		    	 mapModel=NlpHandler.applyMatchedStringForModels(sentence);
+		    	 
+		    	 if(!mapModel.trim().isEmpty()){
 		    	 allResponses.add(mapModel);
-		    	//System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
+		    	 }
+		    	System.out.println("Matched String Map Model("+mapModel+"):::"+sentence);
 	      }
+	      
+	      copyResponseToFile(allResponses,actualFileName);
 	      
 	      return allResponses;
 		
