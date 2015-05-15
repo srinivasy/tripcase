@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:aop="http://www.springframework.org/schema/aop" 
+	 xmlns:context="http://www.springframework.org/schema/context" 
+	   xmlns:gate="http://gate.ac.uk/ns/spring" 
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans  
+						 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+						    http://gate.ac.uk/ns/spring 
+						         http://gate.ac.uk/ns/spring.xsd 
+						             http://www.springframework.org/schema/context 
+						                http://www.springframework.org/schema/context/spring-context-4.0.xsd" > 
+						   						
+	<context:annotation-config />
+
+
+	<!-- set up the definition of the GATE application. This will load one copy 
+		of the application and then duplicate it. -->   
+	<gate:duplicate id="NLPApp" return-template="true">
+		<gate:saved-application location="gate-files/plugins/OpenNLP/test.gapp" />
+	</gate:duplicate> 
+
+	<!-- Define the pooled handler bean -->
+	<bean class="com.sabre.tripcase.tcp.gate.NLPParser" id="nlpparser">
+		<property name="application" ref="NLPApp" />
+	</bean>
+
+	<!-- Pooling configuration, modify this to control pool parameters <gate:pooled-proxy 
+		max-size="3" initial-size="3" /> -->
+
+</beans>

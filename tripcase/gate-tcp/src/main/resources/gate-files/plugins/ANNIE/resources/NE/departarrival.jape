@@ -1,0 +1,62 @@
+/*
+*  final.jape
+*
+* Copyright (c) 1998-2004, The University of Sheffield.
+*
+*  This file is part of GATE (see http://gate.ac.uk/), and is free
+*  software, licenced under the GNU Library General Public License,
+*  Version 2, June 1991 (in the distribution as file licence.html,
+*  and also available at http://gate.ac.uk/gate/licence.html).
+*
+*  Diana Maynard, 10 Sep 2001
+* 
+*  $Id: final.jape 17326 2014-02-17 16:38:01Z dgmaynard $
+*/
+
+//note: organization should be included as part of the address ??
+
+Phase:	departarrival
+Input: Token Lookup FlightDate FlightTime Arrivaljunction departjunc Date
+Options: control = appelt
+
+//////////////////////////////////////////////////////
+
+Rule: TestRule9
+Priority: 1
+(
+ 	{departjunc} 	
+ 	({!FlightDate})[0, 20]
+)
+(
+	{FlightDate}
+):check
+(
+	({!FlightTime})[0,10]
+)
+(
+	{FlightTime}
+):check2
+-->
+:check.FlightDepartingDate = { rule = "TestRule9"},
+:check2.FlightDepartingTime = {rule = "TestRule9"}
+//////////////////////////////////////////////////////
+
+Rule: TestRule8
+Priority: 1
+(
+ 	{Arrivaljunction} 	
+ 	({!FlightDate})[0, 20]
+)
+(
+	{FlightDate}
+):check
+(
+	({!FlightTime})[0,10]
+)
+(
+	{FlightTime}
+):check2
+-->
+:check.FlightArrivalDate = { rule = "TestRule8"},
+:check2.FlightArrivalTime = {rule = "TestRule8"}
+//////////////////////////////////////////////////////

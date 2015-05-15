@@ -1,0 +1,62 @@
+/*
+*  final.jape
+*
+* Copyright (c) 1998-2004, The University of Sheffield.
+*
+*  This file is part of GATE (see http://gate.ac.uk/), and is free
+*  software, licenced under the GNU Library General Public License,
+*  Version 2, June 1991 (in the distribution as file licence.html,
+*  and also available at http://gate.ac.uk/gate/licence.html).
+*
+*  Diana Maynard, 10 Sep 2001
+* 
+*  $Id: final.jape 17326 2014-02-17 16:38:01Z dgmaynard $
+*/
+
+//note: organization should be included as part of the address ??
+
+Phase:	Final3
+Input: Token Lookup flightdate Date Split
+Options: control = appelt
+
+//////////////////////////////////////////////////////
+
+Rule: TestRule8
+Priority: 37
+(
+ 	{flightdate}
+):temp
+(
+ 	{Token}
+)
+:check
+-->
+:check.departjunc = { rule = "TestRule8"}
+
+//////////////////////////////////////////////////////
+
+Rule: departjuncTestRule2
+Priority: 1
+(
+({Lookup.majorType == "departtag"})
+ ({Token.kind != word})[0,5]
+):temp
+(
+ ({Lookup.minorType == "city"} | {Token.kind == word})
+ ( ({Token.kind == word})
+   ({Token.kind == punctuation})
+   ({Token.kind == word})
+ )?
+ ({Token.kind == punctuation})
+ ({Lookup.minorType == "city"} | {Token.kind == word})
+ ({Token.kind == punctuation})
+ ({Lookup.minorType == "city"} | {Token.kind == word})
+):check
+-->
+:check.departjunc = { rule = "departjuncTestRule2"}
+
+//////////////////////////////////////////////////////
+
+
+
+

@@ -1,0 +1,36 @@
+/*
+*  final.jape
+*
+* Copyright (c) 1998-2004, The University of Sheffield.
+*
+*  This file is part of GATE (see http://gate.ac.uk/), and is free
+*  software, licenced under the GNU Library General Public License,
+*  Version 2, June 1991 (in the distribution as file licence.html,
+*  and also available at http://gate.ac.uk/gate/licence.html).
+*
+*  Diana Maynard, 10 Sep 2001
+* 
+*  $Id: final.jape 17326 2014-02-17 16:38:01Z dgmaynard $
+*/
+
+//note: organization should be included as part of the address ??
+
+Phase:	Final2
+Input: Token Date flightbreakup 
+Options: control = appelt
+
+
+///////////////////////////////////////////////////////////////
+
+Rule: TestRule7
+Priority: 42
+(
+({flightbreakup})
+(
+//({Date.kind == date})
+	({Token.kind == NNP})
+)
+)
+:check
+-->
+:check.flightno = { rule = "TestRule7"}

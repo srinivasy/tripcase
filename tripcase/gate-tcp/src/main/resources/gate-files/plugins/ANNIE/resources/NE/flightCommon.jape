@@ -1,0 +1,88 @@
+/*
+*  flightCommon.jape
+*
+*  venkat pedapudi
+* 
+*  $Id: final.jape 17326 2014-02-17 16:38:01Z dgmaynard $
+*/
+
+//note: organization should be included as part of the address ??
+
+Phase:	Final3
+Input: Token Lookup airport Date Time
+Options: control = appelt
+
+//////////////////////////////////////////////////////
+
+Rule: TestRule1
+Priority: 1
+(
+({Token.string == "Flight"})
+({Token.kind == "punctuation"} )
+({Token.string == "Equip"})
+({Token.kind == "punctuation"} )
+({Token.kind == "punctuation"} )
+//{airport}
+):temp
+(
+ ({Token.kind == word})({Token.kind == word})({Token.kind == word})
+):check
+-->
+:check.FlightDetails = { rule = "TestRule1"}
+
+//////////////////////////////////////////////////////
+
+Rule: TestRule2
+Priority: 2
+(
+({Token.string == "Depart"})
+({Token.kind == "punctuation"} )
+):temp
+(
+ ({Token.kind == word})({Token.kind == "punctuation"} )({Token.kind == word})({Token.kind == "punctuation"} )({Date})
+):check
+-->
+:check.Departure = { rule = "TestRule2"}
+
+////////////////////////////////////////////////////
+
+Rule: TestRule3
+Priority: 3
+(
+({Token.string == "Arrive"})
+({Token.kind == "punctuation"} )
+):temp
+(
+ ({Token.kind == word})({Token.kind == "punctuation"} )({Token.kind == word})({Token.kind == "punctuation"} )({Date})
+):check
+-->
+:check.Arrival = { rule = "TestRule3"}
+
+////////////////////////////////////////////////////
+
+Rule: TestRule4
+Priority: 4
+(
+({Token.string == "Status"})
+({Token.kind == "punctuation"} )
+):temp
+(
+ ({Token.kind == word})
+):check
+-->
+:check.Status = { rule = "TestRule4"}
+
+////////////////////////////////////////////////////
+
+Rule: TestRule5
+Priority: 5
+(
+({Token.string == "Seats"})
+({SpaceToken.kind == space})
+({Token.string == "Requested"})
+):temp
+(
+ ({Token.kind == word})
+):check
+-->
+:check.Seats = { rule = "TestRule5"}

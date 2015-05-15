@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns:context="http://www.springframework.org/schema/context" 
+	 xmlns:gate="http://gate.ac.uk/ns/spring" 
+	 xsi:schemaLocation="http://www.springframework.org/schema/beans 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						 http://gate.ac.uk/ns/spring    http://gate.ac.uk/ns/spring.xsd 
+						 http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd" >
+      						
+	<context:annotation-config />
+
+	<!-- init gate -->
+	<gate:init gate-home="classpath:gate-files" plugins-home="classpath:gate-files/plugins" 
+	site-config-file="classpath:gate-files/gate.xml" user-config-file="classpath:gate-files/user-gate.xml">
+		<gate:preload-plugins>
+			<value>gate-files/plugins/ANNIE</value>
+			<value>gate-files/plugins/OpenNLP</value>
+		</gate:preload-plugins>
+	</gate:init> 
+	
+<!-- 		<gate:init gate-home="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/" plugins-home="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/plugins/" site-config-file="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/gate.xml" user-config-file="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/user-gate.xml">
+		<gate:preload-plugins>
+			<value>gate-files/plugins/ANNIE</value>
+			<value>gate-files/plugins/OpenNLP</value>
+		</gate:preload-plugins>
+ 	</gate:init>   -->
+	
+	<import resource="classpath:META-INF/spring/gateparseconfig.xml"/>
+	<import resource="classpath:META-INF/spring/nlpparseconfig.xml"/>
+	
+
+	<!-- Define the pooled handler bean -->
+	<bean class="com.sabre.tripcase.tcp.gate.ParsingEngine" id="parser">
+		<property name="gateParser" ref="gateparser" />
+		<property name="nlpParser"  ref="nlpparser" />
+	</bean> 	
+
+</beans>
