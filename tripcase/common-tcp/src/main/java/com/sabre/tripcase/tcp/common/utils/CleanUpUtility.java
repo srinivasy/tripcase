@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Nalini Kanta
+ * Munish Gupta
  *
  */
 public class CleanUpUtility {
@@ -54,7 +55,7 @@ public class CleanUpUtility {
 //		newStr=newStr.replaceAll("\\'", "");
 //		newStr=newStr.replaceAll("`", "");
 //		newStr=newStr.replaceAll("\\*", "");
-//		newStr=newStr.replaceAll("→", " ");
+//		newStr=newStr.replaceAll("â†’", " ");
 //		newStr=newStr.replaceAll("\\?", "");
 //		newStr=newStr.replaceAll("\t", "");
 //		newStr=newStr.replaceAll("PM", "<timetype>PM</timetype> ");
