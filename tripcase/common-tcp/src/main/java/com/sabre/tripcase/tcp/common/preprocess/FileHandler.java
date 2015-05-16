@@ -11,7 +11,7 @@ import java.io.File;
  */
 public class FileHandler {
 	
-	private String filePath="C:/Users/CB34388493/opennlp/emails/";
+	private String filePath="c:/Users/CB34388493/opennlp/emails/";
 	private String processFile="ALL";
 	
 	/*

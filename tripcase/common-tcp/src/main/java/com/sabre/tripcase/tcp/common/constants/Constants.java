@@ -30,7 +30,14 @@ public interface Constants {
 	public static final String TAG="TAG";
 	public static final String VALUE="VALUE";
 	
+	//content type
+	public enum LangCode
+	{
+		EN, RO;			
+	}
 	
-	
-
+	enum ContentType
+	{
+		PDF, HTML, TEXT;	
+	}
 }

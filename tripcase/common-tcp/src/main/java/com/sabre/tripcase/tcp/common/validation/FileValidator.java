@@ -18,8 +18,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
-import com.sabre.tripcase.tcp.common.sourcetypes.*;
-import com.sabre.tripcase.tcp.common.validation.*;
+import com.sabre.tripcase.tcp.common.constants.Message;
+import com.sabre.tripcase.tcp.common.sourcetypes.Airlines;
+import com.sabre.tripcase.tcp.common.validation.ExtractAttachmentContent;;
 
  
 public class FileValidator 
@@ -27,8 +28,6 @@ public class FileValidator
 	private LangIdentifier langIdentifier;
 	private ExtractAttachmentContent extractAttContent;
 	private Airlines airlines;
-
-	private String fileLocation;
 	private String downloadfileLocation;
 
 
@@ -54,8 +53,7 @@ public class FileValidator
 	 */
 	public void setAirlines(Airlines airlines) {
 		this.airlines = airlines;
-	}
-	
+	}	
 
 	public String getDownloadfileLocation() {
 		return downloadfileLocation;
@@ -64,15 +62,6 @@ public class FileValidator
 	public void setDownloadfileLocation(String downloadfileLocation) {
 		this.downloadfileLocation = downloadfileLocation;
 	}		
-
-	public String getFileLocation() {
-		return fileLocation;
-	}
-
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
-	}
-
 
 	/**
 	 * @param none
@@ -88,18 +77,20 @@ public class FileValidator
 	 * @throws MessagingException
 	 * @throws IOException
 	 */
-	public boolean validateMessage(MimeMessage mMsg, List<String> contentSupported, List<String> contentNonEnglish, List<String> contentNonSupportedSource) throws MessagingException, IOException {
+	public boolean validateMessage(MimeMessage mMsg, List<Message> contentSupported, List<Message> contentNonSupportedLang, List<Message> contentNonSupportedSource) throws MessagingException, IOException {
 		log.debug(" Process MIME message for attachments and/or body content");
 
 		// store attachment file name, separated by comma
 		String attachFiles = "";
-		List<String> content = new ArrayList<String>();
-		List<String> contentEnglish = new ArrayList<String>();
+		List<Message> rawContents = new ArrayList<Message>();
+		List<Message> rawContentsLangSupported = new ArrayList<Message>();
 		
 		//clear the list objects
+		rawContents.clear();
 		contentSupported.clear();
-		contentNonEnglish.clear();
+		contentNonSupportedLang.clear();
 		contentNonSupportedSource.clear();
+		rawContentsLangSupported.clear();
 		
 		String contentType = mMsg.getContentType();
 
@@ -112,7 +103,6 @@ public class FileValidator
 			int numberOfParts = multiPart.getCount();
 			log.info("Number of parts found in the eml : " + numberOfParts);
 
-			
 			for (int partCount = 0; partCount < numberOfParts; partCount++) 
 			{
 				MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
@@ -120,11 +110,13 @@ public class FileValidator
 
 				// Email body contains in either of the Parts or sometimes in both the Parts.
 				String sEmailBody = getBodyContent(part);
-				if (sEmailBody!= null && sEmailBody.length() > 0)	
+				boolean bodyFound = false;
+				if (sEmailBody!= null && sEmailBody.length() > 0 && bodyFound==false)	
 				{					
-					content.add(sEmailBody);					
-					log.debug("Eml body content length: " + sEmailBody.length()); 
-					break;
+					Message rawmessage = new Message();
+					rawmessage.setContent(sEmailBody);
+					rawContents.add(rawmessage);					
+					bodyFound = true;
 				}				
 
 				if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) 
@@ -142,13 +134,15 @@ public class FileValidator
 						attachFiles += attachmentName + ", ";	
 						
 						if (attContent != null) {
-							content.add(attContent);
+							Message rawmessage = new Message();
+							rawmessage.setContent(attContent);
+							rawContents.add(rawmessage);	
 						}
 						log.info("Eml attachment data is in: " + langIdentifier.identifyLanguage(attContent) + " language");
 					}
 					catch(Exception ex)
 					{
-						//just move for a while						
+						//just move on for a while	(Munish)					
 					}
 				} 				
 			}
@@ -163,8 +157,10 @@ public class FileValidator
 		else if (contentType.contains("text/plain") || contentType.contains("text/html"))
 		{
 			Object value = mMsg.getContent();
-			if (content != null) {
-				content.add(value.toString());
+			if (value != null) {
+				Message rawmessage = new Message();
+				rawmessage.setContent(value.toString());
+				rawContents.add(rawmessage);
 			}	
 		}
 		else if (contentType.contains("application/*")) {
@@ -173,16 +169,16 @@ public class FileValidator
 		
 		
 		// identify language of the content.
-		languageDetection(content, contentEnglish, contentNonEnglish);
-		if (contentNonEnglish.isEmpty() == false) 
+		languageDetection(rawContents, rawContentsLangSupported, contentNonSupportedLang);
+		if (contentNonSupportedLang.isEmpty() == false) 
 		{
-			for (int i = 0; i < contentNonEnglish.size(); i++) {
+			for (int i = 0; i < contentNonSupportedLang.size(); i++) {
 				System.out.println("Language Not Supported ");
 			}
 		}
 							
 		// identify source of the content.
-		sourceDetection(contentEnglish, contentSupported, contentNonSupportedSource);
+		sourceDetection(rawContentsLangSupported, contentSupported, contentNonSupportedSource);
 		if (contentNonSupportedSource.isEmpty() == false) 
 		{
 			for (int i = 0; i < contentNonSupportedSource.size(); i++) {
@@ -199,41 +195,41 @@ public class FileValidator
 	/**
 	 * @param alContents
 	 */
-	private void languageDetection(List<String> contents, List<String> contentsSupported, List<String> contentsNonSupported)
+	private void languageDetection(List<Message> contents, List<Message> contentsSupported, List<Message> contentsNonSupported)
 	{
 		// identify language of the content.		
 		String sContent = null;				
 		for(int index = 0; index < contents.size(); index++) {			
 			
-			sContent = contents.get(index);
+			sContent = contents.get(index).getContent();
 			if((langIdentifier.identifyLanguage(sContent)).compareToIgnoreCase("en") == 0 ) 
 			{
 				log.debug(" Eml content" + index +" language identified as English.");
-				contentsSupported.add(sContent);
+				contentsSupported.add(contents.get(index));
 			}
 			else 
 			{
-				contentsNonSupported.add(sContent);				
+				contentsNonSupported.add(contents.get(index));				
 				log.debug(" Eml content" + index +" language identified as Non-English.");
 			}
-		}		
+		}	
 	}
 		
 	/**
 	 * @param alContEn
 	 * @param alContEnAir
 	 */
-	private void sourceDetection(List<String> contents, List<String> contentsSupported, List<String> contentsNonSupported) {
+	private void sourceDetection(List<Message> contents, List<Message> contentsSupported, List<Message> contentsNonSupported) {
 		// identify source of the content.
 
 		String sContent = null;	
 		for(int index = 0; index < contents.size(); index++) {
-			sContent = contents.get(index);
+			sContent = contents.get(index).getContent();
 			if( airlines.isAirlines(sContent) ) {
 				log.info(" Eml content belongs to Airlines data.");
-				contentsSupported.add(sContent);
+				contentsSupported.add(contents.get(index));
 			} else {
-				contentsNonSupported.add(sContent);
+				contentsNonSupported.add(contents.get(index));
 				log.info(" Eml content belongs to other sources.");
 			}
 		}		
