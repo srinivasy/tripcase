@@ -1,5 +1,6 @@
 package com.sabre.tripcase.tcp.gate;
 
+import com.sabre.tripcase.tcp.common.constants.Message;
 import com.sabre.tripcase.tcp.common.dto.Airline;
 
 import gate.Annotation;
@@ -32,13 +33,9 @@ public class Parser{
 	protected static final String NULL = null;
 	protected CorpusController application;
 	protected Corpus corpus;	
-	protected String[] messages;		
+	protected List<Message> messages;		
 	
 	int airobjcount = 0;
-	
-	public void setMessages(String[] imessages) {
-		this.messages = imessages;
-	}	
 	
 	public void setApplication(CorpusController application) {
 		this.application = application;
@@ -57,11 +54,11 @@ public class Parser{
 		Document doc = null;
 		corpus.clear();
 
-		for (String messagecontent : messages) { 
-			if (messagecontent != NULL)
+		for (int i=0; i < messages.size(); i++) { 
+			if (messages.get(i).getContent() != NULL)
 			{
 				  FeatureMap params = Factory.newFeatureMap();
-			      params.put("stringContent", messagecontent);
+			      params.put("stringContent", messages.get(i).getContent());
 			      params.put("preserveOriginalContent", new Boolean(true));
 			      params.put("collectRepositioningInfo", new Boolean(true));
 	
@@ -70,18 +67,7 @@ public class Parser{
 			}
 		}		
 	}
-	
-
-	public void run() {	
-		try 
-		{
-			setCorpus();			
-			application.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+		
 	public void getAnnotations(List<Airline> annotationList) throws Exception 
 	{	
 		

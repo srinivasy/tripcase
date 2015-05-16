@@ -1,5 +1,6 @@
 package com.sabre.tripcase.tcp.gate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,8 @@ import gate.util.Out;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sabre.tripcase.tcp.common.constants.Message;
 import com.sabre.tripcase.tcp.common.dto.Airline;
 
 /**
@@ -26,7 +29,8 @@ public class ParsingEngine {
 	private static Logger LOG = LoggerFactory.getLogger(ParsingEngine.class);
 	
 	private GateParser gateparser;
-	private NLPParser nlpparser;
+	private NLPParser nlpparser;	
+	private TableParser tableparser;
 	
 	public Airline[] airlinesentities;
 	
@@ -37,29 +41,34 @@ public class ParsingEngine {
 	public void setnlpParser(NLPParser parsingobj) {
 		this.nlpparser = parsingobj;
 	}
-
-	public void ParseInput(String[] messages) throws Exception 
+	
+	public void setTableParser(TableParser parsingobj) {
+		this.tableparser = parsingobj;
+	}
+	
+	public void ParseInput(List<Message> rawMessages, List<Message> processedMessages) throws Exception 
 	{			
-			Out.prln("Parsing Started");
-			
-			long waitinms = 30000; //change it configuration later
+		Out.prln("Parsing Started");
+		List<Thread> parseThreadList = new ArrayList<Thread>();
+		long waitinms = 30000; //change it configuration later
+	
+		gateparser.setMessages(processedMessages);
+		nlpparser.setMessages(processedMessages); 
+		tableparser.setMessages(rawMessages);
 		
-			gateparser.setMessages(messages);
-			nlpparser.setMessages(messages); 
-			//tablepareser.semssgs(oringlmsg);
-			
-			Out.prln("Gate Parsing Started");
-			Thread gatethread  = new Thread(gateparser, "GATE Thread");
-			gatethread.start();
-						
-			Out.prln("NLP Parsing Started");
-			Thread nlpthread  = new Thread(nlpparser, "NLP Thread");
-			nlpthread.start();	
-			
-			gatethread.join(waitinms);
-			nlpthread.join(waitinms);
-			
-			Out.prln("Parsing finished");
+		Thread threadRef = gateparser.execute();
+		parseThreadList.add(threadRef);
+		
+		threadRef = nlpparser.execute();
+		parseThreadList.add(threadRef);
+		
+		threadRef = tableparser.execute();
+		parseThreadList.add(threadRef);
+		
+		for (Thread threadId : parseThreadList) 
+			threadId.join(waitinms);			
+				
+		Out.prln("Parsing finished");
 	}
 			
 			//return back the annotations

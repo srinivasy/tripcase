@@ -1,39 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xmlns:context="http://www.springframework.org/schema/context" 
-	 xmlns:gate="http://gate.ac.uk/ns/spring" 
-	 xsi:schemaLocation="http://www.springframework.org/schema/beans 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-						 http://gate.ac.uk/ns/spring    http://gate.ac.uk/ns/spring.xsd 
-						 http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd" >
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:gate="http://gate.ac.uk/ns/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://gate.ac.uk/ns/spring
+						http://gate.ac.uk/ns/spring.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
       						
 	<context:annotation-config />
 
 	<!-- init gate -->
-	<gate:init gate-home="classpath:gate-files" plugins-home="classpath:gate-files/plugins" 
-	site-config-file="classpath:gate-files/gate.xml" user-config-file="classpath:gate-files/user-gate.xml">
+	<gate:init gate-home="classpath:gate-files" plugins-home="classpath:gate-files/plugins" site-config-file="classpath:gate-files/gate.xml" user-config-file="classpath:gate-files/user-gate.xml">
 		<gate:preload-plugins>
 			<value>gate-files/plugins/ANNIE</value>
 			<value>gate-files/plugins/OpenNLP</value>
 		</gate:preload-plugins>
 	</gate:init> 
 	
-<!-- 		<gate:init gate-home="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/" plugins-home="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/plugins/" site-config-file="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/gate.xml" user-config-file="file://C:/Users/CB34388493/Documents/tripcase_project/tripcase/gate-tcp/src/main/resources/gate-files/user-gate.xml">
-		<gate:preload-plugins>
-			<value>gate-files/plugins/ANNIE</value>
-			<value>gate-files/plugins/OpenNLP</value>
-		</gate:preload-plugins>
- 	</gate:init>   -->
+	<!-- set up the definition of the GATE application. This will load one copy 
+		of the application and then duplicate it. -->
+	<gate:duplicate id="gateApp" return-template="true">
+		<gate:saved-application location="gate-files/plugins/ANNIE/testcorpus.gapp" />
+	</gate:duplicate>
+
+	<!-- Define the pooled handler bean -->
+	<bean class="com.sabre.tripcase.tcp.gate.GateParser" id="gateparser">
+		<property name="application" ref="gateApp" />
+	</bean>
 	
-	<import resource="**/META-INF/spring/gateparseconfig.xml"/>
-	<import resource="**/META-INF/spring/nlpparseconfig.xml"/>
+	<!-- set up the definition of the GATE application. This will load one copy 
+		of the application and then duplicate it. -->   
+	<gate:duplicate id="NLPApp" return-template="true">
+		<gate:saved-application location="gate-files/plugins/OpenNLP/test.gapp" />
+	</gate:duplicate> 
+
+	<!-- Define the NLP Parser bean -->
+	<bean class="com.sabre.tripcase.tcp.gate.NLPParser" id="nlpparser">
+		<property name="application" ref="NLPApp" />
+	</bean>
 	
+	<!-- Define the Table Parser bean -->
+	<bean class="com.sabre.tripcase.tcp.gate.TableParser" id="tableparser">
+	</bean>
 
 	<!-- Define the pooled handler bean -->
 	<bean class="com.sabre.tripcase.tcp.gate.ParsingEngine" id="parser">
 		<property name="gateParser" ref="gateparser" />
 		<property name="nlpParser"  ref="nlpparser" />
+		<property name="tableParser"  ref="tableparser" />
 	</bean> 	
 
 </beans>

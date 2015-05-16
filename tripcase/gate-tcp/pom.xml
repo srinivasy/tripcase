@@ -9,7 +9,7 @@
   </parent>
   <groupId>com.sabre.tripcase.tcp.parse.engine</groupId>
   <artifactId>gate-tcp</artifactId>
-  <version>1.0</version>
+  <version>${gate.tcp.version}</version>
   <name>gate-tcp</name>
   <url>http://maven.apache.org</url>
 	<properties>
@@ -71,13 +71,8 @@
 		<dependency>
 			<groupId>com.sabre.tripcase.tcp.parse.engine</groupId>
 			<artifactId>common-tcp</artifactId>
-			<version>1.0</version>
-			<exclusions>
-       		 <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-        </exclusion>
-    </exclusions>
+			<version>${common.tcp.version}</version>
+			<scope>compile</scope>
 		</dependency>
   </dependencies>
   <build>
@@ -92,7 +87,7 @@
 						<target>${jdk.version}</target>
 					</configuration>
 				</plugin>
-<!-- 				<plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${mvn.jar.plugin.version}</version>
@@ -103,7 +98,7 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin> -->
+				</plugin>
             </plugins>
            
         </pluginManagement>

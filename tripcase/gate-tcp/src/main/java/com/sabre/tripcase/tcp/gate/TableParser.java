@@ -23,38 +23,23 @@ import org.springframework.beans.factory.InitializingBean;
 
 import com.sabre.tripcase.tcp.common.constants.Message;
 
-public class GateParser extends Parser implements InitializingBean, Runnable {
-	
-	private static Logger LOG = LoggerFactory.getLogger(GateParser.class);
+public class TableParser extends Parser implements Runnable{
+	private static Logger LOG = LoggerFactory.getLogger(TableParser.class);
 
-	public void afterPropertiesSet() throws Exception {
-		init();
-	}
-
-	public void init() throws Exception {
-		corpus = Factory.newCorpus("GATE-Corpus");
-		application.setCorpus(corpus);
-	}
-	
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}
 	
-	public void run() {	
-		try 
-		{
-			setCorpus();			
-			application.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void run() 
+	{	
+		return;
 	}
 	
 	public Thread execute()
 	{
-		Out.prln("Gate Parsing Started");
-		Thread gatethread  = new Thread(this, "GATEParsing Thread");
-		gatethread.start();
-		return gatethread;
-	}		
+		Out.prln("Table Parsing Started");
+		Thread tablethread  = new Thread(this, "TableParsing Thread");
+		tablethread.start();
+		return tablethread;
+	}	
 }
