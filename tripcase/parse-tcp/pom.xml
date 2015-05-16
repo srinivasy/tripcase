@@ -96,6 +96,7 @@
 			<version>1.7.3</version>
 		</dependency>
 
+<!--  
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-tools</artifactId>
@@ -111,22 +112,18 @@
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-maxent</artifactId>
 			<version>${opennlp.maxent.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.sabre.tripcase.tcp.parse.engine</groupId>
 			<artifactId>gate-tcp</artifactId>
-			<version>1.0</version>
+			<version>${gate.tcp.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sabre.tripcase.tcp.parse.engine</groupId>
 			<artifactId>common-tcp</artifactId>
-			<version>1.0</version>
-			<exclusions>
-       		 <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-        </exclusion>
-    </exclusions>
+			<version>${common.tcp.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<build>

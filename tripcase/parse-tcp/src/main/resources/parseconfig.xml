@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                        http://www.springframework.org/schema/beans/spring-beans.xsd
+	   					   	http://www.motivitylabs.com/schema/emsmessaging
+							http://www.motivitylabs.com/schema/ems/ems-messaging.xsd">
+	
     
-<!-- <import resource="classpath:META-INF/spring/parseengineconfig.xml"/>
-     <import resource="classpath:META-INF/spring/commonconfig.xml"/> -->
-    
-    <import resource="META-INF/spring/parseengineconfig.xml"/>
-    <import resource="META-INF/spring/commonconfig.xml"/>
+    <import resource="classpath*:META-INF/spring/parseengineconfig.xml"/>
+    <import resource="classpath*:META-INF/spring/commonconfig.xml"/>
       
    <bean id="EMLParser" class="com.sabre.tripcase.tcp.parser.EMLParser">
        <property name="mimeMessageReader" ref="mimeMessageReader"/>

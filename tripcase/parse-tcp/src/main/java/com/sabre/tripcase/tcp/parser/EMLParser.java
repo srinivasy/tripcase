@@ -14,17 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.sabre.tripcase.tcp.gate.*;
+import com.sabre.tripcase.tcp.gate.ParsingEngine;
 import com.sabre.tripcase.tcp.common.constants.*;
 import com.sabre.tripcase.tcp.common.preprocess.*;
 import com.sabre.tripcase.tcp.common.validation.*;
 import com.sabre.tripcase.tcp.common.utils.*;
 import com.sabre.tripcase.tcp.common.dto.*;
 
-/**
- * @author Nalini Kanta
- *
- */
 public class EMLParser 
 {	
 	@Autowired
@@ -68,9 +64,11 @@ public class EMLParser
 		//initialize the variables
 		gateAirAnnotations = new ArrayList<Airline>();
 		nlpAirAnnotations = new ArrayList<Airline>();
-		List<String> lContentSupported = new ArrayList<String>();
-		List<String> lContentNonEnglish = new ArrayList<String>();
-		List<String> lContentNonEnglishAir = new ArrayList<String>();
+		
+		List<Message> rawMessagesSupported = new ArrayList<Message>();
+		List<Message> rawMessagesLangNotSupported = new ArrayList<Message>();
+		List<Message> rawMessagesTypeNotSupported = new ArrayList<Message>();
+		List<Message> processedMessages = new ArrayList<Message>();
 
 		if(files != null){			
 				for (File file : files) 
@@ -79,41 +77,41 @@ public class EMLParser
 					{
 						log.info("************************* " + file.getName() + " ***********************");
 						System.out.println("************************* " + file.getName() + " ***********************");
-						MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);
-						String[] messages = new String[10];
+						MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);	
+						processedMessages.clear();
 												
-						//will call validation function here 
-						if (fileValidator.validateMessage(mimeMessage, lContentSupported,lContentNonEnglish,lContentNonEnglishAir))
+						//will call validation function here 			
+						if (fileValidator.validateMessage(mimeMessage, rawMessagesSupported,rawMessagesLangNotSupported,rawMessagesTypeNotSupported))
 						{
 							//verify the size of unsupported message later to send partial success later
 							//even though it has some supported messages
+							
+							//clean up code (we will push collection of messages)
 											
-							for (int i = 0; i < lContentSupported.size(); i++) 
+							for (int i = 0; i < rawMessagesSupported.size(); i++) 
 							{
-								String content = lContentSupported.get(i);
-								content = cleanText.seggregateSectionWise(content);
-								if(content.contains(Constants.HTML_TAG))
+								Message message = rawMessagesSupported.get(i);
+								message.setContent(cleanText.seggregateSectionWise(message.getContent()));
+								if(message.getContent().contains(Constants.HTML_TAG))
 								{
-									content = htmlHandler.processHTMLContent(content);
+									message.setContent(htmlHandler.processHTMLContent(message.getContent()));
 								}
 								else
-								{						
-									content = textHandler.processTextContent(content);
+								{
+									message.setContent(textHandler.processTextContent(message.getContent()));
 								}
 								
-								//clean up code (we will push collection of messages)
-								messages[i]=content;		
+								processedMessages.add(message);								
 							}
 							
 							//Call the Parsing Engine
 							
-							parsingEngine.ParseInput(messages);	
+							parsingEngine.ParseInput(rawMessagesSupported, processedMessages);	
 							
 							//Get the POJO to pass it to evaluation Engine
 							parsingEngine.getNLPAnnotations(nlpAirAnnotations);
 							parsingEngine.getGateAnnotations(gateAirAnnotations);
-							
-							
+									
 							for (int i = 0; i < gateAirAnnotations.size(); i++) 
 							{
 								Out.prln("****GATE**Departure** " + gateAirAnnotations.get(i).getDepartLocation());	
