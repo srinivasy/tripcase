@@ -20,15 +20,15 @@ import com.sabre.tripcase.tcp.common.preprocess.*;
 import com.sabre.tripcase.tcp.common.validation.*;
 import com.sabre.tripcase.tcp.common.utils.*;
 import com.sabre.tripcase.tcp.common.dto.*;
+import com.sabre.tripcase.tcp.common.handler.Handler;
+import com.sabre.tripcase.tcp.common.handler.HandlerFactory;
+import com.sabre.tripcase.tcp.common.handler.HtmlHandler;
+import com.sabre.tripcase.tcp.common.handler.TextHandler;
 
 public class EMLParser 
 {	
 	@Autowired
-	private MimeMessageReader mimeMessageReader=null;
-	@Autowired
-	private HtmlHandler htmlHandler=null;
-	@Autowired
-	private TextHandler textHandler=null;
+	private MimeMessageReader mimeMessageReader=null;	
 	@Autowired
 	private FileHandler fileHandler=null;
 	@Autowired
@@ -37,7 +37,8 @@ public class EMLParser
 	private FileValidator fileValidator=null;
 	@Autowired
 	private CleanText cleanText=null;
-	
+	@Autowired
+	private HandlerFactory handlerFactory=null;
 	
 	private static Logger log =Logger.getLogger(EMLParser.class);
 	protected List<Airline> gateAirAnnotations;
@@ -92,20 +93,12 @@ public class EMLParser
 							{
 								Message message = rawMessagesSupported.get(i);
 								message.setContent(cleanText.seggregateSectionWise(message.getContent()));
-								if(message.getContent().contains(Constants.HTML_TAG))
-								{
-									message.setContent(htmlHandler.processHTMLContent(message.getContent()));
-								}
-								else
-								{
-									message.setContent(textHandler.processTextContent(message.getContent()));
-								}
-								
+								Handler handler = handlerFactory.getHandler(message.getContentType());
+								message.setContent(handler.convertToText(message.getContent()));								
 								processedMessages.add(message);								
 							}
 							
-							//Call the Parsing Engine
-							
+							//Call the Parsing Engine							
 							parsingEngine.ParseInput(rawMessagesSupported, processedMessages);	
 							
 							//Get the POJO to pass it to evaluation Engine
@@ -151,34 +144,6 @@ public class EMLParser
 	}
 
 	/**
-	 * @return the htmlHandler
-	 */
-	public HtmlHandler getHtmlHandler() {
-		return htmlHandler;
-	}
-
-	/**
-	 * @param htmlHandler the htmlHandler to set
-	 */
-	public void setHtmlHandler(HtmlHandler htmlHandler) {
-		this.htmlHandler = htmlHandler;
-	}
-
-	/**
-	 * @return the textHandler
-	 */
-	public TextHandler getTextHandler() {
-		return textHandler;
-	}
-
-	/**
-	 * @param textHandler the textHandler to set
-	 */
-	public void setTextHandler(TextHandler textHandler) {
-		this.textHandler = textHandler;
-	}
-
-	/**
 	 * @return the fileHandler
 	 */
 	public FileHandler getFileHandler() {
@@ -218,6 +183,14 @@ public class EMLParser
 
 	public void setCleanText(CleanText cleanText) {
 		this.cleanText = cleanText;
+	}
+	
+	public HandlerFactory getHandlerFactory() {
+		return handlerFactory;
+	}	
+
+	public void setHandlerFactory(HandlerFactory handlerFactory) {
+		this.handlerFactory = handlerFactory;
 	}
  	
 }
