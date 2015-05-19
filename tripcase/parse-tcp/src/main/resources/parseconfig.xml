@@ -16,8 +16,7 @@
        <property name="fileValidator" 	ref="fileValidator"/>
        <property name="cleanText" 		ref="cleanText"/>
        <property name="handlerFactory" 	ref="handlerFactory"/>
-   </bean>
-   	
+   </bean>   	
       <bean id="mimeMessageReader" class="com.sabre.tripcase.tcp.common.preprocess.MimeMessageReader"></bean>
       <bean id="fileHandler" class="com.sabre.tripcase.tcp.common.preprocess.FileHandler">
 	  <property name="filePath" value="C:/Users/CB34388493/opennlp/emails/"/>
