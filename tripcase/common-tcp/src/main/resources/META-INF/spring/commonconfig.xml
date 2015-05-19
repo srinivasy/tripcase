@@ -36,4 +36,17 @@
       <!--   <property name="airlinesFileMatchStr" value="${sourcetype.en_airlinesfile}"></property>
        <property name="airlinesDataMatchStr" value="${datatype.en_airlinesData}"></property> -->              
       </bean>   
+      
+      <bean id="handlerFactory" class="com.sabre.tripcase.tcp.common.handler.HandlerFactory" factory-method="createFactory">
+      <property name="htmlHandler" ref="htmlHandler"></property> 
+      <property name="textHandler" ref="textHandler"></property>  
+      <property name="pdfHandler" ref="pdfHandler"></property>  
+	  </bean>
+	  
+	  <bean id="htmlHandler" class="com.sabre.tripcase.tcp.common.handler.HtmlHandler"></bean>
+      <bean id="textHandler" class="com.sabre.tripcase.tcp.common.handler.TextHandler"></bean>	  
+	  <bean id="pdfHandler" class="com.sabre.tripcase.tcp.common.handler.PdfHandler">
+	   <property name="htmlHandler" ref="htmlHandler"></property>
+	  </bean>
+	     
 </beans>
