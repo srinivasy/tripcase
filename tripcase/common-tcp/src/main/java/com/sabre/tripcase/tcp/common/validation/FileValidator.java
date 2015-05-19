@@ -18,7 +18,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
+import com.sabre.tripcase.tcp.common.constants.Constants;
 import com.sabre.tripcase.tcp.common.constants.Message;
+import com.sabre.tripcase.tcp.common.constants.Constants.ContentType;
 import com.sabre.tripcase.tcp.common.sourcetypes.Airlines;
 import com.sabre.tripcase.tcp.common.validation.ExtractAttachmentContent;;
 
@@ -115,6 +117,10 @@ public class FileValidator
 				{					
 					Message rawmessage = new Message();
 					rawmessage.setContent(sEmailBody);
+					if (sEmailBody.contains(Constants.HTML_TAG))
+						rawmessage.setContentType(ContentType.HTML);
+					else
+						rawmessage.setContentType(ContentType.TEXT);
 					rawContents.add(rawmessage);					
 					bodyFound = true;
 				}				
@@ -135,6 +141,11 @@ public class FileValidator
 						
 						if (attContent != null) {
 							Message rawmessage = new Message();
+							if (attContent.contains(Constants.HTML_TAG))
+								rawmessage.setContentType(ContentType.HTML);
+							else
+								rawmessage.setContentType(ContentType.TEXT);
+								
 							rawmessage.setContent(attContent);
 							rawContents.add(rawmessage);	
 						}
@@ -160,6 +171,7 @@ public class FileValidator
 			if (value != null) {
 				Message rawmessage = new Message();
 				rawmessage.setContent(value.toString());
+				rawmessage.setContentType(ContentType.TEXT);
 				rawContents.add(rawmessage);
 			}	
 		}
