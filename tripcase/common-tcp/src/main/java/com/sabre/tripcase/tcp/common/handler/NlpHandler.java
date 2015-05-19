@@ -197,7 +197,7 @@ public final class NlpHandler {
 		String mapValue="";
 		String mapModel="";
 		Map<String,String> matchedSenetenceMap=null;
-	  	matchedSenetenceMap=ExtractMatchedSentense.match(sentences);
+	  	matchedSenetenceMap=ExtractMatchedSentense.match(sentences,0);
 		Set<String> keySet=matchedSenetenceMap.keySet();
 		for(String strKey:keySet){
 				mapValue=matchedSenetenceMap.get(strKey);
