@@ -104,6 +104,7 @@ public class FileValidator
 			MimeMultipart multiPart = (MimeMultipart) mMsg.getContent();
 			int numberOfParts = multiPart.getCount();
 			log.info("Number of parts found in the eml : " + numberOfParts);
+			boolean bodyFound = false;
 
 			for (int partCount = 0; partCount < numberOfParts; partCount++) 
 			{
@@ -112,7 +113,7 @@ public class FileValidator
 
 				// Email body contains in either of the Parts or sometimes in both the Parts.
 				String sEmailBody = getBodyContent(part);
-				boolean bodyFound = false;
+				
 				if (sEmailBody!= null && sEmailBody.length() > 0 && bodyFound==false)	
 				{					
 					Message rawmessage = new Message();
