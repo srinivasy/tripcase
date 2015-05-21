@@ -60,6 +60,36 @@
 						</execution>
 					</executions>
 				</plugin>
+				
+				<plugin>
+	                <groupId>org.codehaus.mojo</groupId>
+	                <artifactId>jaxb2-maven-plugin</artifactId>
+	                <version>1.5</version>
+	                <executions>
+	                    <execution>
+	                        <id>xjc</id>
+	                        <goals>
+	                            <goal>xjc</goal>
+	                        </goals>
+	                    </execution>
+	                </executions>
+	                <configuration>
+	                    <!-- Package to store the generated file -->
+	                 <!--   <packageName>com.sabre.tripcase.wsdl.wstest</packageName> -->	                    
+	                    <wsdl>false</wsdl>	                    
+	                    <xmlschema>true</xmlschema>
+	                    <!-- The WSDL file that you saved earlier -->
+	<!--                    <schemaFiles>partner_import.xsd</schemaFiles>  -->       
+	                    <schemaFiles>worldmate-api-v1.xsd</schemaFiles>                         
+	                    
+	                    <!-- The location of the WSDL file -->
+	                 <!--     <schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory> -->
+	                    <!-- The output directory to store the generated Java files -->
+	                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+	                    <!-- Don't clear output directory on each run -->
+	                    <clearOutputDir>false</clearOutputDir>
+	                </configuration>
+	            </plugin>
 			</plugins>
 
 		</pluginManagement>
