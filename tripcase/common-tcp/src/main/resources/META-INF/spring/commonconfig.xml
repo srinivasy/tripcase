@@ -10,7 +10,7 @@
       <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:META-INF/environment.properties</value>
+				<value>classpath:resources/META-INF/environment.properties</value>
 			</list>
 		</property>
 		<property name="searchSystemEnvironment" value="true"/>
