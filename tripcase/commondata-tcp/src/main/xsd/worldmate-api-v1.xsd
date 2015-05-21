@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.worldmate.com/schemas/worldmate-api-v1.xsd" xmlns:wm="http://www.worldmate.com/schemas/worldmate-api-v1.xsd">
+
+<!-- Updated on 2012-03-20 -->
+
+	<xsd:element name="worldmate-parsing-result">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="1" name="status" type="xsd:string"/>
+				<xsd:element minOccurs="0" maxOccurs="1" name="error-msg" type="xsd:string"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="headers" type="wm:headers"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="end-user-emails" type="wm:end-user-emails"/>
+				<xsd:element minOccurs="0" maxOccurs="1" name="reservation-details" type="wm:reservation"/>
+				<xsd:element minOccurs="0" maxOccurs="1" name="items" type="wm:items"/>
+			</xsd:sequence>
+			<xsd:attribute name="received" type="xsd:dateTime" use="required"/>
+			<xsd:attribute name="request-id" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:complexType name="headers">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" maxOccurs="unbounded" name="header" type="wm:header"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="header">
+		<xsd:attribute name="name" type="xsd:string" use="optional"/>
+		<xsd:attribute name="value" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="end-user-emails">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" maxOccurs="unbounded" name="user" type="wm:end-user-email"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="end-user-email">
+		<xsd:attribute name="name" type="xsd:string" use="optional"/>
+		<xsd:attribute name="email" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="items">						
+			<xsd:choice minOccurs="1" maxOccurs="unbounded">	
+				<xsd:element minOccurs="1" maxOccurs="1" name="flight" type="wm:flight"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="car-rental" type="wm:car-rental"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="hotel-reservation" type="wm:hotel-reservation"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="public-transportation" type="wm:public-transportation"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="event" type="wm:event"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="meeting" type="wm:meeting"/>
+			</xsd:choice>
+		<xsd:attribute name="size" type="xsd:int" use="required"/>	 
+	</xsd:complexType>
+
+
+
+	<xsd:complexType name="itinerary-item" abstract="true">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:long"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="notes" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="traveler">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="1" name="first-name" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="middle-name" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="last-name" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="name" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="e-mail" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="loyalty-program" type="wm:loyalty-program"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="meal" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="seat" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="cabin" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="class-type" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="e-ticket" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="price" type="wm:price-details"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="booking-details">
+		<xsd:complexContent>
+			<xsd:extension base="wm:contact-details">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="confirmation-number" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="date" type="xsd:dateTime"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="provider-details">
+		<xsd:complexContent>
+			<xsd:extension base="wm:contact-details">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="confirmation-number" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="price-details">
+		<xsd:all>
+			<xsd:element minOccurs="1" maxOccurs="1" name="total-cost" type="xsd:decimal"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="daily-cost" type="xsd:decimal"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="tax" type="xsd:decimal"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="currency-code" type="wm:currency-code"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="reservation">
+		<xsd:complexContent>
+			<xsd:extension base="wm:itinerary-item">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="record-locator" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="booking-details" type="wm:booking-details"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="provider-details" type="wm:provider-details"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="total-price" type="wm:price-details"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="flight">
+		<xsd:complexContent>
+			<xsd:extension base="wm:reservation">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="details" type="wm:flight-details"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="operated-by" type="wm:flight-details"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="departure" type="wm:airport-details"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="arrival" type="wm:airport-details"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="aircraft" type="wm:coded-name"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="duration" type="xsd:int"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="distance-in-miles" type="xsd:int"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="class-type" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="traveler" type="wm:traveler"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="car-rental">
+		<xsd:complexContent>
+			<xsd:extension base="wm:reservation">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="car-type" type="wm:coded-name"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="pickup" type="wm:car-rental-locaion"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="dropoff" type="wm:car-rental-locaion"/>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="driver" type="wm:traveler"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="hotel-reservation">
+		<xsd:complexContent>
+			<xsd:extension base="wm:reservation">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="hotel-name" type="xsd:string"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="address" type="wm:address"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="check-in" type="xsd:date"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="check-out" type="xsd:date"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="room" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="fax" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="guest" type="wm:traveler"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="public-transportation">
+		<xsd:complexContent>
+			<xsd:extension base="wm:reservation">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="departure" type="wm:public-transportation-locaion"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="arrival" type="wm:public-transportation-locaion"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="train-number" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="seat" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="cabin" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="class-type" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="duration" type="xsd:int"/>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="traveler" type="wm:traveler"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="event">
+		<xsd:complexContent>
+			<xsd:extension base="wm:reservation">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="event-name" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="location" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="local-start-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="local-end-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="utc-start-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="utc-end-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="address" type="wm:address"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="fax" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="meeting">
+		<xsd:complexContent>
+			<xsd:extension base="wm:itinerary-item">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="location" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="local-start-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="local-end-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="utc-start-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="utc-end-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="address" type="wm:address"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="fax" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="geo-location">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" maxOccurs="1" name="latitude" type="xsd:double"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="longitude" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="address">
+		<xsd:complexContent>
+			<xsd:extension base="wm:geo-location">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="street" type="xsd:string"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="city" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="state-code" type="wm:state-code"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="country-code" type="wm:country-code"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="country-name" type="wm:country-code"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="postal-code" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="flight-details">
+		<xsd:attribute use="required" name="airline-code" type="wm:airline-code"/>
+		<xsd:attribute use="required" name="number" type="xsd:int"/>
+	</xsd:complexType>
+	<xsd:complexType name="airport-details">
+		<xsd:complexContent>
+			<xsd:extension base="wm:geo-location">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="airport-code" type="wm:airport-code"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="terminal" type="xsd:string"/>
+					<xsd:element minOccurs="0" maxOccurs="1" name="gate" type="xsd:string"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="local-date-time" type="xsd:dateTime"/>
+					<xsd:element minOccurs="1" maxOccurs="1" name="utc-date-time" type="xsd:dateTime"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="car-rental-locaion">
+		<xsd:all>
+			<xsd:element minOccurs="0" maxOccurs="1" name="airport-code" type="wm:airport-code"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="local-date-time" type="xsd:dateTime"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="utc-date-time" type="xsd:dateTime"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="fax" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="opening-hours" type="xsd:string"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="address" type="wm:address"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="public-transportation-locaion">
+		<xsd:all>
+			<xsd:element minOccurs="0" maxOccurs="1" name="station-name" type="xsd:string"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="local-date-time" type="xsd:dateTime"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="utc-date-time" type="xsd:dateTime"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="platform" type="xsd:string"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="address" type="wm:address"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="contact-details">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="1" name="name" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="url" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="fax" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="loyalty-program">
+		<xsd:attribute use="optional" name="name" type="xsd:string"/>
+		<xsd:attribute use="optional" name="number" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="coded-name">
+		<xsd:attribute use="optional" name="code" type="xsd:string"/>
+		<xsd:attribute use="optional" name="name" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:simpleType name="country-code">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z][A-Z]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="state-code">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z][A-Z]{2,3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="currency-code">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z][A-Z][A-Z]"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	<xsd:simpleType name="airport-code">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z][A-Z][A-Z]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="airline-code">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z\d]{2}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>
