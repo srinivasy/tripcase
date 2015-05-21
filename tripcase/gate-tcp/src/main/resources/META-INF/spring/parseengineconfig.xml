@@ -13,30 +13,17 @@
 	<context:annotation-config />
 
 	<!-- init gate -->
- 	  <gate:init gate-home="${gate.home}" plugins-home="${plugin.home}" site-config-file="${site.config.file}" user-config-file="${user.config.file}">
+ 	  <gate:init gate-home="${gate.home}" plugins-home="${gate.home}/plugins" site-config-file="${gate.home}/gate.xml" user-config-file="${gate.home}/user-gate.xml">
 		<gate:preload-plugins>
-			<value>${plugin.annie}</value>
-			<value>${plugin.opennlp}</value>
+			<value>${gate.home}/plugins/ANNIE</value>
+			<value>${gate.home}/plugins/OpenNLP</value>
 		</gate:preload-plugins>
 	</gate:init>  
-	
-	<!-- <bean class="gate.util.spring.Init" init-method="init">
-	   <property name="gateHome"><value>classpath:C:/Users/Sriram/Downloads/gate-files</value></property>
-	   <property name="pluginsHome"><value>classpath:C:/Users/Sriram/Downloads/gate-files/plugins</value></property>
-	   <property name="siteConfigFile"><value>classpath:C:/Users/Sriram/Downloads/gate-files/gate.xml</value></property>
-	   <property name="userConfigFile"><value>classpath:C:/Users/Sriram/Downloads/gate-files/user-gate.xml</value></property>
-	   <property name="preloadPlugins">
-	     <list>
-	       <value>classpath:C:/Users/Sriram/Downloads/gate-files/plugins/ANNIE</value>
-	       <value>classpath:C:/Users/Sriram/Downloads/gate-files/plugins/OpenNLP</value>
-	     </list>
-	   </property>
-    </bean>   -->
 	
 	<!-- set up the definition of the GATE application. This will load one copy 
 		of the application and then duplicate it. -->
 	<gate:duplicate id="gateApp" return-template="true">
-		<gate:saved-application location="${plugin.annie}/testcorpus.gapp" />
+		<gate:saved-application location="${gate.home}/plugins/ANNIE/testcorpus.gapp" />
 	</gate:duplicate>
 
 	<!-- Define the pooled handler bean -->
@@ -47,7 +34,7 @@
 	<!-- set up the definition of the GATE application. This will load one copy 
 		of the application and then duplicate it. -->   
 	<gate:duplicate id="NLPApp" return-template="true">
-		<gate:saved-application location="${plugin.opennlp}/test.gapp" />
+		<gate:saved-application location="${gate.home}/plugins/OpenNLP/test.gapp" />
 	</gate:duplicate> 
 
 	<!-- Define the NLP Parser bean -->
