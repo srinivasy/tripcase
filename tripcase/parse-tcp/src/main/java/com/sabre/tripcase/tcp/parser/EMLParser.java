@@ -47,7 +47,7 @@ public class EMLParser
 	public static void main(String args[]) {
 		try{
 				@SuppressWarnings("resource")
-				ApplicationContext context = new ClassPathXmlApplicationContext("parseconfig.xml");
+				ApplicationContext context = new ClassPathXmlApplicationContext("classpath:resources/parseconfig.xml");
 				EMLParser emlParser =(EMLParser) context.getBean("EMLParser");
 				emlParser.startProcess();
 				log.info("File has been successfully processed");
