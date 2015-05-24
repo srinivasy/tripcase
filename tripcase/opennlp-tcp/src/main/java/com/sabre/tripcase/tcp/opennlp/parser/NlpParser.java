@@ -67,7 +67,7 @@ public class NlpParser {
 		if(files != null){			
 				for (File file : files) {
 				if (file.isFile()) {
-					log.info("************************* " + file.getName() + " ***********************");
+					log.info("START************************* " + file.getName() + " ***********************");
 					System.out.println("************************* " + file.getName() + " ***********************");
 					MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);
 					String bodyText=EmailReader.getBody(mimeMessage, false);
