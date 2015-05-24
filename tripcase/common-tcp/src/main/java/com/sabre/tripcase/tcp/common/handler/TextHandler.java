@@ -11,8 +11,8 @@ public class TextHandler implements Handler
 	private static Logger log =Logger.getLogger(TextHandler.class);	
 	public String convertToText(String content)
 	{		
-		log.info("************************ TEXT Processor ***************************");
-		log.info("*******************************************************************");
+		log.info("************************ START ***************************");
+		
 		return content.toString().replaceAll("\\<.*?>","");
 	}
 }

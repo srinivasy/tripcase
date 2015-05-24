@@ -22,6 +22,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,8 +33,10 @@ import com.sabre.tripcase.tcp.common.utils.HtmlTableParser;
 
 public class EmailReader {
 	Email email = new Email();
+	private static Logger log =Logger.getLogger(EmailReader.class);
 	
 	public static String getToAddress(MimeMessage mimeMessage){
+		log.info("******** START ************");
 		String toReceipentsAddress = "";
 		try {
 			InternetAddress[] toRecipients = (InternetAddress[]) mimeMessage.getRecipients(RecipientType.TO);
@@ -56,7 +59,7 @@ public class EmailReader {
 		} catch (MessagingException e) {
 			System.err.println(e.getMessage());
 		}
-
+		log.info("******** END ************");
 		return toReceipentsAddress;
 		
 	}

@@ -9,9 +9,15 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
+
+
 public class MimeMessageReader {
 
+	private static Logger log =Logger.getLogger(MimeMessageReader.class);
 	public  MimeMessage getMimeMessage(File file){
+		log.info("******** START ************");
+		
 		MimeMessage mimeMessage=null;
 			try{
 			Properties p = System.getProperties();
@@ -24,6 +30,7 @@ public class MimeMessageReader {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+			log.info("******** END ************");
 		return mimeMessage;
 	}
 	

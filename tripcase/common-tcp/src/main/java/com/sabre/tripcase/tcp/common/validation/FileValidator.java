@@ -80,7 +80,7 @@ public class FileValidator
 	 * @throws IOException
 	 */
 	public boolean validateMessage(MimeMessage mMsg, List<Message> contentSupported, List<Message> contentNonSupportedLang, List<Message> contentNonSupportedSource) throws MessagingException, IOException {
-		log.debug(" Process MIME message for attachments and/or body content");
+		log.info(" Process MIME message for attachments and/or body content");
 
 		// store attachment file name, separated by comma
 		String attachFiles = "";

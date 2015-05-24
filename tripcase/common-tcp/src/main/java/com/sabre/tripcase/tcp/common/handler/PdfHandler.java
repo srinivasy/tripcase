@@ -1,9 +1,13 @@
 package com.sabre.tripcase.tcp.common.handler;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PdfHandler implements Handler 
 {
+	private static Logger log =Logger.getLogger(PdfHandler.class);
+	
+			
 	@Autowired
 	private HtmlHandler htmlHandler; 
 	@Override

@@ -20,8 +20,8 @@ public class HtmlHandler implements Handler {
 	
 	public String convertToText(String content)
 	{
-		log.info(" ************************ HTML Processor ***************************");
-		log.info(" *******************************************************************");
+		log.info(" ************************ START ***************************");
+		
 		
 		content=NlpHandler.removeBlankLines(content);
 		String value="";
@@ -44,6 +44,8 @@ public class HtmlHandler implements Handler {
 				th.printStackTrace();
 			}			
 		}
+		
+		log.info(" ******************************END*************************************");
 		return value;		
 	}
 }

@@ -6,7 +6,13 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
+
+
 public class CleanText {
+	
+	private static Logger log =Logger.getLogger(CleanText.class);
 	
 	/* Make this entire block configurable (Munish) */	
 	/* **********************************************************************************************************/
@@ -26,6 +32,8 @@ public class CleanText {
 	
 	public String seggregateSectionWise(String input) {
 
+		log.info("************* START ***********");
+		
 		String strLine[] = null;
 		strLine = input.split(NEWLINE);
 		String sLine = null;
@@ -67,8 +75,9 @@ public class CleanText {
 			}
 		}
 		catch (Exception ex){
-			System.out.println("Failed to save the content in to File" + ex.getMessage()); 
+			log.error("Failed to save the content in to File" + ex.getMessage()); 
 		}
+		log.info("************* END ***********");
 		return output;
 	}
 	
