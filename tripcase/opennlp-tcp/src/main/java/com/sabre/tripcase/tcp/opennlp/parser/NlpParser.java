@@ -46,7 +46,7 @@ public class NlpParser {
 		//nlpParser.startTraining();
 		log.info("Training models are successfully done");
 		nlpParser.startProcess();
-		log.info("NLP processing of Models and Source Files are successfully done");
+		log.info("NLP processing of Models and Source Files are successfully done :::");
 		}
 		catch(Throwable th){
 			log.error("Error inside NlpParser:", th);
@@ -67,8 +67,8 @@ public class NlpParser {
 		if(files != null){			
 				for (File file : files) {
 				if (file.isFile()) {
-					log.info("START************************* " + file.getName() + " ***********************");
-					System.out.println("************************* " + file.getName() + " ***********************");
+					log.info("************************* " + file.getName() + " ***********************");
+					//System.out.println("************************* " + file.getName() + " ***********************");
 					MimeMessage mimeMessage=mimeMessageReader.getMimeMessage(file);
 					String bodyText=EmailReader.getBody(mimeMessage, false);
 					//System.out.println(bodyText);
