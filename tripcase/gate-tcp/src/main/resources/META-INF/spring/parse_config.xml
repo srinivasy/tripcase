@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:gate="http://gate.ac.uk/ns/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://gate.ac.uk/ns/spring
+						http://gate.ac.uk/ns/spring.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+      				 <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:META-INF/environment.properties</value>
+			</list>
+		</property>
+		<property name="searchSystemEnvironment" value="true"/>
+		<property name="order" value="5"/>
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+	</bean>		
+	<context:annotation-config />
+
+	<!-- init gate -->
+	<gate:init gate-home="classpath:gate-files" plugins-home="classpath:gate-files/plugins" site-config-file="classpath:gate-files/gate.xml" user-config-file="classpath:gate-files/user-gate.xml">
+		<gate:preload-plugins>
+			<value>gate-files/plugins/ANNIE</value>
+			<value>gate-files/plugins/OpenNLP</value>
+		</gate:preload-plugins>
+	</gate:init> 
+	
+	<!-- set up the definition of the GATE application. This will load one copy 
+		of the application and then duplicate it. -->
+	<gate:duplicate id="gateApplication" return-template="true">
+		<gate:saved-application location="gate-files/plugins/ANNIE/testcorpus.gapp" />
+	</gate:duplicate>
+	
+	<bean id="processRouteBuilder" class="com.sabre.tripcase.tcp.process.ProcessRouteBuilder" >
+	    <property name="enableTableParser" value="${enable.table.parser}"/>
+		<property name="enableGateParser" value="${enable.gate.parser}"/>
+		<property name="enableNlpParser" value="${enable.opennlp.parser}"/>
+	</bean>
+	
+	<bean id="messageRouter" class="com.sabre.tripcase.tcp.process.MessageRouter">
+		
+	</bean>
+
+    <bean id="contentParser" class="com.sabre.tripcase.tcp.parse.ContentParserImpl" >
+       <property name="processRouteBuilder" ref="processRouteBuilder"></property>
+    </bean>
+
+
+	<!-- Define the pooled handler bean -->
+	<bean class="com.sabre.tripcase.tcp.gate.GateContentParser" id="gateContentParser">
+		<property name="application" ref="gateApplication" />
+		<property name="processRouteBuilder" ref="processRouteBuilder"></property>
+		<property name="flightAnnotationSet">
+		  <set>
+		    <value>FlightNumber</value>
+		    <value>FlightName</value>
+		    <value>FlightDeparture</value>
+		    <value>FlightArrival</value>
+		    <value>FlightDepartureDate</value>
+		    <value>FlightArrivalDate</value>
+		    <value>FlightDepartureTime</value>
+		    <value>FlightArrivalTime</value>
+		  </set>
+		</property>
+		<!-- <gate:pooled-proxy 	max-size="3" initial-size="3" /> -->
+	</bean>
+	
+	<!-- set up the definition of the GATE application. This will load one copy 
+		of the application and then duplicate it. -->   
+	<gate:duplicate id="NLPApp" return-template="true">
+		<gate:saved-application location="gate-files/plugins/OpenNLP/test.gapp" />
+	</gate:duplicate> 
+
+	<!-- Define the NLP Parser bean -->
+	<bean class="com.sabre.tripcase.tcp.nlp.NLPContentParser" id="nlpparser">
+		<property name="application" ref="NLPApp" />
+		<property name="processRouteBuilder" ref="processRouteBuilder"></property>
+		<property name="flightAnnotationSet">
+		  <set>
+		    <value>FlightNumber</value>
+		    <value>FlightName</value>
+		    <value>FlightDeparture</value>
+		    <value>FlightArrival</value>
+		    <value>FlightDepartureDate</value>
+		    <value>FlightArrivalDate</value>
+		    <value>FlightDepartureTime</value>
+		    <value>FlightArrivalTime</value>
+		  </set>
+		</property>
+	
+	</bean>
+	
+	<bean id="contentFinalProcess" class="com.sabre.tripcase.tcp.post.process.ContentFinalProcess" />
+	
+</beans>

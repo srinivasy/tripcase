@@ -3,11 +3,11 @@ Phase:	NumberLetter
 Input: Token SpaceToken
 Options: control = appelt
 
-// verified by Munish for Gate Application
+
 
 
 Rule: NumberLetter
-// A word that's adjoining a number with no spaces between should not be considered as part of any entity
+// A word that's adjoining a number with no spaces between should not be considerd as part of any entity
 
 (
  {Token.kind == number}

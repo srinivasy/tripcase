@@ -1,0 +1,183 @@
+
+/*
+* CommomTemplate.jape
+*
+* venkat pedapudi
+* Rules consist of common time and common date
+* 
+*/
+
+
+Phase:	commontemplate
+Input: Token Lookup
+Options: control = brill debug = true
+
+
+///////////////////////////////////////////////////////////////
+
+Macro: ONE_DIGIT
+({Token.kind == number, Token.length == "1"})
+
+Macro: TWO_DIGIT
+({Token.kind == number, Token.length == "2"})
+
+Macro: COLON
+  ({Token.string == ":"})
+  
+Macro: AMPM
+  ({Token.string == "AM"}|{Token.string == "PM"})
+
+Macro: SMALL_AMPM
+  ({Token.string == "am"}|{Token.string == "pm"})
+
+Macro: DAY_NAME 
+({Lookup.minorType == day })
+
+Macro: MONTH_NAME
+({Lookup.minorType == month})
+
+Macro: DAY_MONTH_NUM
+(ONE_DIGIT | TWO_DIGIT)
+
+Macro: YEAR
+(        
+ {Lookup.majorType == year}|
+  FOUR_DIGIT
+  //| 
+ //{Token.string == "'"}
+ //(TWO_DIGIT)
+)
+
+Macro: ORDINAL
+(
+   ({Token.string ==~ "[0-9][0-9]?(th|rd|nd|st)"}
+    |
+   {Lookup.minorType == ordinal})
+   (
+    {Token.string == "of"})?
+)
+
+Macro: NUM_OR_ORDINAL
+  (ORDINAL | DAY_MONTH_NUM)
+
+Macro: COMMA
+({Token.string == ","})
+
+Macro: SLASH
+({Token.string == "/"})
+
+
+Macro: FROM_TO
+  ({Token.string == "From"}{Token.string == "/"}{Token.string == "To"})
+
+Macro: UNDER_SCORE
+  ({Token.string == "-"})
+
+Macro: FROM_LV
+  (({Token.string == "From"}{Token.string == ":"})|{Token.string == "LV"})
+
+Macro: TO_AR
+  ({Token.string == "to"}|{Token.string == "AR"})
+
+///////////////////////////////////////////////////////////////////
+
+Rule: ParseRule1
+Priority: 1
+(
+	((ONE_DIGIT|TWO_DIGIT)(COLON)(TWO_DIGIT)(AMPM|SMALL_AMPM)?)
+	|
+	((ONE_DIGIT|TWO_DIGIT)(TWO_DIGIT)(AMPM|SMALL_AMPM))
+)
+:check
+-->
+:check.CommonTime = { rule = "ParseRule1"}
+
+
+//////////////////////////////////////////////////////////////
+
+Rule: ParseRule2
+//Tue,Apr 16
+// 16 Apr
+Priority: 2
+(
+((DAY_NAME)(COMMA)(MONTH_NAME)(NUM_OR_ORDINAL)(YEAR)?)|((NUM_OR_ORDINAL)(MONTH_NAME))|
+((DAY_NAME)(NUM_OR_ORDINAL)(MONTH_NAME)(YEAR))|
+((NUM_OR_ORDINAL)(SLASH)(NUM_OR_ORDINAL)(SLASH)(NUM_OR_ORDINAL))|
+((MONTH_NAME)(NUM_OR_ORDINAL)(COMMA)(YEAR))
+)
+:check
+-->
+:check.CommonDate = { rule = "ParseRule2"}
+
+//////////////////////////////////////////////////////////////
+
+/*Rule: ParseSeatRule3
+Priority: 3
+(
+({Lookup.majorType == SeatHeader}({Token.kind == "punctuation"})[0,2])
+)
+:temp
+(
+{Token.kind == number}
+):check
+-->
+:check.Seat = { rule = "ParseSeatRule3"}*/
+
+/////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////
+
+Rule: ParseRule5
+Priority: 5
+(
+({Token.String == "TERMINAL"}({Token.kind == "punctuation"})[0,2])
+)
+:temp
+(
+{Token.kind == word}
+):check
+-->
+:check.terminal = { rule = "ParseRule5"}
+
+
+
+///////////////////////////////////////////////////////////
+
+Rule: ParseRule7
+Priority: 7
+(
+((FROM_TO)({Token.kind == "punctuation"}))|
+({Lookup.majorType == DepartureHeader}{Token.kind == "punctuation"})|
+((FROM_LV))
+)
+:temp
+(
+({Lookup.majorType == airport_name})
+):check
+-->
+:check.departureName = { rule = "ParseRule7"}
+
+///////////////////////////////////////////////////////////
+
+Rule: ParseRule8
+Priority: 8
+(
+((UNDER_SCORE))|
+({Lookup.majorType == ArrivalHeader}{Token.kind == "punctuation"})|
+((TO_AR))
+)
+:temp
+(
+({Lookup.majorType == airport_name})
+):check
+-->
+:check.arrivalName = { rule = "ParseRule8"}
+
+
+
+
+
+
+

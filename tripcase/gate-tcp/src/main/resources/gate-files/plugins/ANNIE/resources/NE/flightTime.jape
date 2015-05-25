@@ -1,0 +1,53 @@
+/*
+*  FlightTime.jape
+*
+*  venkat pedapudi
+* 
+*/
+
+
+Phase:	Final2
+Input: Token Lookup FlightDepartureDate FlightArrivalDate CommonTime
+Options: control = brill
+
+
+
+//////////////////////////////////////////////////////////
+Macro:COMMA
+({Token.string == ","})
+
+
+
+
+
+///////////////////////////////////////////////////////////
+
+Rule: FlightTimeRule1
+//Depart:             Tue 21 April 2015, 07:40
+//?({Token.string == "at"})?
+Priority: 1
+(
+({FlightDepartureDate}(COMMA))|({Lookup.majorType == FlightDepartureTimeHeader}{Token.kind == "punctuation"})
+)
+:temp
+(
+ ({CommonTime})
+):check
+-->
+:check.FlightDepartureTime = { rule = "FlightTimeRule1"}
+
+//////////////////////////////////////////////////////////
+
+Rule: FlightTimeRule2
+//?({Token.string == "at"})?
+Priority: 2
+(
+({FlightArrivalDate}(COMMA))|({Lookup.majorType == FlightArrivalTimeHeader}{Token.kind == "punctuation"})
+)
+:temp
+(
+ ({CommonTime})
+):check
+-->
+:check.FlightArrivalTime = { rule = "FlightTimeRule2"}
+

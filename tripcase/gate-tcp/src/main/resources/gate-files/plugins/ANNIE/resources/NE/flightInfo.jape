@@ -1,0 +1,374 @@
+/*
+*  FlightInfo.jape
+*
+*  venkat pedapudi
+* 
+*/
+
+
+Phase:	Final1
+Input: Token Lookup Date CommonDate CommonTime TableDepartureData TableArrivalData DepartureData ArrivalData departureName arrivalName DepartureArrivalData
+Options: control = brill debug = true
+
+
+//////////////////////////////////////////////////////
+
+Macro: FLIGHT_MILES 
+({Token.string == "Miles" })
+
+Macro: FLIGHT_DURATION
+({Token.string == "DURATION"})
+
+//////////////////////////////////////////////////////
+
+Rule: ParseRule1
+Priority: 1
+(
+({Lookup.majorType == flightHeader}({Token.kind == "punctuation"})[0,2])
+
+):temp
+(
+ ({Lookup.majorType == airways})
+):check
+-->
+:check.FlightName = { rule = "ParseRule1"}
+
+
+
+//////////////////////////////////////////////////////
+
+Rule: ParseRule2
+//1.Flight/Equip.: Delta Air Lines 2144
+//2. Flight Number:      BA0332
+//3. American Airline 3869
+//4.FLIGHT     VA 874
+Priority: 2
+(
+// ({FlightName} )
+({Lookup.majorType == flightHeader}({Token.kind == "punctuation"})[0,2]{Lookup.majorType == airways})|
+({Lookup.majorType == flightNumber}({Token.kind == "punctuation"})[0,2]) |
+({Lookup.majorType == airways})|
+({Lookup.majorType == flightNumber}({Token.kind == "punctuation"})[0,2]{Lookup.majorType == airline_code})
+ 
+):temp
+(
+({Token.kind == number,Token.length >= 3})
+
+):check
+-->
+:check.FlightNumber = { rule = "ParseRule2"}
+
+
+
+//////////////////////////////////////////////////////
+
+Rule: ParseRule3
+//Depart:
+//Depart:02/02/02 
+Priority: 3
+(
+({Lookup.majorType == DepartureHeader}{Token.kind == "punctuation"})
+| ({Lookup.majorType == DepartureHeader}({Token.kind == "punctuation"})[0,2]{Date})
+
+):temp
+(
+  ({Lookup.majorType == airport_name}) 
+
+):check
+-->
+:check.FlightDeparture = { rule = "ParseRule3"}
+
+//////////////////////////////////////////////////////
+
+
+Rule: ParseRule4
+Priority: 4
+(
+({Lookup.majorType == ArrivalHeader}{Token.kind == "punctuation"})
+| ({Lookup.majorType == ArrivalHeader}({Token.kind == "punctuation"})[0,2]{Date})
+):temp
+(
+({Lookup.majorType == airport_name}) 
+):check
+-->
+:check.FlightArrival = { rule = "ParseRule4"}
+
+//////////////////////////////////////////////////////
+
+
+Rule: ParseRule5
+Priority: 5
+(
+({Lookup.majorType == DepartureDateHeader}({Token.kind == "punctuation"})[0,2])
+| ({Lookup.majorType == DepartureDateHeader}({Token})[0,5]{Token.string == ")"}({Token.string == "on"})?)
+):temp
+(
+({CommonDate}) 
+):check
+-->
+:check.FlightDepartureDate = { rule = "ParseRule5"}
+
+//////////////////////////////////////////////////////
+
+
+Rule: ParseRule6
+Priority: 6
+(
+({Lookup.majorType == ArrivalDateHeader}({Token.kind == "punctuation"})[0,2])
+| ({Lookup.majorType == ArrivalDateHeader}({Token})[0,5]{Token.string == ")"}({Token.string == "on"})?)
+):temp
+(
+({CommonDate}) 
+):check
+-->
+:check.FlightArrivalDate = { rule = "ParseRule6"}
+
+
+
+
+//////////////////////////////////////////////////////
+
+
+Rule: ParseRule7
+Priority: 7
+(
+({Lookup.majorType == TerminalHeader}({Token.kind == "punctuation"})[0,2])
+//| ({Lookup.majorType == ArrivalHeader}({Token.kind == "punctuation"})[0,2]{Date})
+):temp
+(
+({Token.kind == number, Token.length == "1"}) |({Token.kind == word, Token.length == "1"}) 
+):check
+-->
+:check.FlightTerminal = { rule = "ParseRule7"}
+
+
+
+///////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////
+
+/*Rule: ParseRule10
+Priority: 10
+(
+{Seat within TableData}
+)
+:check
+-->
+:check.FlightSeat = { rule = "ParseRule10"}*/
+
+///////////////////////////////////////////////////////
+
+
+Rule: ParseRule11
+Priority: 11
+(
+//{FlightAirportName within TableData} | 
+{departureName within DepartureData}| {departureName within TableDepartureData}|
+{departureName within DepartureArrivalData}
+)
+:check
+-->
+:check.FlightDeparture = { rule = "ParseRule11"}
+
+//////////////////////////////////////////////////////////////////
+
+/*Rule: ParseRule12
+Priority: 12
+(
+{FlightNo within TableData}
+)
+:check
+
+-->
+:check.FlightNumber = { rule = "ParseRule12"}*/
+
+//////////////////////////////////////////////////////
+
+
+/*Rule: ParseRule13
+Priority: 13
+(
+{terminal within TableData}
+)
+:check
+
+-->
+:check.FlightTerminal = { rule = "ParseRule13"}*/
+
+//////////////////////////////////////////////////////
+
+
+Rule: ParseRule14
+//1.TableData
+//2.DEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       30 APR 05:00
+Priority: 14
+(
+//({deptDate within TableData})|
+({CommonDate within TableDepartureData})
+)
+:check
+-->
+:check.FlightDepartureDate = { rule = "ParseRule14"}
+
+//////////////////////////////////////////////////////
+
+Rule: ParseRule15
+//1.TableData
+//2.DEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       30 APR 05:00
+Priority: 15
+(
+//({deptDate within TableData})|
+({CommonTime within TableDepartureData})
+)
+//:temp
+//(
+ //({Token.kind == number})
+//)
+:check
+-->
+:check.FlightDepartureTime = { rule = "ParseRule15"}
+
+//////////////////////////////////////////////////////
+
+
+Rule: ParseRule16
+//1.DEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       30 APR 05:00
+Priority: 16
+(
+({CommonDate within TableArrivalData})
+)
+:check
+-->
+:check.FlightArrivalDate = { rule = "ParseRule16"}
+
+//////////////////////////////////////////////////////
+
+Rule: ParseRule17
+//1.DEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       30 APR 05:00
+Priority: 17
+(
+({CommonTime within TableArrivalData})
+)
+:check
+-->
+:check.FlightArrivalTime = { rule = "ParseRule15"}
+
+
+
+//////////////////////////////////////////////////////
+
+Rule: ParseRule18
+Priority: 18
+(
+({Lookup.majorType == ClassHeader }({Token.kind == "punctuation"})[0,2])
+)
+:temp
+(
+ ({Token.kind == word})
+):check
+-->
+:check.FlightClass = { rule = "ParseRule18"}
+
+/////////////////////////////////////////////////////////
+
+Rule: ParseRule19
+//Miles:
+Priority: 19
+(
+((FLIGHT_MILES)({Token.kind == "punctuation"}))
+)
+:temp
+(
+ ({Token.kind == number})
+):check
+-->
+:check.FlightMiles = { rule = "ParseRule19"}
+
+/////////////////////////////////////////////////////////
+
+Rule: ParseRule19
+//DURATION:
+Priority: 19
+(
+((FLIGHT_DURATION)({Token.kind == "punctuation"}))
+)
+:temp
+(
+ ({CommonTime})
+):check
+-->
+:check.FlightDuration = { rule = "ParseRule19"}
+
+////////////////////////////////////////////////////////
+
+Rule: ParseRule20
+Priority: 20
+(
+{arrivalName within ArrivalData}|{arrivalName within TableArrivalData}|
+{arrivalName within DepartureArrivalData}
+)
+:check
+
+-->
+:check.FlightArrival = { rule = "ParseRule20"}
+
+////////////////////////////////////////////////////////
+
+Rule: ParseRule21
+Priority: 21
+(
+{Lookup.majorType == FlightDepartureCodeHeader}{Token.kind == "punctuation"}
+)
+:temp
+(
+ {Lookup.majorType == airport_code}
+):check
+
+-->
+:check.FlightDepartureCode = { rule = "ParseRule21"}
+
+////////////////////////////////////////////////////////
+
+Rule: ParseRule22
+Priority: 22
+(
+{Lookup.majorType == FlightArrivalCodeHeader}{Token.kind == "punctuation"}
+)
+:temp
+(
+ {Lookup.majorType == airport_code}
+):check
+
+-->
+:check.FlightArrivalCode = { rule = "ParseRule22"}
+
+////////////////////////////////////////////////////////
+Rule: ParseRule23
+//Takeoff: 12:23 PM
+Priority: 23
+(
+({Lookup.majorType == DepartureHeader}{Token.kind == "punctuation"})
+)
+:temp
+(
+ {CommonTime}
+):check
+
+-->
+:check.FlightDepartureTime = { rule = "ParseRule23"}
+
+////////////////////////////////////////////////////////
+Rule: ParseRule24
+//Landing: 12:23 PM
+Priority: 24
+(
+({Lookup.majorType == ArrivalHeader}{Token.kind == "punctuation"})
+)
+:temp
+(
+ {CommonTime}
+):check
+
+-->
+:check.FlightArrivalTime = { rule = "ParseRule24"}
+

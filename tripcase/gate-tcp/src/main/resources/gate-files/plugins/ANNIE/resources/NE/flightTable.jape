@@ -1,0 +1,169 @@
+
+/*
+*  FlightTableInfo.jape
+*
+*  venkat pedapudi
+* 
+*/
+
+
+Phase:	FlightTable
+Input: Token Lookup CommonDate
+Options: control = brill debug = true
+
+/////////////////////////////////////////////////////////////////////
+Macro:AMPM
+  ({Token.string == "AM"}|{Token.string == "PM"})
+
+Macro: SMALL_AMPM
+  ({Token.string == "am"}|{Token.string == "pm"})
+
+Macro: FROM_TO
+  ({Token.string == "From"}{Token.string == "/"}{Token.string == "To"})
+
+Macro: BRACKET
+  ({Token.string == "("}{Token.kind == word}{Token.string == ")"})
+
+Macro: UNDER_SCORE
+  ({Token.string == "-"})
+
+/////////////////////////////////////////////////////////////////////
+
+/*Rule: ParseRule1
+Priority: 1
+(
+({Lookup.majorType == FlightTableHeader}
+({Token})[0,250]
+{Token.string == "AT"}{Token.string == "CHECK-IN"})
+)
+:check
+-->*/
+//:check.TableData = { rule = "ParseRule2"}
+/*{
+	AnnotationSet instAnnots = bindings.get("check");
+	Iterator itr = instAnnots.iterator();
+	while(itr.hasNext()){
+	Annotation theInstance =  (Annotation)itr.next();
+	 AnnotationSet tokenAS = instAnnots.get("Token",  
+        theInstance.getStartNode().getOffset(),  
+        theInstance.getEndNode().getOffset());  
+	Annotation curToken=null; 
+	List<Annotation> tokens = new ArrayList<Annotation>(tokenAS);
+	 for (int i=0; i < tokens.size(); i++) {  
+		 curToken = tokens.get(i); 
+		//String value= theInstance.getFeatures().get(curToken.getType()).toString();
+		 //gate.util.Err.prln("Debug: curToken "+curToken.getType());
+		 //gate.util.Err.prln("Debug: curValue "+theInstance.getFeatures().get("kind"));
+		 String knd = theInstance.getFeatures().get("kind").toString();
+		 if (knd.equals("CommonDate"))
+		 {
+	 		gate.util.Err.prln("Debug: date found ");	
+	         }else if(knd.equals("SV")){
+			gate.util.Err.prln("Debug: flight code found ");	
+		 }
+        }
+	}
+	//FeatureMap features =  Factory.newFeatureMap();
+	//String knd = theInstance.getFeatures().get("kind").toString();
+	//gate.util.Err.prln("Debug: added "+knd);
+	//if (knd.equals("date"))
+	//{
+	//	features.put("kind", theInstance.getFeatures().get("kind"));
+	//	features.put("rule", "ParseRule10");
+	//	outputAS.add(instAnnots.firstNode(), instAnnots.lastNode(), "Seat", features);		
+	//}	
+}
+*/
+
+
+
+/////////////////////////////////////////////////////////////////////
+
+Rule: ParseRule2
+//DEPARTURE: SYDNEY, NS (KINGSFORD SMITH), TERMINAL 2              14 APR 18:00
+//Depart: Detroit(DTW) Thursday, Apr 16 17:25
+// LV BASRA INTERNATL              425P           EQP:
+//From:               Heathrow (London), United Kingdom Terminal:           5
+//Depart: Victoria International Airport Victoria, British Columbia, Canada 11:00 AM Tuesday, April 28 2015
+Priority: 2
+(
+({Lookup.majorType == FlightDepartureTableHeader}
+ {Token.string == ":"}
+ {Lookup.majorType == airport_name}
+ ({Token})[0,14]
+ ({Token.string == ":"})?{Token.kind == number,Token.length == "2"}(AMPM)?(SMALL_AMPM)? ({CommonDate})? )|
+({Lookup.majorType == FlightDepartureTableHeader}
+ ({Token})[0,5] {Token.string == "EQP"}{Token.string == ":"}) |
+({Lookup.string == "From"}{Lookup.string == ":"}
+ ({Token})[0,5] {Token.string == "Terminal"}{Token.string == ":"})
+)
+:check
+-->
+:check.TableDepartureData = { rule = "ParseRule2"}
+
+////////////////////////////////////////////////////////////////////////////
+
+Rule: ParseRule3
+//ARRIVAL:   MELBOURNE, VI (MELBOURNE AIRPORT), TERMINAL 3         14 APR 19:35
+//AR DUBAI                        715P           NON-STOP
+Priority: 3
+(
+({Lookup.majorType == FlightArrivalTableHeader}
+{Token.string == ":"}
+ {Lookup.majorType == airport_name}
+({Token})[0,20]
+{Token.string == ":"}{Token.kind == number,Token.length == "2"}(AMPM)?(SMALL_AMPM)? ({CommonDate})?)|
+({Lookup.majorType == FlightArrivalTableHeader}
+ ({Token})[0,5] {Token.string == "NON-STOP"})
+)
+:check
+-->
+:check.TableArrivalData = { rule = "ParseRule3"}
+
+/////////////////////////////////////////////////////////////////////
+
+Rule: ParseRule3
+
+//From:               Heathrow (London), United Kingdom Terminal:           5
+Priority: 3
+(
+
+({Token.string == "From"}
+ ({Token})[0,9] {Token.string == "Terminal"}{Token.string == ":"})
+)
+:check
+-->
+:check.DepartureData = { rule = "ParseRule3"}
+
+/////////////////////////////////////////////////////////////////////
+
+Rule: ParseRule4
+
+//to                  Orly (Paris), France Terminal:
+Priority: 4
+(
+
+({Token.string == "to"}
+ ({Token})[0,9] {Token.string == "Terminal"}{Token.string == ":"})
+)
+:check
+-->
+:check.ArrivalData = { rule = "ParseRule3"}
+
+/////////////////////////////////////////////////////////////////////
+
+Rule: ParseRule5
+
+//From/To:Toronto Billy Bishop City Airport (ON) - Montreal Trudeau (PQ)
+Priority: 5
+(
+
+((FROM_TO)({Token})[0,20](BRACKET) )
+)
+:check
+-->
+:check.DepartureArrivalData = { rule = "ParseRule5"}
+
+
+
+

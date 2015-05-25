@@ -11,7 +11,6 @@
 *  Diana Maynard, 02 Aug 2001
 *
 *  $Id: main.jape 17798 2014-04-10 12:55:36Z markagreenwood $
-// changed by Munish for Gate Application
 */
 
 MultiPhase:	TestTheGrammars
@@ -26,23 +25,16 @@ date
 reldate
 number
 address
+url_pre
+//url
 email
 identifier
 jobtitle
 final
-vendorinfo
-departure
-departtime
-arrival
-arrivaltime
-seats
-reserved
-status
-class
-flightparser
-departarrival
-flightinfoparser
-flightCommon
+commontemplate
+flightTable
+flightInfo
+flightTime
 unknown
 name_context
 org_context

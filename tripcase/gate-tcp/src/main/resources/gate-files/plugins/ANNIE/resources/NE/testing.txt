@@ -1,0 +1,47 @@
+Rule: ParseRule10
+Priority: 10
+(
+{FlightSeat within TableData}
+)
+:check
+-->
+{
+	AnnotationSet instAnnots = bindings.get("check");
+	Annotation theInstance = instAnnots.iterator().next();
+	FeatureMap features =  Factory.newFeatureMap();
+	String knd = theInstance.getFeatures().get("kind").toString();
+	if (knd.equals("number"))
+	{
+		features.put("kind", theInstance.getFeatures().get("kind"));
+		features.put("rule", "ParseRule10");
+		outputAS.add(instAnnots.firstNode(), instAnnots.lastNode(), "Seat", features);		
+	}	
+}
+
+Rule: ParseRule9
+Priority: 9
+(
+({Lookup.majorType == flightHeader}
+({Token})[0,250]
+{Token.string == "AT"}{Token.string == "CHECK-IN"})
+)
+:check
+-->
+:check.TableData = { rule = "ParseRule9"}
+
+
+APHYD007318800000264
+
+{
+	AnnotationSet instAnnots = bindings.get("check");
+	Annotation theInstance = instAnnots.iterator().next();
+	FeatureMap features =  Factory.newFeatureMap();
+	String knd = theInstance.getFeatures().get("kind").toString();
+	gate.util.Err.prln("Debug: added "+knd);
+	if (knd.equals("date"))
+	{
+		features.put("kind", theInstance.getFeatures().get("kind"));
+		features.put("rule", "ParseRule10");
+		outputAS.add(instAnnots.firstNode(), instAnnots.lastNode(), "Seat", features);		
+	}	
+}*/

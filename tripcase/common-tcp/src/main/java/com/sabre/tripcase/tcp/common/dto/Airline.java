@@ -20,7 +20,21 @@ public class Airline {
 	private String meal;
 	private String airfare;
 	private String seat;
+	private String arrivalDate;
+	private String arrivalTime;
 
+	public String getArrivalDate() {
+		return arrivalDate;
+	}
+	public String getArrivalTime() {
+		return arrivalTime;
+	}
+	public void setArrivalTime(String arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+	public void setArrivalDate(String arrivalDate) {
+		this.arrivalDate = arrivalDate;
+	}
 	private Map<String, List<String>> data = new HashMap<String, List<String>>();
 
 	public Map<String, List<String>> getData() {

@@ -1,0 +1,53 @@
+/*
+ 
+Rule: TestRule7
+Priority: 1
+/*
+(
+{Token.string == "Flightno"}
+({Token})[0, 20]
+{Token.string == "Class"}
+({Split})[0,2]
+):check
+((
+       (
+              ({Token.category == NNP}
+              {Token.category == CD})
+       ):check1
+       (
+              ({Date}.kind == "date"})
+       ):check2
+       (
+              ({Token.orth == "allCaps"})
+       ):check3
+       (
+              ({Date})
+       ):check4     
+       (
+              ({Token.orth == "allCaps"})
+       ):check5
+       (
+              ({Date.kind == "time"})
+       ):check6
+       ({Token.kind != "word"})[0,3]
+       (
+              ({Token.kind == "word"})
+       ):check7
+       (
+              {Token.kind == "word"}
+       ):check8
+)+
+):check9
+ 
+-->
+:check.flightdate2 = { rule = "TestRule7"},
+:check1.tabularflightno = { rule = "TestRule7"},
+:check2.tabulardate = { rule = "TestRule7"},
+:check3.tabulardept = { rule = "TestRule7"},
+:check4.tabulardepttime = { rule = "TestRule7"},
+:check5.tabulararrival = { rule = "TestRule7"},
+:check6.tabulararrivaltime = { rule = "TestRule7"},
+:check7.tabularstatus = { rule = "TestRule7"},
+:check8.tabularclass = { rule = "TestRule7"},
+:check9.finaltable = { rule = "TestRule7"}
+*/

@@ -16,7 +16,7 @@
 //note: organization should be included as part of the address ??
 
 Phase:	Final
-Input: Token Lookup Jobtitle TempPerson TempLocation TempOrganization TempDate TempTime TempYear TempZone Street Postcode Email Url Phone Ip TempIdentifier TempSpecs Title Split Money Date
+Input: Token Lookup Jobtitle TempPerson TempLocation TempOrganization TempDate TempTime TempYear TempZone Street Postcode Email Url Phone Ip TempIdentifier TempSpecs Title Split Money
 Options: control = appelt
 
 
@@ -28,49 +28,6 @@ Priority: 200
 )
 --> 
 {}
-
-
-Rule: TestRule1
-Priority: 30
-(
-({Token.string == "Ticketnumbers"})
-({Token.kind == punctuation})
-):temp
-(
- ({Token.kind == number})
- ({Token.kind == punctuation})
- ({Token.kind == number})
-):check
--->
-:check.TicketNumber = { rule = "TestRule1"}
-
-Rule: TestRule2
-Priority: 31
-(
-({Token.string == "Ticketing"})
-({Token.string == "Airline"})
-({Token.kind == punctuation})
-):temp
-(
- ({Token.kind == word})
-):check
--->
-:check.Carrier = { rule = "TestRule2"}
-
-Rule: TestRule2
-Priority: 31
-(
-({Token.string == "Confirmation"})
-({Token.kind == punctuation})
-)
-(
- ({Token.kind == word})?
- ({Token.kind == number})
- (({Token.kind == word}) | ({Token.kind == number}))[0, 3]
- (({Token.orth == allCaps}))[0, 5]
-):check
--->
-:check.Confirmation = { rule = "TestRule3"}
 
 Rule: PersonFinal
 Priority: 30

@@ -1,0 +1,165 @@
+
+/*
+*  FlightSeatInfo.jape
+*
+*  venkat pedapudi
+* 
+*/
+
+
+Phase:	seat
+Input: Token Lookup
+Options: control = brill debug = true
+
+////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////
+
+Macro: ONE_DIGIT
+({Token.kind == number, Token.length == "1"})
+
+Macro: TWO_DIGIT
+({Token.kind == number, Token.length == "2"})
+
+Macro: COLON
+  ({Token.string == ":"})
+  
+Macro: AMPM
+  ({Token.string == "AM"}|{Token.string == "PM"})
+
+Macro: SMALL_AMPM
+  ({Token.string == "am"}|{Token.string == "pm"})
+
+Macro: DAY_NAME 
+({Lookup.minorType == day })
+
+Macro: MONTH_NAME
+({Lookup.minorType == month})
+
+Macro: YEAR
+(        
+ {Lookup.majorType == year}|
+  FOUR_DIGIT
+  //| 
+ //{Token.string == "'"}
+ //(TWO_DIGIT)
+)
+
+Macro: ORDINAL
+(
+   ({Token.string ==~ "[0-9][0-9]?(th|rd|nd|st)"}
+    |
+   {Lookup.minorType == ordinal})
+   (
+    {Token.string == "of"})?
+)
+
+Macro: NUM_OR_ORDINAL
+  (ORDINAL | DAY_MONTH_NUM)
+
+Macro: COMMA
+({Token.string == ","})
+
+Macro: SLASH
+({Token.string == "/"})
+
+//////////////////////////////////////////////////////////////
+
+Rule: ParseSeatRule1
+Priority: 1
+(
+({Lookup.majorType == SeatHeader}({Token.kind == "punctuation"})[0,2])
+)
+:temp
+(
+{Token.kind == number}
+):check
+-->
+:check.Seat = { rule = "ParseSeatRule1"}
+
+/////////////////////////////////////////////////////////
+
+Rule: ParseRule2
+Priority: 2
+(
+({Lookup.majorType == airport_name})
+)
+:check
+-->
+:check.FlightAirportName = { rule = "ParseRule2"}
+
+///////////////////////////////////////////////////////////
+
+/*Rule: ParseRule3
+Priority: 3
+(
+({Lookup.majorType == airline_code})
+)
+:temp
+(
+{Token.kind == number}
+):check
+-->
+:check.FlightNo = { rule = "ParseRule3"}*/
+
+///////////////////////////////////////////////////////////
+
+Rule: ParseRule4
+Priority: 4
+(
+({Token.String == "TERMINAL"}({Token.kind == "punctuation"})[0,2])
+)
+:temp
+(
+{Token.kind == word}
+):check
+-->
+:check.terminal = { rule = "ParseRule4"}
+
+///////////////////////////////////////////////////////////
+
+Rule: ParseRule5
+Priority: 5
+(
+({Lookup.majorType == airline_code}{Token.kind == number}{Token.kind == word})
+)
+:temp
+(
+//({Date})
+({Token.kind == number}{Token.kind == word})
+):check
+-->
+:check.deptDate = { rule = "ParseRule5"}
+
+///////////////////////////////////////////////////////////////////
+
+Rule: ParseRule6
+Priority: 6
+(
+	(ONE_DIGIT|TWO_DIGIT)(COLON)(TWO_DIGIT)(AMPM|SMALL_AMPM)?
+)
+:check
+-->
+:check.CommonTime = { rule = "ParseRule6"}
+
+
+//////////////////////////////////////////////////////////////
+
+Rule: ParseRule7
+//Tue,Apr 16
+// 16 Apr
+Priority: 7
+(
+((DAY_NAME)(COMMA)(MONTH_NAME)(NUM_OR_ORDINAL)(YEAR)?)|((NUM_OR_ORDINAL)(MONTH_NAME))|
+((DAY_NAME)(NUM_OR_ORDINAL)(MONTH_NAME)(YEAR))|
+((NUM_OR_ORDINAL)(SLASH)(NUM_OR_ORDINAL)(SLASH)(NUM_OR_ORDINAL))|
+((MONTH_NAME)(NUM_OR_ORDINAL)(COMMA)(YEAR))
+)
+:check
+-->
+:check.CommonDate = { rule = "ParseRule7"}
+
+

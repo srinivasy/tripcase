@@ -209,7 +209,7 @@
             <localMap>
               <entry>
                 <string>caseSensitive</string>
-                <boolean>true</boolean>
+                <boolean>false</boolean>
               </entry>
               <entry>
                 <string>listsURL</string>
