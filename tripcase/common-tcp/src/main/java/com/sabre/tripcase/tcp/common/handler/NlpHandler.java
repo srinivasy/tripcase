@@ -6,28 +6,37 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.sabre.tripcase.tcp.common.utils.ControlProperties;
 import com.sabre.tripcase.tcp.common.utils.ExtractMatchedSentense;
 
-
 public final class NlpHandler {
+	private static Logger log =Logger.getLogger(NlpHandler.class);
 	
 	public static void printSentences(String[] sentences,String fileName){
+		log.info(" ***START***** ");
+		
 		if(ControlProperties.printSentence(fileName)){
 		for(int i=0;i<sentences.length;i++){
 			System.out.println("sentence::"+sentences[i].trim());
 		 }
 		}
+		
+		log.info(" ***END***** ");
 	}
 	
 
 	
 	public static void printTokens(String[] tokens,String fileName){
+		log.info(" ***START***** ");
 		if(ControlProperties.printTokens(fileName)){
 		for(int i=0;i<tokens.length;i++){
 			System.out.println("token::" + tokens[i]);
 		 }
 		}
+		
+		log.info(" ***END***** ");
 	}
 	
 	public static void printCleanSentences(String[] clean,String fileName){

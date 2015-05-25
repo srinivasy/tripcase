@@ -1,5 +1,6 @@
 package com.sabre.tripcase.tcp.common.handler;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sabre.tripcase.tcp.common.preprocess.CleanText;
@@ -15,18 +16,24 @@ public class HandlerFactory
 	@Autowired
 	private static PdfHandler  pdfHandler;
 	
+	private static Logger log =Logger.getLogger(HandlerFactory.class);
+	
 	public static HandlerFactory createFactory(){
 		return handleFactory;
 	}
 		
 	public Handler getHandler(ContentType contenttype)
 	{
+		log.info(" ***START***** ");
+		
 		if (contenttype == ContentType.HTML)
 			return htmlHandler;
 		else if (contenttype == ContentType.TEXT)
 			return textHandler;
 		else
 			return pdfHandler;
+		
+		
 	}
 	
 	/**
